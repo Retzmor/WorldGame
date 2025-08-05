@@ -4,10 +4,12 @@ using UnityEngine.InputSystem;
 public class GetItem : Player
 {
     AttackPlayer playerAttack;
-    bool canGetObject;
+    private bool canObjectAttack = false;
     [SerializeField] Vector2 sizeBoxDetected;
     [SerializeField] float angle;   
     [SerializeField] LayerMask layer;
+
+    public bool CanObjectAttack { get => canObjectAttack; set => canObjectAttack = value; }
 
     private void Start()
     {
@@ -41,6 +43,7 @@ public class GetItem : Player
             playerAttack.CurrentArm.transform.parent = null;
             playerAttack.CurrentArm = DetectedObject()[0].gameObject;
             playerAttack.CurrentArm.transform.parent = transform;
+            canObjectAttack = true;
         }
     }
 

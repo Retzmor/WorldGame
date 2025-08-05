@@ -22,7 +22,7 @@ public class AttackPlayer : MonoBehaviour
     {
         if (callBack.performed)
         {
-            Debug.Log("Golpea");
+            
         }
         //Collider2D[] zone = Physics2D.OverlapCircleAll(transform.position, radiusZoneAttack, layerEnemy);
         //if (zone.Length > 1)
