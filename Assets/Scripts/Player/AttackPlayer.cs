@@ -31,9 +31,8 @@ public class AttackPlayer : MonoBehaviour
             {
                 if(zone[i].CompareTag("Enemy"))
                 {
-                    Debug.Log("hola");
                     HealthEnemy enemyHealth = zone[i].GetComponent<HealthEnemy>();
-                    ArmMelee arm = CurrentArm.GetComponent<ArmMelee>();
+                    ArmsRange arm = CurrentArm.GetComponent<ArmsRange>();
                     arm.Attack(enemyHealth);
                 }
             }
