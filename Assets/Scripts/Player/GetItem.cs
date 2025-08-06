@@ -41,8 +41,9 @@ public class GetItem : Player
         {
             Debug.Log("Tengo un arma");
             playerAttack.CurrentArm.transform.parent = null;
-            playerAttack.CurrentArm = DetectedObject()[0].gameObject;
-            playerAttack.CurrentArm.transform.parent = transform;
+            GameObject newArm = DetectedObject()[0].gameObject;
+            playerAttack.CurrentArm = newArm;
+            newArm.transform.parent = transform;
             canObjectAttack = true;
         }
     }

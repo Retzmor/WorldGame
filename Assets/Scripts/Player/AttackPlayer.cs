@@ -8,7 +8,6 @@ public class AttackPlayer : MonoBehaviour
     [SerializeField] float radiusZoneAttack;
     [SerializeField] GameObject _currentArm;
     [SerializeField] float radiusRotation;
-    [SerializeField] Transform currentArm;
     public bool canAttack;
 
 
@@ -26,7 +25,7 @@ public class AttackPlayer : MonoBehaviour
     {
         if (callBack.performed)
         {
-            Collider2D[] zone = Physics2D.OverlapCircleAll(currentArm.transform.position, radiusZoneAttack, layerEnemy);
+            Collider2D[] zone = Physics2D.OverlapCircleAll(_currentArm.transform.position, radiusZoneAttack, layerEnemy);
 
             for (int i = 0; i < zone.Length; i++)
             {
@@ -44,7 +43,7 @@ public class AttackPlayer : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(currentArm.transform.position, radiusZoneAttack);
+        Gizmos.DrawWireSphere(_currentArm.transform.position, radiusZoneAttack);
     }
 }
 
