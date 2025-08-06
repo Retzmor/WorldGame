@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Arms : MonoBehaviour
 {
-    [SerializeField] HealthEnemy healthEnemy;
+    [SerializeField] protected HealthEnemy healthEnemy;
     protected int damage = 50;
 
-    public void RemoveHealth(HealthEnemy healthEnemy)
+    public virtual void Attack(HealthEnemy target)
     {
-       healthEnemy.TakeDamage(damage);
+        
     }
 }

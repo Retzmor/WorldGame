@@ -1,15 +1,14 @@
+using Unity.Burst.Intrinsics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class AttackPlayer : MonoBehaviour
 {
-    GetItem getItem;
     [SerializeField] LayerMask layerEnemy;
     [SerializeField] float radiusZoneAttack;
     [SerializeField] GameObject _currentArm;
     [SerializeField] float radiusRotation;
     public bool canAttack;
-
 
     public GameObject CurrentArm { get => _currentArm; set => _currentArm = value; }
 
@@ -25,17 +24,35 @@ public class AttackPlayer : MonoBehaviour
     {
         if (callBack.performed)
         {
+            Arms arm = CurrentArm.GetComponent<Arms>();
+
             Collider2D[] zone = Physics2D.OverlapCircleAll(_currentArm.transform.position, radiusZoneAttack, layerEnemy);
 
             for (int i = 0; i < zone.Length; i++)
             {
-                if(zone[i].CompareTag("Enemy"))
+                if (zone[i].CompareTag("Enemy"))
                 {
-                    HealthEnemy enemyHealth = zone[i].GetComponent<HealthEnemy>();
-                    ArmsRange arm = CurrentArm.GetComponent<ArmsRange>();
-                    arm.Attack(enemyHealth);
+                    HealthEnemy enemy = zone[i].GetComponent<HealthEnemy>();
+                    arm.Attack(enemy);
                 }
             }
+        }
+    }
+
+    public void ChangeRangeArm()
+    {
+        Arms arm = CurrentArm.GetComponent<Arms>();
+
+        if (arm is ArmMelee)
+        {
+            radiusZoneAttack = 1f;
+            radiusRotation = 1f;
+        }
+
+        if (arm is ArmsRange)
+        {
+            radiusZoneAttack = 3f;
+            radiusRotation = 3f;
         }
     }
 
