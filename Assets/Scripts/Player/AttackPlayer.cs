@@ -3,10 +3,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class AttackPlayer : MonoBehaviour
 {
+    GetItem getItem;
     [SerializeField] LayerMask layerEnemy;
     [SerializeField] float radiusZoneAttack;
     [SerializeField] GameObject _currentArm;
     [SerializeField] float radiusRotation;
+    [SerializeField] Transform currentArm;
+    public bool canAttack;
+
 
     public GameObject CurrentArm { get => _currentArm; set => _currentArm = value; }
 
@@ -22,22 +26,25 @@ public class AttackPlayer : MonoBehaviour
     {
         if (callBack.performed)
         {
-            
+            Collider2D[] zone = Physics2D.OverlapCircleAll(currentArm.transform.position, radiusZoneAttack, layerEnemy);
+
+            for (int i = 0; i < zone.Length; i++)
+            {
+                if(zone[i].CompareTag("Enemy"))
+                {
+                    Debug.Log("hola");
+                    HealthEnemy enemyHealth = zone[i].GetComponent<HealthEnemy>();
+                    ArmMelee arm = CurrentArm.GetComponent<ArmMelee>();
+                    arm.Attack(enemyHealth);
+                }
+            }
         }
-        //Collider2D[] zone = Physics2D.OverlapCircleAll(transform.position, radiusZoneAttack, layerEnemy);
-        //if (zone.Length > 1)
-        //{
-        //    foreach (Collider2D c in zone)
-        //    {
-        //        // Llamar a evento de daño del enemigo
-        //    }
-        //}
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, radiusZoneAttack);
+        Gizmos.DrawWireSphere(currentArm.transform.position, radiusZoneAttack);
     }
 }
 
