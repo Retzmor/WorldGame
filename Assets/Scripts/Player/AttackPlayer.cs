@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class AttackPlayer : MonoBehaviour
 {
-    [SerializeField] LayerMask layerEnemy;
+    [SerializeField] LayerMask layer;
     [SerializeField] float radiusZoneAttack;
     [SerializeField] GameObject _currentArm;
     [SerializeField] float radiusRotation;
@@ -26,7 +26,7 @@ public class AttackPlayer : MonoBehaviour
         {
             Arms arm = CurrentArm.GetComponent<Arms>();
 
-            Collider2D[] zone = Physics2D.OverlapCircleAll(_currentArm.transform.position, radiusZoneAttack, layerEnemy);
+            Collider2D[] zone = Physics2D.OverlapCircleAll(_currentArm.transform.position, radiusZoneAttack, layer);
 
             for (int i = 0; i < zone.Length; i++)
             {
@@ -34,6 +34,11 @@ public class AttackPlayer : MonoBehaviour
                 {
                     HealthEnemy enemy = zone[i].GetComponent<HealthEnemy>();
                     arm.Attack(enemy);
+                }
+
+                else if (zone[i].TryGetComponent(out IHit hit))
+                {
+                    hit.TakeDamage(arm.damage);
                 }
             }
         }
