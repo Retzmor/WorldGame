@@ -1,15 +1,13 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerController : MonoBehaviour, IHit
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Death(float health)
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public void TakeDamage(float damage)
     {
         
     }

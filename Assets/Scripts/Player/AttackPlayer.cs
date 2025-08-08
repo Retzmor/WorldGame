@@ -30,13 +30,7 @@ public class AttackPlayer : MonoBehaviour
 
             for (int i = 0; i < zone.Length; i++)
             {
-                if (zone[i].CompareTag("Enemy"))
-                {
-                    HealthEnemy enemy = zone[i].GetComponent<HealthEnemy>();
-                    arm.Attack(enemy);
-                }
-
-                else if (zone[i].TryGetComponent(out IHit hit))
+                if (zone[i].TryGetComponent(out IHit hit))
                 {
                     hit.TakeDamage(arm.damage);
                 }
