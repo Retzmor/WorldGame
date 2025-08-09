@@ -7,6 +7,7 @@ public class AttackPlayer : MonoBehaviour
     [SerializeField] LayerMask layer;
     [SerializeField] float radiusZoneAttack;
     [SerializeField] GameObject _currentArm;
+    [SerializeField] GameObject positionArm;
     [SerializeField] float radiusRotation;
     public bool canAttack;
 
@@ -18,7 +19,17 @@ public class AttackPlayer : MonoBehaviour
         wordPosition.z = 0;
         Vector3 direction = (wordPosition - transform.position).normalized;
         CurrentArm.transform.up = direction;
-        CurrentArm.transform.position = transform.position + direction * radiusRotation;
+        CurrentArm.transform.position = positionArm.transform.position;
+
+        if(gameObject.transform.position.x > wordPosition.x)
+        {
+            gameObject.transform.localScale = new Vector3( -1 ,transform.localScale.y, transform.localScale.z);
+        }
+
+        else
+        {
+            gameObject.transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
+        }
     }
     public void HitEnemy(InputAction.CallbackContext callBack)
     {
@@ -52,8 +63,8 @@ public class AttackPlayer : MonoBehaviour
 
         if (arm is ArmMelee)
         {
-            radiusZoneAttack = 1f;
-            radiusRotation = 1f;
+            radiusZoneAttack = 0.5f;
+            radiusRotation = 0.5f;
         }
 
         if (arm is ArmsRange)

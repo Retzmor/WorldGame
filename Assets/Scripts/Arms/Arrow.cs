@@ -12,15 +12,13 @@ public class Arrow : MonoBehaviour
 
     private void Update()
     {
-        transform.Translate(Vector2.up * velocity * Time.deltaTime);
+        transform.position += transform.right * velocity * Time.deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Entro al trigger");
         if(collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("En el if");
             collision.GetComponent<IHit>().TakeDamage(damage);
         }
     }

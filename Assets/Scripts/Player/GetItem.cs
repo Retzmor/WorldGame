@@ -6,7 +6,8 @@ public class GetItem : MonoBehaviour
     AttackPlayer playerAttack;
     private bool canObjectAttack = false;
     [SerializeField] Vector2 sizeBoxDetected;
-    [SerializeField] float angle;   
+    [SerializeField] float angle;
+    [SerializeField] GameObject arm;
     [SerializeField] LayerMask layerArm;
 
     [SerializeField] string nameLayerDefault = "Default";
@@ -55,6 +56,7 @@ public class GetItem : MonoBehaviour
                 CambiarLayerRecursivo(playerAttack.CurrentArm, LayerMask.NameToLayer(nameLayerDefault));
                 playerAttack.CurrentArm.transform.parent = transform;
                 canObjectAttack = true;
+                playerAttack.CurrentArm.transform.localPosition = Vector3.zero;
             }
         }
     }
