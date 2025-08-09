@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 public class Enemies : MonoBehaviour, IHit
@@ -6,10 +7,18 @@ public class Enemies : MonoBehaviour, IHit
     [SerializeField] GameObject _gameObject;
     private int _damage;
 
-    [SerializeField] float _health;
+    [SerializeField] float _health = 100;
     [SerializeField] float _currentHealth;
 
     public int Damage { get => _damage; set => _damage = value; }
+
+    void Start()
+    {
+        _currentHealth = _health;
+        _agent = GetComponent<NavMeshAgent>();
+        _agent.updateRotation = false;
+        _agent.updateUpAxis = false;
+    }
 
     public void Death(float health)
     {
@@ -27,12 +36,7 @@ public class Enemies : MonoBehaviour, IHit
         Death(_health);
     }
 
-    void Start()
-    {
-        _agent = GetComponent<NavMeshAgent>();
-        _agent.updateRotation = false;
-        _agent.updateUpAxis = false;
-    }
+    
 
     // Update is called once per frame
     void Update()

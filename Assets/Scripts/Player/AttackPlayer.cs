@@ -26,14 +26,22 @@ public class AttackPlayer : MonoBehaviour
         {
             Arms arm = CurrentArm.GetComponent<Arms>();
 
-            Collider2D[] zone = Physics2D.OverlapCircleAll(_currentArm.transform.position, radiusZoneAttack, layer);
-
-            for (int i = 0; i < zone.Length; i++)
+            if(arm is ArmMelee)
             {
-                if (zone[i].TryGetComponent(out IHit hit))
+                Collider2D[] zone = Physics2D.OverlapCircleAll(_currentArm.transform.position, radiusZoneAttack, layer);
+
+                for (int i = 0; i < zone.Length; i++)
                 {
-                    hit.TakeDamage(arm.damage);
+                    if (zone[i].TryGetComponent(out IHit hit))
+                    {
+                        hit.TakeDamage(arm.damage);
+                    }
                 }
+            }
+
+            else if(arm is ArmsRange armRange) 
+            {
+                armRange.Arrow();
             }
         }
     }
@@ -50,8 +58,8 @@ public class AttackPlayer : MonoBehaviour
 
         if (arm is ArmsRange)
         {
-            radiusZoneAttack = 3f;
-            radiusRotation = 3f;
+            radiusZoneAttack = 1f;
+            radiusRotation = 1f;
         }
     }
 
