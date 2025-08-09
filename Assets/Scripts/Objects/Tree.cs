@@ -14,6 +14,10 @@ public class Tree : MonoBehaviour, IHit
         } 
     }
 
+    public void Death(float health)
+    {
+        
+    }
     public void DestroyTree()
     {
         foreach(Transform wood in woods)
@@ -39,4 +43,6 @@ public class Tree : MonoBehaviour, IHit
         }
         Destroy(gameObject);
     }
+
+    
 }
