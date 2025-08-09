@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 389369307362590144}
   - component: {fileID: 5868692452081427329}
   - component: {fileID: -3771530369126571367}
-  - component: {fileID: -3773673688027629298}
+  - component: {fileID: 7246785399378225087}
   m_Layer: 0
-  m_Name: Arrow_0 (1)
+  m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,8 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b14eca8c729d2348b21de9306dea6fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!60 &-3773673688027629298
-PolygonCollider2D:
+--- !u!61 &7246785399378225087
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -145,12 +145,5 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.40625, y: 0.15625}
-      - {x: -0.40625, y: -0.15625}
-      - {x: 0.375, y: -0.15625}
-      - {x: 0.40625, y: -0.09375}
-      - {x: 0.40625, y: 0.125}
-      - {x: 0.34375, y: 0.15625}
-  m_UseDelaunayMesh: 0
+  m_Size: {x: 0.8125, y: 0.3125}
+  m_EdgeRadius: 0

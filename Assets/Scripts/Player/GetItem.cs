@@ -3,16 +3,15 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class GetItem : MonoBehaviour
 {
-    AttackPlayer playerAttack;
+    private AttackPlayer playerAttack;
     private bool canObjectAttack = false;
-    [SerializeField] Vector2 sizeBoxDetected;
-    [SerializeField] float angle;
-    [SerializeField] GameObject arm;
-    [SerializeField] LayerMask layerArm;
 
-    [SerializeField] string nameLayerDefault = "Default";
-    [SerializeField] string nameLayerArm = "Arm";
+    [SerializeField] private Vector2 sizeBoxDetected;
+    [SerializeField] private float angle;
+    [SerializeField] private LayerMask layerArm;
 
+    [SerializeField] private string nameLayerDefault = "Default";
+    [SerializeField] private string nameLayerArm = "Arm";
 
     public bool CanObjectAttack { get => canObjectAttack; set => canObjectAttack = value; }
 
@@ -23,51 +22,63 @@ public class GetItem : MonoBehaviour
 
     private void Update()
     {
-        DetectedObject();
+        DetectedObject(); // Solo para debug si lo quieres ver
     }
 
-    public void GetItemPlayer(GameObject currentArm) 
-     {
-        switch(currentArm.tag)
+    public void GetItemPlayer(GameObject currentArm)
+    {
+        // Si más adelante hay más tipos de armas, puedes usar un diccionario o enum
+        if (currentArm.CompareTag("arm") || currentArm.CompareTag("wood"))
         {
-            case "arm":
-                playerAttack.CurrentArm = currentArm;
-                break;
-
-            case "wood":
-                playerAttack.CurrentArm = currentArm;
-                break;
-        } 
-     }
+            playerAttack.CurrentArm = currentArm;
+        }
+    }
 
     public void CanGetObject(InputAction.CallbackContext callBack)
     {
-        if(callBack.performed && DetectedObject()[0] != null) 
-        {
-            GameObject objectDetected = DetectedObject()[0].gameObject;
+        if (!callBack.performed)
+            return;
 
-            if(objectDetected != null)
+        // Llamamos una sola vez a la detección
+        Collider2D[] detected = DetectedObject();
+
+        if (detected.Length == 0)
+            return;
+
+        GameObject objectDetected = detected[0].gameObject;
+
+        if (objectDetected != null)
+        {
+            Debug.Log("Tengo un arma");
+
+            // Si el jugador ya tenía un arma, la soltamos
+            if (playerAttack.CurrentArm != null)
             {
-                Debug.Log("Tengo un arma");
                 playerAttack.CurrentArm.transform.parent = null;
                 CambiarLayerRecursivo(playerAttack.CurrentArm, LayerMask.NameToLayer(nameLayerArm));
-                playerAttack.CurrentArm = objectDetected;
-                playerAttack.ChangeRangeArm();
-                CambiarLayerRecursivo(playerAttack.CurrentArm, LayerMask.NameToLayer(nameLayerDefault));
-                playerAttack.CurrentArm.transform.parent = transform;
-                canObjectAttack = true;
-                playerAttack.CurrentArm.transform.localPosition = Vector3.zero;
             }
+
+            // Asignamos el nuevo arma
+            playerAttack.CurrentArm = objectDetected;
+            CambiarLayerRecursivo(playerAttack.CurrentArm, LayerMask.NameToLayer(nameLayerDefault));
+
+            // Hacemos hijo del jugador
+            playerAttack.CurrentArm.transform.parent = transform;
+            playerAttack.CurrentArm.transform.localPosition = Vector3.zero;
+
+            canObjectAttack = true;
         }
     }
 
     public Collider2D[] DetectedObject()
     {
-        Collider2D[] items = Physics2D.OverlapBoxAll(transform.position, sizeBoxDetected, angle , layerArm);
-        if(items.Length > 0)
+        Collider2D[] items = Physics2D.OverlapBoxAll(transform.position, sizeBoxDetected, angle, layerArm);
+
+        if (items.Length > 0)
         {
-            Debug.Log("Un arma");
+            Debug.Log("Un arma detectada");
         }
+
         return items;
     }
 
@@ -77,7 +88,7 @@ public class GetItem : MonoBehaviour
         Gizmos.DrawWireCube(transform.position, sizeBoxDetected);
     }
 
-    void CambiarLayerRecursivo(GameObject obj, int newLayer)
+    private void CambiarLayerRecursivo(GameObject obj, int newLayer)
     {
         obj.layer = newLayer;
         foreach (Transform child in obj.transform)

@@ -1,83 +1,65 @@
-using Unity.Burst.Intrinsics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
 public class AttackPlayer : MonoBehaviour
 {
-    [SerializeField] LayerMask layer;
-    [SerializeField] float radiusZoneAttack;
-    [SerializeField] GameObject _currentArm;
-    [SerializeField] GameObject positionArm;
-    [SerializeField] float radiusRotation;
-    public bool canAttack;
+    [Header("Configuración de ataque")]
+    [SerializeField] private LayerMask layer;
+    [SerializeField] private float radiusZoneAttack = 1f;
 
-    public GameObject CurrentArm { get => _currentArm; set => _currentArm = value; }
+    [Header("Referencias")]
+    [SerializeField] private GameObject _currentArm;
+    [SerializeField] private GameObject pivotArm; // Para armas melee
+
+    private Camera mainCamera;
+
+    public GameObject CurrentArm
+    {
+        get => _currentArm;
+        set => _currentArm = value;
+    }
+
+    private void Awake()
+    {
+        mainCamera = Camera.main;
+    }
 
     private void Update()
     {
-        Vector3 wordPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        wordPosition.z = 0;
-        Vector3 direction = (wordPosition - transform.position).normalized;
-        CurrentArm.transform.up = direction;
-        CurrentArm.transform.position = positionArm.transform.position;
+        // Calcular dirección hacia el mouse
+        Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        mouseWorldPos.z = 0;
 
-        if(gameObject.transform.position.x > wordPosition.x)
-        {
-            gameObject.transform.localScale = new Vector3( -1 ,transform.localScale.y, transform.localScale.z);
-        }
+        Vector3 direction = (mouseWorldPos - transform.position).normalized;
 
-        else
-        {
-            gameObject.transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
-        }
+        // Flip del jugador según la posición del mouse
+        float flipX = transform.position.x > mouseWorldPos.x ? -1f : 1f;
+        transform.localScale = new Vector3(flipX, transform.localScale.y, transform.localScale.z);
+
+        if (_currentArm == null) return; // No hacer nada si no hay arma
+
+        // Determinar punto de posicionamiento
+        Transform targetPos = transform; // Por defecto: centro del personaje (para rango)
+        if (_currentArm.TryGetComponent(out Arms arm) && arm is ArmMelee)
+            targetPos = pivotArm.transform; // Si es melee, usar pivot
+
+        
+
+        // Rotar y posicionar arma
+        _currentArm.transform.up = direction;
+        _currentArm.transform.position = targetPos.position;
+
+       
     }
-    public void HitEnemy(InputAction.CallbackContext callBack)
+
+    public void HitEnemy(InputAction.CallbackContext context)
     {
-        if (callBack.performed)
+        if (!context.performed || _currentArm == null) return;
+
+        if (_currentArm.TryGetComponent(out Arms arm))
         {
-            Arms arm = CurrentArm.GetComponent<Arms>();
-
-            if(arm is ArmMelee)
-            {
-                Collider2D[] zone = Physics2D.OverlapCircleAll(_currentArm.transform.position, radiusZoneAttack, layer);
-
-                for (int i = 0; i < zone.Length; i++)
-                {
-                    if (zone[i].TryGetComponent(out IHit hit))
-                    {
-                        hit.TakeDamage(arm.damage);
-                    }
-                }
-            }
-
-            else if(arm is ArmsRange armRange) 
-            {
-                armRange.Arrow();
-            }
+            arm.UseWeapon();
         }
     }
 
-    public void ChangeRangeArm()
-    {
-        Arms arm = CurrentArm.GetComponent<Arms>();
-
-        if (arm is ArmMelee)
-        {
-            radiusZoneAttack = 0.5f;
-            radiusRotation = 0.5f;
-        }
-
-        if (arm is ArmsRange)
-        {
-            radiusZoneAttack = 1f;
-            radiusRotation = 1f;
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(_currentArm.transform.position, radiusZoneAttack);
-    }
 }
-
