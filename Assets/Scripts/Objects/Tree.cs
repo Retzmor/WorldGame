@@ -43,6 +43,4 @@ public class Tree : MonoBehaviour, IHit
         }
         Destroy(gameObject);
     }
-
-    
 }
