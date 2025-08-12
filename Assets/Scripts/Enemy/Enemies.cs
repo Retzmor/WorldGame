@@ -36,11 +36,15 @@ public class Enemies : MonoBehaviour, IHit
         Death(_health);
     }
 
-    
-
-    // Update is called once per frame
     void Update()
     {
         _agent.SetDestination(_gameObject.transform.position);
+
+        Vector3 direction = _gameObject.transform.position - transform.position;
+
+        if (direction.x < 0)
+            transform.localScale = new Vector3(1, 1, 1); 
+        else if (direction.x > 0)
+            transform.localScale = new Vector3(-1, 1, 1);
     }
 }
