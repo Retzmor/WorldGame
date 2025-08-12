@@ -59,6 +59,7 @@ public class AttackPlayer : MonoBehaviour
         if (_currentArm.TryGetComponent(out Arms arm))
         {
             arm.UseWeapon();
+            AudioManager.Instance.PlaySFX("Hit");
         }
     }
 

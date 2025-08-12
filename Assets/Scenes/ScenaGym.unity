@@ -250,7 +250,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8457509758085768480, guid: 988a3e298587871428eb0c570ea246dd, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5742565097388503676, guid: 988a3e298587871428eb0c570ea246dd, type: 3}
@@ -1920,7 +1920,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 60
-    OrthographicSize: 3
+    OrthographicSize: 4
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -2081,7 +2081,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 3
+  orthographic size: 4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3085,7 +3085,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8457509758085768480, guid: 988a3e298587871428eb0c570ea246dd, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5742565097388503676, guid: 988a3e298587871428eb0c570ea246dd, type: 3}
@@ -4330,7 +4330,7 @@ GameObject:
   - component: {fileID: 2097572323}
   - component: {fileID: 2097572322}
   m_Layer: 6
-  m_Name: SkeletonWalking
+  m_Name: Skeleton
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4635,7 +4635,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8457509758085768480, guid: 988a3e298587871428eb0c570ea246dd, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8457509758085768480, guid: 988a3e298587871428eb0c570ea246dd, type: 3}
       propertyPath: m_TagString
