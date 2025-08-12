@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Pig : MonoBehaviour, IHit
+public class Animal : MonoBehaviour, IHit
 {
     [SerializeField] float health = 100;
     [SerializeField] Transform[] meats;

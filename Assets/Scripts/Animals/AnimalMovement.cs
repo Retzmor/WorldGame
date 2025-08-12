@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PigPatrol : MonoBehaviour
+public class AnimalMovement : MonoBehaviour
 {
     [SerializeField] float speed;
     [SerializeField] Transform[] pointsMovement;
