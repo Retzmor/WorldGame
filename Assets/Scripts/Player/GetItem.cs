@@ -49,7 +49,7 @@ public class GetItem : MonoBehaviour
 
         if (objectDetected != null)
         {
-            Debug.Log("Tengo un arma");
+            
 
             // Si el jugador ya tenía un arma, la soltamos
             if (playerAttack.CurrentArm != null)
@@ -76,7 +76,7 @@ public class GetItem : MonoBehaviour
 
         if (items.Length > 0)
         {
-            Debug.Log("Un arma detectada");
+            
         }
 
         return items;

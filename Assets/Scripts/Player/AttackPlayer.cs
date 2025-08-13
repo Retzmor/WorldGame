@@ -54,12 +54,14 @@ public class AttackPlayer : MonoBehaviour
 
     public void HitEnemy(InputAction.CallbackContext context)
     {
-        if (!context.performed || _currentArm == null) return;
-
-        if (_currentArm.TryGetComponent(out Arms arm))
+        if (_currentArm.TryGetComponent(out Arms arm) && context.performed)
         {
             arm.UseWeapon();
-            AudioManager.Instance.PlaySFX("Hit");
+
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySFX("Hit");
+            else
+                Debug.LogWarning("AudioManager.Instance es null");
         }
     }
 
