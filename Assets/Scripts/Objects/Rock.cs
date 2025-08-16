@@ -5,18 +5,24 @@ public class Rock : MonoBehaviour, IHit
     [SerializeField] float health;
     [SerializeField] Transform[] rocks;
     [SerializeField] int force;
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Weapon weapon)
     {
-        health -= damage;
+
+        float finalDamage = damage;
+        if (weapon == Weapon.Pickaxe)
+        {
+            finalDamage *= 3;
+        }
+          health -= finalDamage;
         if (health <= 0)
         {
             DestroyTree();
         }
     }
 
-    public void Death(float health)
+    public void Death()
     {
-
+        Destroy(gameObject);
     }
     public void DestroyTree()
     {
@@ -41,6 +47,6 @@ public class Rock : MonoBehaviour, IHit
                 rb.linearDamping = 5f;
             }
         }
-        Destroy(gameObject);
+        Death();
     }
 }

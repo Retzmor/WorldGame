@@ -5,7 +5,7 @@ public class Tree : MonoBehaviour, IHit
     [SerializeField] float health;
     [SerializeField] Transform[] woods;
     [SerializeField] int force;
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Weapon weapon)
     {
         health -= damage;
         if (health <= 0)
@@ -14,9 +14,9 @@ public class Tree : MonoBehaviour, IHit
         } 
     }
 
-    public void Death(float health)
+    public void Death()
     {
-        
+        Destroy(gameObject);
     }
     public void DestroyTree()
     {
@@ -41,6 +41,6 @@ public class Tree : MonoBehaviour, IHit
                 rb.linearDamping = 5f;
             }
         }
-        Destroy(gameObject);
+        Death();
     }
 }

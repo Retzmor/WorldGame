@@ -5,7 +5,7 @@ public class Animal : MonoBehaviour, IHit
     [SerializeField] float health = 100;
     [SerializeField] Transform[] meats;
     [SerializeField] int force;
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Weapon weapon)
     {
         health -= damage;
         if(health <= 0)
@@ -38,10 +38,10 @@ public class Animal : MonoBehaviour, IHit
                 rb.linearDamping = 5f;
             }
         }
-        Death(health);
+        Death();
     }
 
-    public void Death(float health)
+    public void Death()
     {
         gameObject.SetActive(false);
     }

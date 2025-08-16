@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-    float damage = 50f;
+    float damage = 10f;
     float velocity = 3;
 
     private void Start()
@@ -19,7 +19,7 @@ public class Arrow : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Enemy") || collision.CompareTag("Animal"))
         {
-            collision.GetComponent<IHit>().TakeDamage(damage);
+            collision.GetComponent<IHit>().TakeDamage(damage, Weapon.Arrow);
         }
     }
 }
