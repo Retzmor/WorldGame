@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IHit
 {
     private PlayerInput playerInput;
     private Animator animator;
@@ -12,11 +12,24 @@ public class PlayerController : MonoBehaviour
     private Vector2 movementDirection;
     private Vector3 realPosition; // posición acumulada sin snap
 
+    private DamageFlash damageFlash;
+
+    public void Death(float health)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void TakeDamage(float damage)
+    {
+        damageFlash.CallDamageFlash();
+    }
+
     private void Start()
     {
         animator = GetComponent<Animator>();
         playerInput = GetComponent<PlayerInput>();
         realPosition = transform.position;
+        damageFlash = GetComponent<DamageFlash>();
     }
 
     private void Update()
@@ -40,5 +53,14 @@ public class PlayerController : MonoBehaviour
         snappedPosition.y = Mathf.Round(snappedPosition.y * ppu) / ppu;
 
         transform.position = snappedPosition;
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            TakeDamage(0);
+        }
     }
 }

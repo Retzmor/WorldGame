@@ -5,10 +5,20 @@ public class Pig : MonoBehaviour, IHit
     [SerializeField] float health = 100;
     [SerializeField] Transform[] meats;
     [SerializeField] int force;
+
+    private DamageFlash damageFlash;
+
+    private void Start()
+    {
+        damageFlash = GetComponent<DamageFlash>();
+    }
+
+
     public void TakeDamage(float damage)
     {
         health -= damage;
-        if(health <= 0)
+        damageFlash.CallDamageFlash();
+        if (health <= 0)
         {
             DestroyPig();
         }
