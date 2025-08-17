@@ -1,16 +1,22 @@
 using UnityEngine;
 
 
-public class ArmMelee : Arms
+public class ArmMelee : Weapon
 {
     [SerializeField] private Vector2 SizeRange;
     [SerializeField] private float offsetX;
     [SerializeField] private float offsetY;
     [SerializeField] private LayerMask LayerEnemy;
 
-    public override void UseWeapon()
+    public override void Attack()
+    {
+        if (Time.time - lastShotTime < 1f / fireRate)
+            return;
 
-    {  // Offset en espacio local
+        lastShotTime = Time.time;
+
+
+        // Offset en espacio local
         Vector2 localOffset = new Vector2(offsetX, offsetY);
 
         // Convertimos el offset local a posición global aplicando la rotación
@@ -18,6 +24,8 @@ public class ArmMelee : Arms
 
         float angle = transform.eulerAngles.z;
         Collider2D[] zone = Physics2D.OverlapBoxAll(positionDetect, SizeRange, angle, LayerEnemy);
+
+        AnimationAttack();
 
         foreach (var collider in zone)
         {
@@ -30,6 +38,16 @@ public class ArmMelee : Arms
 
     }
 
+    public override void AnimationAttack()
+    {
+        if (animator != null)
+            animator.SetTrigger("Attack");
+
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX("Hit");
+        else
+            Debug.LogWarning("AudioManager.Instance es null");
+    }
 
     private void OnDrawGizmos()
     {

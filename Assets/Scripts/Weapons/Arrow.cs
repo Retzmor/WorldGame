@@ -3,7 +3,7 @@ using UnityEngine;
 public class Arrow : MonoBehaviour
 {
     float damage = 50f;
-    float velocity = 3;
+    [SerializeField] float velocity;
 
     private void Start()
     {

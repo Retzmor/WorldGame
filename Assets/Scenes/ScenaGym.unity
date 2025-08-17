@@ -1098,7 +1098,7 @@ GameObject:
   - component: {fileID: 205037368}
   - component: {fileID: 205037369}
   - component: {fileID: 205037370}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: Sword
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
@@ -1134,6 +1134,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 50
+  fireRate: 2
+  lastShotTime: 0
+  animator: {fileID: 0}
   SizeRange: {x: 0.43, y: 0.38}
   offsetX: 0
   offsetY: 0.39
@@ -2069,7 +2072,7 @@ GameObject:
   m_Component:
   - component: {fileID: 361476537}
   - component: {fileID: 361476536}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: SwordImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3661,7 +3664,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 635533583}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: DirectionArrow
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
@@ -4682,7 +4685,7 @@ GameObject:
   - component: {fileID: 774840670}
   - component: {fileID: 774840673}
   - component: {fileID: 774840668}
-  - component: {fileID: 774840667}
+  - component: {fileID: 774840674}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -4783,25 +4786,6 @@ Transform:
   - {fileID: 1712363591}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &774840667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 774840663}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6893460bcc82d647ba0200a95c4b48e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sizeBoxDetected: {x: 2, y: 2}
-  angle: 0
-  layerArm:
-    serializedVersion: 2
-    m_Bits: 8
-  nameLayerDefault: Default
-  nameLayerArm: Arm
 --- !u!114 &774840668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4819,8 +4803,8 @@ MonoBehaviour:
     m_Bits: 448
   radiusZoneAttack: 0.57
   _currentArm: {fileID: 0}
-  pivotArm: {fileID: 1712363590}
-  animator: {fileID: 205037370}
+  weaponHolder: {fileID: 774840666}
+  pivotArm: {fileID: 1712363591}
 --- !u!60 &774840670
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -4924,7 +4908,7 @@ MonoBehaviour:
     m_ActionName: 'Controles/Disparar[/Mouse/leftButton]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 774840667}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GetItem, Assembly-CSharp
         m_MethodName: CanGetObject
         m_Mode: 0
@@ -4965,6 +4949,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedMovement: 3
   ppu: 32
+--- !u!114 &774840674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774840663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e3faefbd56240544976a786c146d132, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionSize: {x: 1, y: 1}
+  pickableLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  weaponHolder: {fileID: 774840666}
 --- !u!1 &803695266
 GameObject:
   m_ObjectHideFlags: 0
@@ -8756,7 +8757,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1220653933}
   - component: {fileID: 1220653932}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BowImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9900,7 +9901,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1445160381}
   - component: {fileID: 1445160382}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HitPointSword_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11822,7 +11823,7 @@ GameObject:
   - component: {fileID: 1593166509}
   - component: {fileID: 1593166508}
   - component: {fileID: 1593166507}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: bow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11888,6 +11889,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 50
+  fireRate: 2
+  lastShotTime: 0
+  animator: {fileID: 0}
   Bullet: {fileID: 4166789705912597453, guid: 37197fac868219d4fb3dda5fd39b095e, type: 3}
 --- !u!4 &1593166509
 Transform:

@@ -10,8 +10,8 @@ public class AttackPlayer : MonoBehaviour
 
     [Header("Referencias")]
     [SerializeField] private GameObject _currentArm;
-    [SerializeField] private GameObject pivotArm; // Para armas melee
-    [SerializeField] private Animator animator; // Añade referencia al Animator
+    [SerializeField] private Transform weaponHolder; // Nuevo: el punto donde irá el arma
+    [SerializeField] private Transform pivotArm; // Para armas melee
 
     private Camera mainCamera;
     private bool isAttacking = false;
@@ -20,7 +20,18 @@ public class AttackPlayer : MonoBehaviour
     public GameObject CurrentArm
     {
         get => _currentArm;
-        set => _currentArm = value;
+        set
+        {
+            _currentArm = value;
+
+            if (_currentArm != null)
+            {
+                // Colocar el arma como hija del Weapon Holder
+                _currentArm.transform.SetParent(weaponHolder);
+                _currentArm.transform.localPosition = Vector3.zero;
+                _currentArm.transform.localRotation = Quaternion.identity;
+            }
+        }
     }
 
     private void Awake()
@@ -30,80 +41,35 @@ public class AttackPlayer : MonoBehaviour
 
     private void Update()
     {
-        // Calcular dirección hacia el mouse
         Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         mouseWorldPos.z = 0;
-
         Vector3 direction = (mouseWorldPos - transform.position).normalized;
 
-        // Flip del jugador según la posición del mouse
-        float flipX = transform.position.x > mouseWorldPos.x ? -1f : 1f;
-        transform.localScale = new Vector3(flipX, transform.localScale.y, transform.localScale.z);
-
-
-
-        if (_currentArm == null) return; // No hacer nada si no hay arma
-
+        if (_currentArm == null) return;
 
         if (!isAttacking)
         {
-            // Determinar punto de posicionamiento
-            Transform targetPos = transform; // Por defecto: centro del personaje (para rango)
-            if (_currentArm.TryGetComponent(out Arms arm) && arm is ArmMelee)
-                targetPos = pivotArm.transform; // Si es melee, usar pivot
-
-            // Rotar y posicionar arma
-            _currentArm.transform.up = direction;
+            float flipX = transform.position.x > mouseWorldPos.x ? -1f : 1f;
+            transform.localScale = new Vector3(flipX, transform.localScale.y, transform.localScale.z);
+            Transform targetPos = transform;
+            if (_currentArm.TryGetComponent(out Weapon arm) && arm is ArmMelee)
+                targetPos = pivotArm.transform;
+                _currentArm.transform.up = direction;
             _currentArm.transform.position = targetPos.position;
         }
         else
         {
             _currentArm.transform.rotation = lockedRotation;
         }
-
-
-        
-
-        
-
-       
-
-       
     }
 
     public void HitEnemy(InputAction.CallbackContext context)
     {
-        if (_currentArm.TryGetComponent(out Arms arm) && context.performed && !isAttacking)
+        if (_currentArm != null && _currentArm.TryGetComponent(out Weapon arm) && context.performed && !isAttacking)
         {
             lockedRotation = _currentArm.transform.rotation;
-
-            arm.UseWeapon();
-
-            if (animator != null)
-                animator.SetTrigger("Attack");
-
-
-            if (AudioManager.Instance != null)
-                AudioManager.Instance.PlaySFX("Hit");
-            else
-                Debug.LogWarning("AudioManager.Instance es null");
-
-
-            StartCoroutine(UnlockAfterAttack());
+            arm.Attack();
         }
-
-        IEnumerator UnlockAfterAttack()
-        {
-            isAttacking = true;
-
-            // Esperar duración de la animación actual
-            float animTime = animator != null ? animator.GetCurrentAnimatorStateInfo(0).length : 0.3f;
-            yield return new WaitForSeconds(animTime);
-
-            isAttacking = false;
-        }
-
-
     }
 
 }
