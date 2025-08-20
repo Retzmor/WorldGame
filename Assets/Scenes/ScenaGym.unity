@@ -9495,7 +9495,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -12126,7 +12126,7 @@ MonoBehaviour:
   chunkSize: 32
   viewRadiusChunks: 3
   seed: 0
-  seedInput: juan es gei roscon y marica
+  seedInput: Erwin
   terrainScale: 20
   biomeScale: 100
   octaves: 3

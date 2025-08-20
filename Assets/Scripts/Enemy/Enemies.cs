@@ -27,7 +27,7 @@ public class Enemies : MonoBehaviour, IHit
         
     }
 
-    public void TakeDamage(float damage, WeaponType weapon)
+    public void TakeDamage(float damage, WeaponType weapon, Vector2 HitDir)
     {
         _health -= damage;
         damageFlash.CallDamageFlash();

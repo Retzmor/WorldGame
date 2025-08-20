@@ -19,7 +19,7 @@ public class Arrow : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Enemy") || collision.CompareTag("Animal"))
         {
-            collision.GetComponent<IHit>().TakeDamage(damage, WeaponType.Arrow);
+            collision.GetComponent<IHit>().TakeDamage(damage, WeaponType.Arrow,collision.transform.position);
         }
     }
 }
