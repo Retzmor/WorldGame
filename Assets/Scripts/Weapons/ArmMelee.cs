@@ -31,8 +31,7 @@ public class ArmMelee : Weapon
         {
             if (collider.TryGetComponent(out IHit hit))
             {
-                hit.TakeDamage(damage);
-                Debug.Log(collider.gameObject.name);
+                hit.TakeDamage(damage, weaponType);
             }
         }
 

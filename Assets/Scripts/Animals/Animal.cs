@@ -1,24 +1,14 @@
 using UnityEngine;
 
-public class Pig : MonoBehaviour, IHit
+public class Animal : MonoBehaviour, IHit
 {
     [SerializeField] float health = 100;
     [SerializeField] Transform[] meats;
     [SerializeField] int force;
-
-    private DamageFlash damageFlash;
-
-    private void Start()
-    {
-        damageFlash = GetComponent<DamageFlash>();
-    }
-
-
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Weapon weapon)
     {
         health -= damage;
-        damageFlash.CallDamageFlash();
-        if (health <= 0)
+        if(health <= 0)
         {
             DestroyPig();
         }
@@ -48,10 +38,10 @@ public class Pig : MonoBehaviour, IHit
                 rb.linearDamping = 5f;
             }
         }
-        Death(health);
+        Death();
     }
 
-    public void Death(float health)
+    public void Death()
     {
         gameObject.SetActive(false);
     }

@@ -20,20 +20,21 @@ public class Enemies : MonoBehaviour, IHit
         _agent.updateUpAxis = false;
     }
 
-    public void Death(float health)
+    public void Death()
     {
-        Damage = 10;
-        Debug.Log(Damage);
-        if (health <= 0)
-        {
-            Destroy(gameObject);
-        }
+        Destroy(gameObject);
+        
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Weapon weapon)
     {
         _health -= damage;
-        Death(_health);
+
+        if (_health <= 0)
+        {
+            Death();
+        }
+        
     }
 
     void Update()

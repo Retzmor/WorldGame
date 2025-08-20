@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class AttackPlayer : MonoBehaviour
 {
     [Header("Configuración de ataque")]
-    [SerializeField] private LayerMask layer;
     [SerializeField] private float radiusZoneAttack = 1f;
 
     [Header("Referencias")]
