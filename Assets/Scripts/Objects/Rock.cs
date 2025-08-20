@@ -5,11 +5,11 @@ public class Rock : MonoBehaviour, IHit
     [SerializeField] float health;
     [SerializeField] Transform[] rocks;
     [SerializeField] int force;
-    public void TakeDamage(float damage, Weapon weapon)
+    public void TakeDamage(float damage, WeaponType weapon)
     {
 
         float finalDamage = damage;
-        if (weapon == Weapon.Pickaxe)
+        if (weapon == WeaponType.Pickaxe)
         {
             finalDamage *= 3;
         }
@@ -48,5 +48,10 @@ public class Rock : MonoBehaviour, IHit
             }
         }
         Death();
+    }
+
+    public void TakeDamage(float damage, Weapon weapon)
+    {
+        throw new System.NotImplementedException();
     }
 }

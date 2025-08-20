@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum Weapon 
+public enum WeaponType 
 {
     Axe,
     Pickaxe,

@@ -63,4 +63,14 @@ public class PlayerController : MonoBehaviour, IHit
             TakeDamage(0);
         }
     }
+
+    public void TakeDamage(float damage, Weapon weapon)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Death()
+    {
+        throw new System.NotImplementedException();
+    }
 }
