@@ -50,10 +50,10 @@ public class AttackPlayer : MonoBehaviour
         {
             float flipX = transform.position.x > mouseWorldPos.x ? -1f : 1f;
             transform.localScale = new Vector3(flipX, transform.localScale.y, transform.localScale.z);
+            _currentArm.transform.up = direction;
             Transform targetPos = transform;
             if (_currentArm.TryGetComponent(out Weapon arm) && arm is ArmMelee)
                 targetPos = pivotArm.transform;
-                _currentArm.transform.up = direction;
             _currentArm.transform.position = targetPos.position;
         }
         else

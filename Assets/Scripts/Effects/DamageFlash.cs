@@ -28,11 +28,14 @@ public class DamageFlash : MonoBehaviour
         {
             materials[i] = spriteRenderers[i].material;
         }
+
+        Debug.Log(materials.Length);
     }
 
     public void CallDamageFlash()
     {
         DamageCoroutine = StartCoroutine(DamageFlasher());
+       
     }
 
     private IEnumerator DamageFlasher()

@@ -9,7 +9,7 @@ public class Enemies : MonoBehaviour, IHit
 
     [SerializeField] float _health = 100;
     [SerializeField] float _currentHealth;
-
+    private DamageFlash damageFlash;
     public int Damage { get => _damage; set => _damage = value; }
 
     void Start()
@@ -18,6 +18,7 @@ public class Enemies : MonoBehaviour, IHit
         _agent = GetComponent<NavMeshAgent>();
         _agent.updateRotation = false;
         _agent.updateUpAxis = false;
+       damageFlash = GetComponent<DamageFlash>();
     }
 
     public void Death()
@@ -26,9 +27,10 @@ public class Enemies : MonoBehaviour, IHit
         
     }
 
-    public void TakeDamage(float damage, Weapon weapon)
+    public void TakeDamage(float damage, WeaponType weapon)
     {
         _health -= damage;
+        damageFlash.CallDamageFlash();
 
         if (_health <= 0)
         {

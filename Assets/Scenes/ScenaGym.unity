@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameObject: {fileID: 774840663}
-  _health: 10
+  _health: 100
   _currentHealth: 0
 --- !u!50 &11070406
 Rigidbody2D:
@@ -1098,7 +1098,7 @@ GameObject:
   - component: {fileID: 205037368}
   - component: {fileID: 205037369}
   - component: {fileID: 205037370}
-  m_Layer: 9
+  m_Layer: 3
   m_Name: Sword
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
@@ -1133,16 +1133,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca938b8253dd4924cb93d5e0c0990991, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 50
+  damage: 10
   fireRate: 2
   lastShotTime: 0
-  animator: {fileID: 0}
-  SizeRange: {x: 0.43, y: 0.38}
+  animator: {fileID: 205037370}
+  SizeRange: {x: 0.55, y: 0.21}
   offsetX: 0
-  offsetY: 0.39
+  offsetY: 0.48
   LayerEnemy:
     serializedVersion: 2
-    m_Bits: 448
+    m_Bits: 64
+  WeaponType: 1
 --- !u!61 &205037369
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2072,7 +2073,7 @@ GameObject:
   m_Component:
   - component: {fileID: 361476537}
   - component: {fileID: 361476536}
-  m_Layer: 9
+  m_Layer: 3
   m_Name: SwordImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3664,7 +3665,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 635533583}
-  m_Layer: 9
+  m_Layer: 3
   m_Name: DirectionArrow
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
@@ -4432,7 +4433,7 @@ GameObject:
   - component: {fileID: 752220806}
   - component: {fileID: 752220805}
   - component: {fileID: 752220804}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Tree_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4641,7 +4642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameObject: {fileID: 774840663}
-  _health: 10
+  _health: 100
   _currentHealth: 0
 --- !u!50 &765593022
 Rigidbody2D:
@@ -4800,12 +4801,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f111bbe327b3bb64d9c779ba3c318110, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layer:
-    serializedVersion: 2
-    m_Bits: 448
   radiusZoneAttack: 0.57
   _currentArm: {fileID: 0}
-  weaponHolder: {fileID: 774840666}
+  weaponHolder: {fileID: 1712363591}
   pivotArm: {fileID: 1712363591}
 --- !u!114 &774840671
 MonoBehaviour:
@@ -4914,7 +4912,7 @@ MonoBehaviour:
   detectionSize: {x: 1, y: 1}
   pickableLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 8
   weaponHolder: {fileID: 774840666}
 --- !u!61 &774840675
 BoxCollider2D:
@@ -8652,7 +8650,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1220653933}
   - component: {fileID: 1220653932}
-  m_Layer: 9
+  m_Layer: 3
   m_Name: BowImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9398,7 +9396,7 @@ GameObject:
   - component: {fileID: 1318920337}
   - component: {fileID: 1318920336}
   - component: {fileID: 1318920335}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: Pig (1)
   m_TagString: Animal
   m_Icon: {fileID: 0}
@@ -9891,7 +9889,7 @@ GameObject:
   - component: {fileID: 1431876448}
   - component: {fileID: 1431876447}
   - component: {fileID: 1431876446}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Meet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10063,7 +10061,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1445160381}
   - component: {fileID: 1445160382}
-  m_Layer: 9
+  m_Layer: 3
   m_Name: HitPointSword_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11664,7 +11662,7 @@ GameObject:
   - component: {fileID: 1553380171}
   - component: {fileID: 1553380170}
   - component: {fileID: 1553380168}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RockSmall_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11985,7 +11983,7 @@ GameObject:
   - component: {fileID: 1593166509}
   - component: {fileID: 1593166508}
   - component: {fileID: 1593166507}
-  m_Layer: 9
+  m_Layer: 3
   m_Name: bow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12050,7 +12048,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aac227044ab0234d8a83ec75a9b5027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 50
+  damage: 10
   fireRate: 2
   lastShotTime: 0
   animator: {fileID: 0}
@@ -12241,7 +12239,7 @@ GameObject:
   - component: {fileID: 1610650306}
   - component: {fileID: 1610650305}
   - component: {fileID: 1610650304}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13785,7 +13783,7 @@ GameObject:
   - component: {fileID: 1929689272}
   - component: {fileID: 1929689271}
   - component: {fileID: 1929689269}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RockSmall_0 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14669,7 +14667,7 @@ GameObject:
   - component: {fileID: 2023440863}
   - component: {fileID: 2023440862}
   - component: {fileID: 2023440861}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Meet (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15355,6 +15353,7 @@ GameObject:
   - component: {fileID: 2097572324}
   - component: {fileID: 2097572323}
   - component: {fileID: 2097572322}
+  - component: {fileID: 2097572329}
   m_Layer: 6
   m_Name: Skeleton
   m_TagString: Enemy
@@ -15375,7 +15374,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameObject: {fileID: 774840663}
-  _health: 10
+  _health: 100
   _currentHealth: 0
 --- !u!195 &2097572323
 NavMeshAgent:
@@ -15564,6 +15563,44 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2097572329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097572321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02a98595bd5197b46b70545ad116cdf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _flashColor: {r: 8, g: 0, b: 0, a: 1}
+  flashTime: 0.25
+  flashSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -4
+      outSlope: -4
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.25
+      value: 0
+      inSlope: -4
+      outSlope: -4
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2134792047
 GameObject:
   m_ObjectHideFlags: 0

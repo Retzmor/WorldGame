@@ -7,6 +7,7 @@ public class ArmMelee : Weapon
     [SerializeField] private float offsetX;
     [SerializeField] private float offsetY;
     [SerializeField] private LayerMask LayerEnemy;
+    [SerializeField] WeaponType WeaponType;
 
     public override void Attack()
     {
@@ -31,7 +32,8 @@ public class ArmMelee : Weapon
         {
             if (collider.TryGetComponent(out IHit hit))
             {
-                hit.TakeDamage(damage, weaponType);
+                hit.TakeDamage(damage, WeaponType);
+                Debug.Log("ATACA");
             }
         }
 

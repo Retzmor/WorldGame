@@ -5,7 +5,7 @@ public class Tree : MonoBehaviour, IHit
     [SerializeField] float health;
     [SerializeField] Transform[] woods;
     [SerializeField] int force;
-    public void TakeDamage(float damage, Weapon weapon)
+    public void TakeDamage(float damage, WeaponType weapon)
     {
         health -= damage;
         if (health <= 0)

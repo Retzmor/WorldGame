@@ -5,16 +5,12 @@ public class Animal : MonoBehaviour, IHit
     [SerializeField] float health = 100;
     [SerializeField] Transform[] meats;
     [SerializeField] int force;
-    public void TakeDamage(float damage, Weapon weapon)
+    private DamageFlash DamageFlash;
+
+    private void Start()
     {
-        health -= damage;
-        if(health <= 0)
-        {
-            DestroyPig();
-        }
+        DamageFlash = GetComponent<DamageFlash>();
     }
-
-
     public void DestroyPig()
     {
         foreach (Transform meet in meats)
@@ -44,5 +40,15 @@ public class Animal : MonoBehaviour, IHit
     public void Death()
     {
         gameObject.SetActive(false);
+    }
+
+    public void TakeDamage(float damage, WeaponType weapon)
+    {
+        DamageFlash.CallDamageFlash();
+        health -= damage;
+        if (health <= 0)
+        {
+            DestroyPig();
+        }
     }
 }
