@@ -64,6 +64,14 @@ public class PlayerController : MonoBehaviour, IHit
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Item"))
+        {
+            collision.gameObject.SetActive(false);
+        }
+    }
+
     public void TakeDamage(float damage, WeaponType weapon, Vector2 HitDir)
     {
         throw new System.NotImplementedException();

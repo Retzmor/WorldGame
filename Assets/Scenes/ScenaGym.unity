@@ -158,9 +158,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037fb857da4f4d748839786be37a3b59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 100
   _gameObject: {fileID: 774840663}
-  _health: 100
-  _currentHealth: 0
 --- !u!50 &11070406
 Rigidbody2D:
   serializedVersion: 5
@@ -2833,7 +2832,7 @@ GameObject:
   - component: {fileID: 506268863}
   m_Layer: 6
   m_Name: Wood
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2950,7 +2949,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -4641,9 +4640,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037fb857da4f4d748839786be37a3b59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 100
   _gameObject: {fileID: 774840663}
-  _health: 100
-  _currentHealth: 0
 --- !u!50 &765593022
 Rigidbody2D:
   serializedVersion: 5
@@ -9598,7 +9596,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9791710ceacb8994cab7682653b2b55e, type: 2}
+  - {fileID: 2100000, guid: 1628fde4ae621084ea24788066530eaa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9891,7 +9889,7 @@ GameObject:
   - component: {fileID: 1431876446}
   m_Layer: 6
   m_Name: Meet
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9953,7 +9951,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -11661,10 +11659,9 @@ GameObject:
   - component: {fileID: 1553380169}
   - component: {fileID: 1553380171}
   - component: {fileID: 1553380170}
-  - component: {fileID: 1553380168}
   m_Layer: 6
   m_Name: RockSmall_0
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11684,18 +11681,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1610650303}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1553380168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1553380166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc12ada4d7f142f4fbf2cab74abf7077, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &1553380169
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -11781,7 +11766,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -13579,7 +13564,7 @@ GameObject:
   - component: {fileID: 1883701088}
   m_Layer: 6
   m_Name: Wood (1)
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13696,7 +13681,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -13785,7 +13770,7 @@ GameObject:
   - component: {fileID: 1929689269}
   m_Layer: 6
   m_Name: RockSmall_0 (1)
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13902,7 +13887,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -14669,7 +14654,7 @@ GameObject:
   - component: {fileID: 2023440861}
   m_Layer: 6
   m_Name: Meet (1)
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14731,7 +14716,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -15373,9 +15358,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037fb857da4f4d748839786be37a3b59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 100
   _gameObject: {fileID: 774840663}
-  _health: 100
-  _currentHealth: 0
 --- !u!195 &2097572323
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -15516,7 +15500,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 1628fde4ae621084ea24788066530eaa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

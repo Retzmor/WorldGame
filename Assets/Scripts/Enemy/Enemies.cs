@@ -1,43 +1,23 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-public class Enemies : MonoBehaviour, IHit
+public class Enemies : Damageable
 {
     NavMeshAgent _agent;
     [SerializeField] GameObject _gameObject;
     private int _damage;
-
-    [SerializeField] float _health = 100;
-    [SerializeField] float _currentHealth;
-    private DamageFlash damageFlash;
     public int Damage { get => _damage; set => _damage = value; }
 
-    void Start()
+
+    protected override void Start()
     {
-        _currentHealth = _health;
         _agent = GetComponent<NavMeshAgent>();
         _agent.updateRotation = false;
         _agent.updateUpAxis = false;
-       damageFlash = GetComponent<DamageFlash>();
+        base.Start(); // llama a Damageable.Start()
+        // Aquí tu lógica específica de Animal
     }
 
-    public void Death()
-    {
-        Destroy(gameObject);
-        
-    }
-
-    public void TakeDamage(float damage, WeaponType weapon, Vector2 HitDir)
-    {
-        _health -= damage;
-        damageFlash.CallDamageFlash();
-
-        if (_health <= 0)
-        {
-            Death();
-        }
-        
-    }
 
     void Update()
     {
@@ -49,5 +29,10 @@ public class Enemies : MonoBehaviour, IHit
             transform.localScale = new Vector3(1, 1, 1); 
         else if (direction.x > 0)
             transform.localScale = new Vector3(-1, 1, 1);
+    }
+
+    protected override void Death()
+    {
+        gameObject.SetActive(false);
     }
 }

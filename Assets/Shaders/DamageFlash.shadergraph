@@ -148,8 +148,8 @@
     ],
     "m_VertexContext": {
         "m_Position": {
-            "x": 366.0,
-            "y": -150.0
+            "x": 239.0,
+            "y": -176.0
         },
         "m_Blocks": [
             {
@@ -165,8 +165,8 @@
     },
     "m_FragmentContext": {
         "m_Position": {
-            "x": 366.0,
-            "y": 50.000003814697269
+            "x": 217.9999542236328,
+            "y": 33.99998092651367
         },
         "m_Blocks": [
             {
@@ -265,9 +265,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -266.0,
-            "y": -22.0000057220459,
-            "width": 142.99998474121095,
+            "x": -268.0,
+            "y": 34.0,
+            "width": 143.0,
             "height": 34.0
         }
     },
@@ -361,14 +361,14 @@
     "m_DefaultRefNameVersion": 1,
     "m_RefNameGeneratedByDisplayName": "MainText",
     "m_DefaultReferenceName": "_MainText",
-    "m_OverrideReferenceName": "",
+    "m_OverrideReferenceName": "_MainTex",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",
     "m_DismissedVersion": 0,
     "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
+    "overrideHLSLDeclaration": true,
+    "hlslDeclarationOverride": 2,
     "m_Hidden": false,
     "m_Value": {
         "m_SerializedTexture": "",
@@ -639,9 +639,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -275.0,
-            "y": -67.99999237060547,
-            "width": 132.99998474121095,
+            "x": -292.0,
+            "y": -39.0,
+            "width": 133.0,
             "height": 34.0
         }
     },
@@ -764,10 +764,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -483.0,
-            "y": -142.0,
-            "width": 208.0,
-            "height": 432.9999694824219
+            "x": -500.0,
+            "y": -147.99998474121095,
+            "width": 207.99996948242188,
+            "height": 433.0
         }
     },
     "m_Slots": [
@@ -1232,10 +1232,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -674.0,
-            "y": -65.0,
-            "width": 138.0,
-            "height": 34.00000762939453
+            "x": -666.0001220703125,
+            "y": -148.00001525878907,
+            "width": 132.0,
+            "height": 34.00004577636719
         }
     },
     "m_Slots": [
