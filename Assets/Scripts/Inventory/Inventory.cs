@@ -58,6 +58,7 @@ public class Inventory : MonoBehaviour
     {
         for(int i = 0; i < slots.Length; i++)
         {
+            text = slots[i].GetComponentInChildren<TextMeshProUGUI>();
             if (slots[i].transform.GetChild(0).gameObject.name == itemName)
             {
                 InventoryItems[itemName]--;

@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class InventoryButtons : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private Inventory inventory;
+
+    void Awake()
     {
-        
+        inventory = Object.FindFirstObjectByType<Inventory>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UseItem()
     {
-        
+        inventory.UseInvetoryItems(gameObject.name);
     }
 }
