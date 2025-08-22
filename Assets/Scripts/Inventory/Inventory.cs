@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class Inventory : MonoBehaviour
 {
     [SerializeField] GameObject[] slots;
     [SerializeField] GameObject[] backPack;
+    [SerializeField] GameObject[] hotbarSlots;
     TextMeshProUGUI text;
 
     bool isInstantiated;
@@ -47,7 +49,6 @@ public class Inventory : MonoBehaviour
                         text.text = InventoryItems[itemName].ToString();
                         break;
                     }
-
                     break;
                 }
             }
@@ -75,4 +76,26 @@ public class Inventory : MonoBehaviour
             }
         }
     }
+
+    public void AddItemToHotbar(GameObject itemPrefab, Sprite itemSprite, string itemName, int healAmount)
+    {
+        for (int i = 0; i < hotbarSlots.Length; i++)
+        {
+            Debug.Log("Slot " + i + " tiene " + hotbarSlots[i].transform.childCount + " hijos");
+            if (hotbarSlots[i].transform.childCount == 0)
+            {
+                GameObject itemButton = Instantiate(itemPrefab, hotbarSlots[i].transform);
+                itemButton.transform.localPosition = Vector3.zero;
+                itemButton.transform.localScale = Vector3.one;
+
+                itemButton.GetComponent<Image>().sprite = itemSprite;
+
+                ItemUse itemUse = itemButton.GetComponent<ItemUse>();
+                itemUse.SetItem(itemName, healAmount);
+                Debug.Log("Se instancio el objeto");
+                break;
+            }
+        }
+    }
+
 }

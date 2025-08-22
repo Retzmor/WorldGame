@@ -3,6 +3,13 @@ using UnityEngine;
 public class ItemUse : MonoBehaviour
 {
     [SerializeField] int healthToGive = 20;
+    private string itemName;
+    private int healAmount;
+    public void SetItem(string name, int heal)
+    {
+        itemName = name;
+        healAmount = heal;
+    }
 
     public void UseButton()
     {
