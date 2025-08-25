@@ -4,6 +4,8 @@ public class Meet : MonoBehaviour
 {
     [SerializeField] GameObject itemToAdd;
     [SerializeField] int amountToAdd;
+    [SerializeField] Sprite itemSprite;
+    [SerializeField] int healAmount = 20;
     [SerializeField] public Inventory inventory;
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -11,8 +13,6 @@ public class Meet : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             inventory.CheckSlotsAvailability(itemToAdd, itemToAdd.name, amountToAdd);
-            Sprite itemSprite = itemToAdd.GetComponent<SpriteRenderer>().sprite;
-            int healAmount = 20; // o el valor que corresponda
             inventory.AddItemToHotbar(itemToAdd, itemSprite, itemToAdd.name, healAmount);
             Destroy(gameObject);
         }
