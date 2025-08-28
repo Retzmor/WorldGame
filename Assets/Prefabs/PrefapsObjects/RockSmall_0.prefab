@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4554060817795652812}
   - component: {fileID: -4449509308128204524}
   - component: {fileID: 2681315963766405256}
-  - component: {fileID: 763288160015798976}
+  - component: {fileID: -8487172750851321164}
   m_Layer: 0
   m_Name: RockSmall_0
   m_TagString: Untagged
@@ -163,7 +163,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.375, y: 0.3125}
   m_EdgeRadius: 0
---- !u!114 &763288160015798976
+--- !u!114 &-8487172750851321164
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,11 +172,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7473094947042414362}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac2e6aaf82641db48a8dc418f1d7e04e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e6d583420d0ff24b8909ea68831bf0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemToAdd: {fileID: 7938505630013425594, guid: fc3c3be59c13e8547ac54b4e3406ff72, type: 3}
-  amountToAdd: 1
-  itemSprite: {fileID: 7100388820099998475, guid: ba72dfd55bdd07646b8082b7968b6ba3, type: 3}
-  healAmount: 20
-  inventory: {fileID: 0}
+  itemData: {fileID: 11400000, guid: 8b608308ccee5e8418943da4abb3ae86, type: 2}
+  amount: 1
+  inventory: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}

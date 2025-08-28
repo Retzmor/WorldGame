@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6131001725101239260}
   - component: {fileID: 3307363790794406086}
   - component: {fileID: 5596776844429661441}
-  - component: {fileID: 1065455835286722424}
+  - component: {fileID: -7838996425025464692}
   m_Layer: 6
   m_Name: Meet
   m_TagString: Item
@@ -163,7 +163,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.7612345, y: 0.622596}
   m_EdgeRadius: 0
---- !u!114 &1065455835286722424
+--- !u!114 &-7838996425025464692
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,11 +172,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3746704370298116857}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d92e40ab9fc8e7b4eb70ecf2c6c3c716, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e6d583420d0ff24b8909ea68831bf0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemToAdd: {fileID: 8283701720008317760, guid: 7d72150a96e359b4e9351de5917d9546, type: 3}
-  amountToAdd: 1
-  itemSprite: {fileID: 21300000, guid: 9effc7faa5bf57345b7246a9a2936137, type: 3}
-  healAmount: 20
-  inventory: {fileID: 0}
+  itemData: {fileID: 11400000, guid: 55dbf49c0770ceb41abd98fa0f5bea1c, type: 2}
+  amount: 1
+  inventory: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}

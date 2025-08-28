@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 779143364340061778}
   - component: {fileID: 5015310366492249199}
   - component: {fileID: 3942786829395854009}
-  - component: {fileID: -3495700270283017382}
+  - component: {fileID: -2910758688815560925}
   m_Layer: 0
   m_Name: Potion
   m_TagString: Untagged
@@ -135,7 +135,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.4375, y: 0.5}
   m_EdgeRadius: 0
---- !u!114 &-3495700270283017382
+--- !u!114 &-2910758688815560925
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,9 +144,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5688600327719869917}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c4487ba40d6fcb448f09b0485d2e579, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e6d583420d0ff24b8909ea68831bf0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemToAdd: {fileID: 6064242756916226058, guid: e956d7bf8c56841438690fcccf87933c, type: 3}
-  amountToAdd: 1
-  inventory: {fileID: 599454627959800866, guid: f3020e0fad5d2cd4f9864d3f34cf8982, type: 3}
+  itemData: {fileID: 11400000, guid: 919fdeb54be07a24bade7340fd281386, type: 2}
+  amount: 1
+  inventory: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}

@@ -6,15 +6,20 @@ using TMPro;
 public class Inventory : MonoBehaviour
 {
     [SerializeField] GameObject[] slots;
-    [SerializeField] GameObject[] backPack;
     [SerializeField] GameObject[] hotbarSlots;
     TextMeshProUGUI text;
 
-    bool isInstantiated;
-
     public Dictionary<string, int> InventoryItems = new Dictionary<string, int>();
 
-    public void CheckSlotsAvailability(GameObject itemToAdd, string itemName, int itemAmount)
+    public void AddItem(GameObject itemPrefab, string itemName, int amount, Sprite icon, int healAmount)
+    {
+        if (!AddItemToHotbar(itemPrefab, icon, itemName, healAmount, amount))
+        {
+            AddItemToInventory(itemPrefab, itemName, amount, icon);
+        }
+    }
+
+    private void AddItemToInventory(GameObject itemToAdd, string itemName, int itemAmount, Sprite icon)
     {
         bool itemPlaced = false;
 
@@ -27,7 +32,7 @@ public class Inventory : MonoBehaviour
                 TextMeshProUGUI text = slots[i].GetComponentInChildren<TextMeshProUGUI>();
                 if (text != null)
                     text.text = InventoryItems[itemName].ToString();
-                itemPlaced = true; 
+                itemPlaced = true;
                 break;
             }
         }
@@ -48,70 +53,13 @@ public class Inventory : MonoBehaviour
                     if (text != null)
                         text.text = InventoryItems[itemName].ToString();
 
-                    slots[i].GetComponent<SlotsScripts>().isUsed = true;
                     break;
                 }
             }
         }
-        Sprite itemSprite = itemToAdd.GetComponent<Image>()?.sprite;
-        AddItemToHotbar(itemToAdd, itemSprite, itemName, 20); 
     }
 
-    public void UseInventoryItems(string itemName)
-    {
-        for (int i = 0; i < slots.Length; i++)
-        {
-            if (slots[i].transform.childCount > 0 &&
-                slots[i].transform.GetChild(0).gameObject.name == itemName)
-            {
-                InventoryItems[itemName]--;
-
-                TextMeshProUGUI text = slots[i].GetComponentInChildren<TextMeshProUGUI>();
-                if (text != null)
-                    text.text = InventoryItems[itemName].ToString();
-
-                for (int j = 0; j < hotbarSlots.Length; j++)
-                {
-                    if (hotbarSlots[j].transform.childCount > 0)
-                    {
-                        Transform hotbarItem = hotbarSlots[j].transform.GetChild(0);
-                        if (hotbarItem.name == itemName)
-                        {
-                            TextMeshProUGUI hotbarText = hotbarItem.GetComponentInChildren<TextMeshProUGUI>();
-                            if (hotbarText != null)
-                            {
-                                if (InventoryItems[itemName] > 0)
-                                    hotbarText.text = InventoryItems[itemName].ToString();
-                                else
-                                    hotbarText.text = ""; 
-                            }
-                            break;
-                        }
-                    }
-                }
-
-                if (InventoryItems[itemName] <= 0)
-                {
-                    Destroy(slots[i].transform.GetChild(0).gameObject);
-                    slots[i].GetComponent<SlotsScripts>().isUsed = false;
-                    InventoryItems.Remove(itemName);
-
-                    for (int j = 0; j < hotbarSlots.Length; j++)
-                    {
-                        if (hotbarSlots[j].transform.childCount > 0 &&
-                            hotbarSlots[j].transform.GetChild(0).name == itemName)
-                        {
-                            Destroy(hotbarSlots[j].transform.GetChild(0).gameObject);
-                            break;
-                        }
-                    }
-                }
-                break;
-            }
-        }
-    }
-
-    public void AddItemToHotbar(GameObject itemPrefab, Sprite itemSprite, string itemName, int healAmount)
+    private bool AddItemToHotbar(GameObject itemPrefab, Sprite itemSprite, string itemName, int healAmount, int amount)
     {
         for (int i = 0; i < hotbarSlots.Length; i++)
         {
@@ -121,10 +69,11 @@ public class Inventory : MonoBehaviour
                 string existingName = existingItem.name.Replace("(Clone)", "");
                 if (existingName == itemName)
                 {
+                    InventoryItems[itemName] += amount;
                     TextMeshProUGUI text = existingItem.GetComponentInChildren<TextMeshProUGUI>();
-                    if (InventoryItems.ContainsKey(itemName))
+                    if (text != null)
                         text.text = InventoryItems[itemName].ToString();
-                    return; 
+                    return true; 
                 }
             }
         }
@@ -136,7 +85,8 @@ public class Inventory : MonoBehaviour
                 GameObject itemButton = Instantiate(itemPrefab, hotbarSlots[i].transform);
                 itemButton.transform.localPosition = Vector3.zero;
                 itemButton.transform.localScale = Vector3.one;
-                itemButton.name = itemName; 
+                itemButton.name = itemName;
+
                 Image img = itemButton.GetComponent<Image>();
                 if (img != null && itemSprite != null)
                     img.sprite = itemSprite;
@@ -145,11 +95,16 @@ public class Inventory : MonoBehaviour
                 if (itemUse != null)
                     itemUse.SetItem(itemName, healAmount);
 
+                InventoryItems[itemName] = amount;
+
                 TextMeshProUGUI text = itemButton.GetComponentInChildren<TextMeshProUGUI>();
-                if (text != null && InventoryItems.ContainsKey(itemName))
+                if (text != null)
                     text.text = InventoryItems[itemName].ToString();
-                break; 
+
+                return true; 
             }
         }
+
+        return false; 
     }
 }

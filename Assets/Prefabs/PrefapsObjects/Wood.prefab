@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1792501807577154358}
   - component: {fileID: -651322814977313524}
   - component: {fileID: -3229878182653807851}
-  - component: {fileID: 6314212289945508461}
+  - component: {fileID: -5793214878163429932}
   m_Layer: 0
   m_Name: Wood
   m_TagString: Untagged
@@ -163,7 +163,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
---- !u!114 &6314212289945508461
+--- !u!114 &-5793214878163429932
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,11 +172,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 321523522686411955}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f1a556c8be87ea4fa511ff0a677bbbb, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e6d583420d0ff24b8909ea68831bf0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemToAdd: {fileID: 5739570377777651304, guid: 9db19b32e2ac9d54da6c8c5dbc8690cf, type: 3}
-  amountToAdd: 0
-  itemSprite: {fileID: 21300000, guid: 1e8159b7b688a7641a988f072363d4d2, type: 3}
-  healAmount: 20
-  inventory: {fileID: 0}
+  itemData: {fileID: 11400000, guid: 0798bdb6dedad4b419e2591e2f4f1989, type: 2}
+  amount: 1
+  inventory: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}
