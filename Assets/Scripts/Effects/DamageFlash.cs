@@ -28,13 +28,13 @@ public class DamageFlash : MonoBehaviour
         {
             materials[i] = spriteRenderers[i].material;
         }
-
-        Debug.Log(materials.Length);
+        //Debug.Log(gameObject.name  + materials.Length);
     }
 
     public void CallDamageFlash()
     {
         DamageCoroutine = StartCoroutine(DamageFlasher());
+        Debug.Log(materials.Length);
        
     }
 

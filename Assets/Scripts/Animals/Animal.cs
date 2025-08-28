@@ -5,7 +5,6 @@ public class Animal : Damageable
 { 
     [SerializeField] Transform[] meats;
     [SerializeField] int force;
-    private DamageFlash DamageFlash;
 
     public void DestroyPig()
     {

@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: Forest
   m_EditorClassIdentifier: 
   biomeName: Bosque
-  groundTile: {fileID: 11400000, guid: 5f496eb64f7647b43af882aec72cc3e1, type: 2}
+  groundTile:
+  - {fileID: 11400000, guid: 5f496eb64f7647b43af882aec72cc3e1, type: 2}
   minHeight: 0.4
   maxHeight: 1
   minMoisture: 0.4
   maxMoisture: 1
   decorations:
-  - {fileID: 6245394949204210498, guid: e7b18e7e24a802b4f8774f778a3917b1, type: 3}
-  decoChance: 0.086
+  - prefab: {fileID: 6245394949204210498, guid: e7b18e7e24a802b4f8774f778a3917b1, type: 3}
+    probability: 0.089

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5113841336433159993}
   - component: {fileID: 5598127237281928977}
   - component: {fileID: 8017222588040685761}
+  - component: {fileID: 4740769668288234308}
   m_Layer: 6
   m_Name: Rock
   m_TagString: Untagged
@@ -60,7 +61,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 1628fde4ae621084ea24788066530eaa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -78,9 +79,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingLayerID: -1680761953
+  m_SortingLayer: 3
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 8e02d4905911aa54c84bb35082f3ea02, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -182,6 +183,44 @@ MonoBehaviour:
   - {fileID: 8241184534265308917}
   - {fileID: 5554386040059573509}
   force: 2
+--- !u!114 &4740769668288234308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6913790783632814790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02a98595bd5197b46b70545ad116cdf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashTime: 0.25
+  flashSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -4
+      outSlope: -4
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.25
+      value: 0
+      inSlope: -4
+      outSlope: -4
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &424165476243824179
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -233,6 +272,18 @@ PrefabInstance:
     - target: {fileID: 5257905200430902070, guid: 6ea01e7d109187e45a9919b6e0c97b7c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5372108547254822054, guid: 6ea01e7d109187e45a9919b6e0c97b7c, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5372108547254822054, guid: 6ea01e7d109187e45a9919b6e0c97b7c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5372108547254822054, guid: 6ea01e7d109187e45a9919b6e0c97b7c, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1680761953
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -295,6 +346,18 @@ PrefabInstance:
     - target: {fileID: 5257905200430902070, guid: 6ea01e7d109187e45a9919b6e0c97b7c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5372108547254822054, guid: 6ea01e7d109187e45a9919b6e0c97b7c, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5372108547254822054, guid: 6ea01e7d109187e45a9919b6e0c97b7c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5372108547254822054, guid: 6ea01e7d109187e45a9919b6e0c97b7c, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1680761953
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

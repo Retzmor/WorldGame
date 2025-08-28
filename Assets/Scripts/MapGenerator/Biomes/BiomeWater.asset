@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: BiomeWater
   m_EditorClassIdentifier: 
   biomeName: Agua
-  groundTile: {fileID: 11400000, guid: ad2da85b312f17246be710344a6c6205, type: 2}
+  groundTile:
+  - {fileID: 11400000, guid: ad2da85b312f17246be710344a6c6205, type: 2}
   minHeight: 0
   maxHeight: 0.25
   minMoisture: 0

@@ -1,4 +1,5 @@
 using DG.Tweening;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public abstract class Damageable : MonoBehaviour, IHit
@@ -6,20 +7,14 @@ public abstract class Damageable : MonoBehaviour, IHit
     [SerializeField] protected float health = 100;
     protected Rigidbody2D rb;
     protected DamageFlash damageFlash;
-
+    [SerializeField] private bool NeedKnockBack;
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         damageFlash = GetComponent<DamageFlash>();
     }
 
-    public virtual void TakeDamage(float damage, WeaponType weapon, Vector2 hitDir)
-    {
-        damageFlash?.CallDamageFlash();
-        ApplyKnockback(hitDir);
-        health -= damage;
-        if (health <= 0) Death();
-    }
+   
 
     protected virtual void ApplyKnockback(Vector2 hitDir)
     {
@@ -32,4 +27,15 @@ public abstract class Damageable : MonoBehaviour, IHit
     }
 
     protected abstract void Death();
+
+ 
+
+    public void TakeDamage(float damage, WeaponType weapon, Vector2 HitDirection)
+    {
+        damageFlash?.CallDamageFlash();
+        if (NeedKnockBack) { ApplyKnockback(HitDirection); }
+
+        health -= damage;
+        if (health <= 0) Death();
+    }
 }

@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour, IHit
+public class PlayerController : Damageable
 {
     private PlayerInput playerInput;
     private Animator animator;
@@ -11,48 +12,41 @@ public class PlayerController : MonoBehaviour, IHit
 
     private Vector2 movementDirection;
     private Vector3 realPosition; // posición acumulada sin snap
+    
 
-    private DamageFlash damageFlash;
-
-    public void Death(float health)
+    protected override void Start()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void TakeDamage(float damage)
-    {
-        damageFlash.CallDamageFlash();
-    }
-
-    private void Start()
-    {
+        base.Start(); // llama a Damageable.Start()
+        // Aquí tu lógica específica de Animal
         animator = GetComponent<Animator>();
         playerInput = GetComponent<PlayerInput>();
         realPosition = transform.position;
-        damageFlash = GetComponent<DamageFlash>();
     }
 
     private void Update()
     {
-        // 1. Leer input
+        // Leer input
         movementDirection = playerInput.actions["Mover"].ReadValue<Vector2>();
 
-        // 2. Normalizar si excede magnitud 1
+        // Normalizar si excede magnitud 1
         if (movementDirection.magnitude > 1f)
             movementDirection.Normalize();
 
-        // 3. Actualizar animación
+        // Actualizar animación
         animator.SetFloat("Speed", movementDirection.magnitude);
 
-        // 4. Mover en posición real (sin snap)
-        realPosition += (Vector3)(movementDirection * speedMovement * Time.deltaTime);
-
-        // 5. Aplicar pixel snapping solo al render final
-        Vector3 snappedPosition = realPosition;
-        snappedPosition.x = Mathf.Round(snappedPosition.x * ppu) / ppu;
-        snappedPosition.y = Mathf.Round(snappedPosition.y * ppu) / ppu;
-
-        transform.position = snappedPosition;
+        // SOLO mover si hay input
+        if (movementDirection != Vector2.zero)
+        {
+            realPosition = transform.position; // sincroniza antes de mover
+            realPosition += (Vector3)(movementDirection * speedMovement * Time.deltaTime);
+            transform.position = realPosition;
+        }
+        else
+        {
+            // si no hay input, no toques transform.position
+            realPosition = transform.position;
+        }
     }
 
 
@@ -60,9 +54,17 @@ public class PlayerController : MonoBehaviour, IHit
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            TakeDamage(0);
+            Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
+            TakeDamage(1, WeaponType.Sword, -hitDirection);
+            if (damageFlash == null) 
+            {
+                Debug.Log("No hay damage flash");
+            }
         }
     }
+
+   
+    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -72,13 +74,8 @@ public class PlayerController : MonoBehaviour, IHit
         }
     }
 
-    public void TakeDamage(float damage, WeaponType weapon, Vector2 HitDir)
+    protected override void Death()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void Death()
-    {
-        throw new System.NotImplementedException();
+       
     }
 }

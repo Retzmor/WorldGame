@@ -5,20 +5,7 @@ public class Rock : MonoBehaviour, IHit
     [SerializeField] float health;
     [SerializeField] Transform[] rocks;
     [SerializeField] int force;
-    public void TakeDamage(float damage, WeaponType weapon, Vector2 HitDir)
-    {
-
-        float finalDamage = damage;
-        if (weapon == WeaponType.Pickaxe)
-        {
-            finalDamage *= 3;
-        }
-          health -= finalDamage;
-        if (health <= 0)
-        {
-            DestroyTree();
-        }
-    }
+    
 
     public void Death()
     {
@@ -50,4 +37,17 @@ public class Rock : MonoBehaviour, IHit
         Death();
     }
 
+    public void TakeDamage(float damage, WeaponType weapon, Vector2 HitDirection)
+    {
+        float finalDamage = damage;
+        if (weapon == WeaponType.Pickaxe)
+        {
+            finalDamage *= 3;
+        }
+        health -= finalDamage;
+        if (health <= 0)
+        {
+            DestroyTree();
+        }
+    }
 }

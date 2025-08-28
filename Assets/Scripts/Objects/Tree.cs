@@ -1,23 +1,11 @@
 using UnityEngine;
 
-public class Tree : MonoBehaviour, IHit
+public class Tree : Damageable
 {
-    [SerializeField] float health;
     [SerializeField] Transform[] woods;
     [SerializeField] int force;
-    public void TakeDamage(float damage, WeaponType weapon, Vector2 HitDir)
-    {
-        health -= damage;
-        if (health <= 0)
-        {
-            DestroyTree();
-        } 
-    }
+   
 
-    public void Death()
-    {
-        Destroy(gameObject);
-    }
     public void DestroyTree()
     {
         foreach(Transform wood in woods)
@@ -42,5 +30,10 @@ public class Tree : MonoBehaviour, IHit
             }
         }
         Death();
+    }
+
+    protected override void Death()
+    {
+        DestroyTree();
     }
 }

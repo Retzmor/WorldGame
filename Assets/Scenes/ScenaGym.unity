@@ -159,6 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  NeedKnockBack: 0
   _gameObject: {fileID: 774840663}
 --- !u!50 &11070406
 Rigidbody2D:
@@ -2120,9 +2121,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingLayerID: -141193261
+  m_SortingLayer: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 8525bfcfb894d6344b4b7c8c1b8c1a03, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -4284,6 +4285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  NeedKnockBack: 0
   _gameObject: {fileID: 774840663}
 --- !u!50 &765593022
 Rigidbody2D:
@@ -4400,9 +4402,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: -141193261
+  m_SortingLayer: 2
+  m_SortingOrder: 0
   m_Sprite: {fileID: 1849522781, guid: 191ff9b8e9dd6d241a0ba1d8eb731581, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -4536,6 +4538,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b60f1a5610c37840a629e70bc36abc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 100
+  NeedKnockBack: 0
   speedMovement: 3
   ppu: 32
 --- !u!114 &774840674
@@ -8339,9 +8343,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingLayerID: -141193261
+  m_SortingLayer: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: -7856493677412862020, guid: f71053ee6f5aa39428193fc6ef577bc3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -9056,7 +9060,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a98595bd5197b46b70545ad116cdf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flashColor: {r: 0.23053788, g: 0, b: 0, a: 1}
+  _flashColor: {r: 1, g: 0, b: 0, a: 1}
   flashTime: 0.25
   flashSpeedCurve:
     serializedVersion: 2
@@ -9117,6 +9121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  NeedKnockBack: 0
   meats:
   - {fileID: 1431876445}
   - {fileID: 2023440860}
@@ -9257,9 +9262,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingLayerID: -141193261
+  m_SortingLayer: 2
+  m_SortingOrder: 0
   m_Sprite: {fileID: 8464103366728336686, guid: efb7686e48d7ab542bffd65c0cac87ed, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -9765,9 +9770,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingLayerID: -141193261
+  m_SortingLayer: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 5416937531536731031, guid: 4ea8bfd59abdab84e98ac915ba21e70d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -11586,7 +11591,7 @@ MonoBehaviour:
   biomeLibrary: {fileID: 11400000, guid: efde63d7ad927134fab5ea5ec1e273e9, type: 2}
   chunkSize: 8
   viewRadiusChunks: 3
-  seed: 61
+  seed: 66666
   terrainScale: 20
   moistureScale: 50
 --- !u!483693784 &1605857227
@@ -11630,8 +11635,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1895637191
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -14295,6 +14300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  NeedKnockBack: 0
   _gameObject: {fileID: 774840663}
 --- !u!195 &2097572323
 NavMeshAgent:
@@ -14454,9 +14460,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingLayerID: -141193261
+  m_SortingLayer: 2
+  m_SortingOrder: 0
   m_Sprite: {fileID: 1075222892331211830, guid: 106c1984a62771b42a90867111e5c7ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

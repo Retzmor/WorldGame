@@ -1,5 +1,6 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq; // para Where()
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -95,7 +96,8 @@ public class WorldGenerator : MonoBehaviour
 
     static int SqrDist(Vector2Int a, Vector2Int b)
     {
-        int dx = a.x - b.x, dy = a.y - b.y; return dx * dx + dy * dy;
+        int dx = a.x - b.x, dy = a.y - b.y;
+        return dx * dx + dy * dy;
     }
 
     Vector2Int WorldToChunk(Vector3 worldPos)
@@ -120,6 +122,9 @@ public class WorldGenerator : MonoBehaviour
         var positions = new Vector3Int[count];
         var tiles = new TileBase[count];
 
+        // Generador determinista para este chunk
+        System.Random chunkRng = new System.Random(seed + c.x * 73856093 ^ c.y * 19349663);
+
         chunkObjects[c] = new List<GameObject>();
 
         int i = 0;
@@ -140,14 +145,44 @@ public class WorldGenerator : MonoBehaviour
 
                 var biome = biomeLibrary.GetBiome(height, moisture);
                 positions[i] = new Vector3Int(wx, wy, 0);
-                tiles[i] = biome.groundTile;
-
-                // Decoraci�n con probabilidad
-                if (biome.decorations.Length > 0 && Random.value < biome.decoChance)
+                if (biome.groundTile != null && biome.groundTile.Length > 0)
                 {
-                    var prefab = biome.decorations[Random.Range(0, biome.decorations.Length)];
-                    var obj = Instantiate(prefab, new Vector3(wx + 0.5f, wy + 0.5f, 0f), Quaternion.identity);
-                    chunkObjects[c].Add(obj);
+                    tiles[i] = biome.groundTile[chunkRng.Next(0, biome.groundTile.Length)];
+                }
+                else
+                {
+                    tiles[i] = null;
+                }
+
+                // --- DECORACIÓN CON PROBABILIDADES INDIVIDUALES ---
+                if (biome.decorations != null && biome.decorations.Length > 0)
+                {
+                    var validDecorations = biome.decorations
+                        .Where(d => d.prefab != null && d.probability > 0f)
+                        .ToArray();
+
+                    if (validDecorations.Length > 0)
+                    {
+                        float roll = (float)chunkRng.NextDouble();
+                        float cumulative = 0f;
+
+                        foreach (var deco in validDecorations)
+                        {
+                            cumulative += deco.probability;
+                            if (roll <= cumulative)
+                            {
+                                var obj = Instantiate(deco.prefab,
+                                    new Vector3(wx + 0.5f, wy + 0.5f, 0f), Quaternion.identity);
+
+                                var sr = obj.GetComponent<SpriteRenderer>();
+                                if (sr != null)
+                                    sr.sortingOrder = -(int)(wy);
+
+                                chunkObjects[c].Add(obj);
+                                break; // solo una decoración por tile
+                            }
+                        }
+                    }
                 }
             }
         }

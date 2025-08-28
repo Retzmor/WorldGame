@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Sander
   m_EditorClassIdentifier: 
   biomeName: Sand
-  groundTile: {fileID: 11400000, guid: aa9f4e8134097614eba0fb0a6bdb6dbc, type: 2}
+  groundTile:
+  - {fileID: 11400000, guid: aa9f4e8134097614eba0fb0a6bdb6dbc, type: 2}
+  - {fileID: 11400000, guid: eea177dd6ac6aae41bd00f7f283b8397, type: 2}
   minHeight: 0.3
   maxHeight: 0.6
   minMoisture: 0
   maxMoisture: 0.3
   decorations:
-  - {fileID: 6913790783632814790, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-  decoChance: 0.075
+  - prefab: {fileID: 6913790783632814790, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
+    probability: 0.083
