@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1536950630049534771}
   - component: {fileID: 6856237052798775821}
   - component: {fileID: 4382386165295444893}
+  - component: {fileID: -3215678522212524377}
   m_Layer: 5
   m_Name: Rock (Use)
   m_TagString: Untagged
@@ -121,6 +122,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &-3215678522212524377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7938505630013425594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db9cedbcf1e6138488b18c6c2d024f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentSlot: {fileID: 0}
+  currentItem: {fileID: 0}
 --- !u!1 &8446417215990040133
 GameObject:
   m_ObjectHideFlags: 0

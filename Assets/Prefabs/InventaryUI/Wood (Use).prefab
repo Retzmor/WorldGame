@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6827335379348647227}
   - component: {fileID: 7836770097797980717}
   - component: {fileID: 3148463652454254330}
+  - component: {fileID: -8277066900089511360}
   m_Layer: 5
   m_Name: Wood (Use)
   m_TagString: Untagged
@@ -121,6 +122,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &-8277066900089511360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5739570377777651304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db9cedbcf1e6138488b18c6c2d024f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentSlot: {fileID: 0}
+  currentItem: {fileID: 0}
 --- !u!1 &6487342753466191163
 GameObject:
   m_ObjectHideFlags: 0
