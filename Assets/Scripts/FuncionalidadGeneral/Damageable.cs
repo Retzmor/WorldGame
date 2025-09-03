@@ -8,6 +8,10 @@ public abstract class Damageable : MonoBehaviour, IHit
     protected Rigidbody2D rb;
     protected DamageFlash damageFlash;
     [SerializeField] private bool NeedKnockBack;
+
+    [SerializeField] private WeaponType weaponNeeded;
+
+
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -16,9 +20,9 @@ public abstract class Damageable : MonoBehaviour, IHit
 
    
 
-    protected virtual void ApplyKnockback(Vector2 hitDir)
+    protected virtual void ApplyKnockback(Vector2 hitDir, float forceKnockBack )
     {
-        float knockbackDistance = 0.5f;
+        float knockbackDistance = forceKnockBack;
         float knockbackDuration = 0.15f;
 
         transform.DOKill();
@@ -30,12 +34,21 @@ public abstract class Damageable : MonoBehaviour, IHit
 
  
 
-    public void TakeDamage(float damage, WeaponType weapon, Vector2 HitDirection)
+    public void TakeDamage(float damage, WeaponType weaponType, float knockBackValue,  Vector2 HitDirection)
     {
         damageFlash?.CallDamageFlash();
-        if (NeedKnockBack) { ApplyKnockback(HitDirection); }
+        if (NeedKnockBack) { ApplyKnockback(HitDirection, knockBackValue); }
 
-        health -= damage;
+        if(weaponNeeded == weaponType)
+        {
+            health -= damage * 2;
+        }
+        else
+        {
+            health -= damage;
+        }
+
+        
         if (health <= 0) Death();
     }
 }

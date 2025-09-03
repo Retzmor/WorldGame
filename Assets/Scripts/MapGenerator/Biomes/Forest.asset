@@ -21,4 +21,9 @@ MonoBehaviour:
   maxMoisture: 1
   decorations:
   - prefab: {fileID: 6245394949204210498, guid: e7b18e7e24a802b4f8774f778a3917b1, type: 3}
-    probability: 0.089
+    probability: 0.08
+  mobs:
+  - prefab: {fileID: 8426327130487835229, guid: 63dd1464411c8c345838900bc2ce9f26, type: 3}
+    probability: 0.412
+    minGroup: 1
+    maxGroup: 1

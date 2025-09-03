@@ -4,6 +4,8 @@ public abstract class Weapon : MonoBehaviour
     public float damage;
     public float fireRate; // Cadencia (disparos por segundo)
     public float lastShotTime;
+    public float KnockbackForce;
+    public WeaponType WeaponType;
     [SerializeField] protected Animator animator;
     public abstract void Attack();
     public abstract void AnimationAttack();

@@ -1,16 +1,12 @@
 using UnityEngine;
 
-public class Rock : MonoBehaviour, IHit
+public class Rock : Damageable
 {
-    [SerializeField] float health;
+
     [SerializeField] Transform[] rocks;
     [SerializeField] int force;
     
 
-    public void Death()
-    {
-        Destroy(gameObject);
-    }
     public void DestroyTree()
     {
         foreach (Transform rock in rocks)
@@ -34,20 +30,27 @@ public class Rock : MonoBehaviour, IHit
                 rb.linearDamping = 5f;
             }
         }
-        Death();
     }
 
-    public void TakeDamage(float damage, WeaponType weapon, Vector2 HitDirection)
+   
+
+    //public void TakeDamage(float damage, WeaponType weapon, Vector2 HitDirection)
+    //{
+    //    float finalDamage = damage;
+    //    if (weapon == WeaponType.Pickaxe)
+    //    {
+    //        finalDamage *= 3;
+    //    }
+    //    health -= finalDamage;
+    //    if (health <= 0)
+    //    {
+    //        DestroyTree();
+    //    }
+    //}
+
+    protected override void Death()
     {
-        float finalDamage = damage;
-        if (weapon == WeaponType.Pickaxe)
-        {
-            finalDamage *= 3;
-        }
-        health -= finalDamage;
-        if (health <= 0)
-        {
-            DestroyTree();
-        }
+        DestroyTree();
+        Destroy(gameObject);
     }
 }

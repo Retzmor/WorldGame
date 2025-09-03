@@ -7,8 +7,8 @@ public class ArmMelee : Weapon
     [SerializeField] private float offsetX;
     [SerializeField] private float offsetY;
     [SerializeField] private LayerMask LayerEnemy;
-    [SerializeField] WeaponType WeaponType;
-
+    
+    [SerializeField] 
     public override void Attack()
     {
         if (Time.time - lastShotTime < 1f / fireRate)
@@ -33,7 +33,7 @@ public class ArmMelee : Weapon
             if (collider.TryGetComponent(out IHit hit))
             {
                 Vector2 hitDirection = (collider.transform.position - transform.position).normalized;
-                hit.TakeDamage(damage, WeaponType, hitDirection);
+                hit.TakeDamage(damage, WeaponType,KnockbackForce , hitDirection);
                 Debug.Log("ATACA");
             }
         }

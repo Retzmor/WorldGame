@@ -9,6 +9,14 @@ public struct DecorationOption
     [Range(0f, 1f)] public float probability;
 }
 
+[System.Serializable]
+public struct MobOption
+{
+    public GameObject prefab;
+    [Range(0f, 1f)] public float probability; // chance de spawn
+    public int minGroup;
+    public int maxGroup;
+}
 
 
 [CreateAssetMenu(fileName = "Biome", menuName = "World/Biome")]
@@ -23,4 +31,7 @@ public class BiomeDefinition : ScriptableObject
 
     [Header("Decoración")]
     public DecorationOption[] decorations;
+
+    [Header("Mobs (animales o enemigos)")]
+    public MobOption[] mobs;
 }

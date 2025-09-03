@@ -29,7 +29,8 @@ public class Tree : Damageable
                 rb.linearDamping = 5f;
             }
         }
-        Death();
+
+        gameObject.SetActive(false);
     }
 
     protected override void Death()

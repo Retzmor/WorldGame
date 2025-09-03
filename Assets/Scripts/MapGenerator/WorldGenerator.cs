@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq; // para Where()
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -20,6 +20,11 @@ public class WorldGenerator : MonoBehaviour
     public float terrainScale = 20f;
     public float moistureScale = 50f;
 
+    [Header("Respawn Settings")]
+    public float respawnInterval = 5f;
+    public int maxMobsPerChunk = 10;   // límite de mobs por chunk
+    public int maxMobsGlobal = 10;     // límite global de mobs
+
     private System.Random prng;
     private float terrainOffsetX, terrainOffsetY;
     private float moistureOffsetX, moistureOffsetY;
@@ -27,7 +32,10 @@ public class WorldGenerator : MonoBehaviour
     private readonly Dictionary<Vector2Int, bool> loadedChunks = new();
     private readonly List<Vector2Int> chunksToDraw = new();
     private readonly Dictionary<Vector2Int, List<GameObject>> chunkObjects = new();
+    private readonly Dictionary<Vector2Int, BiomeDefinition> chunkBiomes = new();
+
     private Coroutine loaderRoutine;
+    private Coroutine respawnRoutine;
 
     void Awake()
     {
@@ -38,8 +46,17 @@ public class WorldGenerator : MonoBehaviour
         moistureOffsetY = prng.Next(-100000, 100000);
     }
 
-    void OnEnable() => loaderRoutine = StartCoroutine(LoaderLoop());
-    void OnDisable() { if (loaderRoutine != null) StopCoroutine(loaderRoutine); }
+    void OnEnable()
+    {
+        loaderRoutine = StartCoroutine(LoaderLoop());
+        respawnRoutine = StartCoroutine(RespawnLoop());
+    }
+
+    void OnDisable()
+    {
+        if (loaderRoutine != null) StopCoroutine(loaderRoutine);
+        if (respawnRoutine != null) StopCoroutine(respawnRoutine);
+    }
 
     IEnumerator LoaderLoop()
     {
@@ -122,7 +139,6 @@ public class WorldGenerator : MonoBehaviour
         var positions = new Vector3Int[count];
         var tiles = new TileBase[count];
 
-        // Generador determinista para este chunk
         System.Random chunkRng = new System.Random(seed + c.x * 73856093 ^ c.y * 19349663);
 
         chunkObjects[c] = new List<GameObject>();
@@ -130,6 +146,9 @@ public class WorldGenerator : MonoBehaviour
         int i = 0;
         int startX = c.x * chunkSize;
         int startY = c.y * chunkSize;
+
+        BiomeDefinition dominantBiome = null;
+        Dictionary<BiomeDefinition, int> biomeCounts = new();
 
         for (int y = 0; y < chunkSize; y++)
         {
@@ -144,18 +163,20 @@ public class WorldGenerator : MonoBehaviour
                                                    (wy + moistureOffsetY) / moistureScale);
 
                 var biome = biomeLibrary.GetBiome(height, moisture);
+                if (biome != null)
+                {
+                    if (!biomeCounts.ContainsKey(biome)) biomeCounts[biome] = 0;
+                    biomeCounts[biome]++;
+                }
+
                 positions[i] = new Vector3Int(wx, wy, 0);
-                if (biome.groundTile != null && biome.groundTile.Length > 0)
+                if (biome != null && biome.groundTile != null && biome.groundTile.Length > 0)
                 {
                     tiles[i] = biome.groundTile[chunkRng.Next(0, biome.groundTile.Length)];
                 }
-                else
-                {
-                    tiles[i] = null;
-                }
 
-                // --- DECORACIÓN CON PROBABILIDADES INDIVIDUALES ---
-                if (biome.decorations != null && biome.decorations.Length > 0)
+                // --- DECORACIONES ---
+                if (biome != null && biome.decorations != null && biome.decorations.Length > 0)
                 {
                     var validDecorations = biome.decorations
                         .Where(d => d.prefab != null && d.probability > 0f)
@@ -179,7 +200,7 @@ public class WorldGenerator : MonoBehaviour
                                     sr.sortingOrder = -(int)(wy);
 
                                 chunkObjects[c].Add(obj);
-                                break; // solo una decoración por tile
+                                break;
                             }
                         }
                     }
@@ -187,6 +208,12 @@ public class WorldGenerator : MonoBehaviour
             }
         }
         groundTilemap.SetTiles(positions, tiles);
+
+        if (biomeCounts.Count > 0)
+        {
+            dominantBiome = biomeCounts.OrderByDescending(kv => kv.Value).First().Key;
+            chunkBiomes[c] = dominantBiome;
+        }
     }
 
     void UnloadChunk(Vector2Int c)
@@ -205,12 +232,100 @@ public class WorldGenerator : MonoBehaviour
 
         groundTilemap.SetTiles(positions, tiles);
 
-        // Destruir decoraciones
         if (chunkObjects.TryGetValue(c, out var objects))
         {
             foreach (var obj in objects)
                 if (obj != null) Destroy(obj);
             chunkObjects.Remove(c);
+        }
+
+        if (chunkBiomes.ContainsKey(c))
+            chunkBiomes.Remove(c);
+    }
+
+    IEnumerator RespawnLoop()
+    {
+        var wait = new WaitForSeconds(respawnInterval);
+
+        while (true)
+        {
+            int totalMobs = chunkObjects.Values
+                .SelectMany(list => list)
+                .Where(o => o != null && o.CompareTag("Mob"))
+                .Count();
+
+            if (totalMobs >= maxMobsGlobal)
+            {
+                yield return wait;
+                continue;
+            }
+
+            foreach (var kv in loadedChunks)
+            {
+                if (totalMobs >= maxMobsGlobal) break; // 🔹 detener si ya se alcanzó el límite global
+
+                if (!kv.Value) continue;
+                Vector2Int chunk = kv.Key;
+
+                if (!chunkBiomes.ContainsKey(chunk)) continue;
+                var biome = chunkBiomes[chunk];
+                if (biome == null || biome.mobs.Length == 0) continue;
+
+                int mobCount = chunkObjects[chunk]
+                    .Where(o => o != null && o.CompareTag("Mob"))
+                    .Count();
+
+                if (mobCount >= maxMobsPerChunk) continue;
+
+                foreach (var mobOpt in biome.mobs)
+                {
+                    if (totalMobs >= maxMobsGlobal) break; // 🔹 cortar aquí también
+
+                    float roll = Random.value;
+                    if (roll <= mobOpt.probability)
+                    {
+                        int groupSize = Random.Range(mobOpt.minGroup, mobOpt.maxGroup + 1);
+
+                        for (int g = 0; g < groupSize; g++)
+                        {
+                            if (totalMobs >= maxMobsGlobal) break;
+
+                            Vector3 spawnPos;
+                            bool valid = false;
+                            int attempts = 0;
+
+                            do
+                            {
+                                float px = chunk.x * chunkSize + Random.Range(0, chunkSize);
+                                float py = chunk.y * chunkSize + Random.Range(0, chunkSize);
+
+                                spawnPos = new Vector3(px + 0.5f, py + 0.5f, 0f);
+
+                                Vector3 viewportPos = Camera.main.WorldToViewportPoint(spawnPos);
+
+                                if (viewportPos.x < 0f || viewportPos.x > 1f ||
+                                    viewportPos.y < 0f || viewportPos.y > 1f)
+                                {
+                                    valid = true;
+                                }
+
+                                attempts++;
+                            }
+                            while (!valid && attempts < 10);
+
+                            if (valid)
+                            {
+                                var mob = Instantiate(mobOpt.prefab, spawnPos, Quaternion.identity);
+                                mob.tag = "Mob";
+                                chunkObjects[chunk].Add(mob);
+                                totalMobs++; // 🔹 incrementar contador global
+                            }
+                        }
+                    }
+                }
+            }
+
+            yield return wait;
         }
     }
 }

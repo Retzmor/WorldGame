@@ -12,12 +12,10 @@ public class PlayerController : Damageable
 
     private Vector2 movementDirection;
     private Vector3 realPosition; // posición acumulada sin snap
-    
 
     protected override void Start()
     {
-        base.Start(); // llama a Damageable.Start()
-        // Aquí tu lógica específica de Animal
+        base.Start(); 
         animator = GetComponent<Animator>();
         playerInput = GetComponent<PlayerInput>();
         realPosition = transform.position;
@@ -35,18 +33,21 @@ public class PlayerController : Damageable
         // Actualizar animación
         animator.SetFloat("Speed", movementDirection.magnitude);
 
-        // SOLO mover si hay input
-        if (movementDirection != Vector2.zero)
-        {
-            realPosition = transform.position; // sincroniza antes de mover
-            realPosition += (Vector3)(movementDirection * speedMovement * Time.deltaTime);
-            transform.position = realPosition;
-        }
-        else
-        {
-            // si no hay input, no toques transform.position
-            realPosition = transform.position;
-        }
+        //// SOLO mover si hay input
+        //if (movementDirection != Vector2.zero)
+        //{
+        //    realPosition = transform.position; // sincroniza antes de mover
+        //    realPosition += (Vector3)(movementDirection * speedMovement * Time.deltaTime);
+        //    //transform.position = realPosition;
+        //    rb2.linearVelocity += new Vector2(realPosition.x, realPosition.y);
+        //}
+        //else
+        //{
+        //    // si no hay input, no toques transform.position
+        //    realPosition = transform.position;
+        //}
+
+        rb.linearVelocity = movementDirection * speedMovement;
     }
 
 
@@ -55,7 +56,7 @@ public class PlayerController : Damageable
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
-            TakeDamage(1, WeaponType.Sword, -hitDirection);
+            TakeDamage(1, WeaponType.Sword,5, -hitDirection);
             if (damageFlash == null) 
             {
                 Debug.Log("No hay damage flash");

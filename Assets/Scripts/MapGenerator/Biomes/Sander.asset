@@ -22,4 +22,4 @@ MonoBehaviour:
   maxMoisture: 0.3
   decorations:
   - prefab: {fileID: 6913790783632814790, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-    probability: 0.083
+    probability: 0.04
