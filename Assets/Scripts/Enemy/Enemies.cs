@@ -23,29 +23,33 @@ public class Enemies : Damageable
 
     void Update()
     {
-        _agent.SetDestination(_gameObject.transform.position);
-
-        Vector3 direction = _gameObject.transform.position - transform.position;
-
-        if (direction.x < 0)
-            transform.localScale = new Vector3(1, 1, 1); 
-        else if (direction.x > 0)
-            transform.localScale = new Vector3(-1, 1, 1);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
+        if(_gameObject != null)
         {
-            Damageable player = collision.gameObject.GetComponent<Damageable>();
-            if (player != null)
-            {
-                Vector2 hitDir = (collision.transform.position - transform.position).normalized;
+            _agent.SetDestination(_gameObject.transform.position);
 
-                player.TakeDamage(_damage, WeaponType.Sword, hitDir);
-            }
+            Vector3 direction = _gameObject.transform.position - transform.position;
+
+            if (direction.x < 0)
+                transform.localScale = new Vector3(1, 1, 1);
+            else if (direction.x > 0)
+                transform.localScale = new Vector3(-1, 1, 1);
         }
+        
     }
+
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Player"))
+    //    {
+    //        Damageable player = collision.gameObject.GetComponent<Damageable>();
+    //        if (player != null)
+    //        {
+    //            Vector2 hitDir = (collision.transform.position - transform.position).normalized;
+
+    //            player.TakeDamage(_damage, WeaponType.Sword, hitDir);
+    //        }
+    //    }
+    //}
 
     protected override void Death()
     {

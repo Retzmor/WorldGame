@@ -11,6 +11,7 @@ public class ItemPickUp : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            Debug.Log("pocion");
             if (inventory != null)
             {
                 inventory.AddItem(

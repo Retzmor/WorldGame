@@ -15,18 +15,13 @@ public class HealthPlayer : Damageable
         health = maxHealth;
     }
 
-    public override void TakeDamage(float damage, WeaponType weapon, Vector2 hitDir)
+    public override void TakeDamage(float damage, WeaponType weaponType, float knockBackValue, Vector2 HitDirection)
     {
-        base.TakeDamage(damage, weapon, hitDir); // esto mantiene knockback + flash
+        base.TakeDamage(damage, weaponType, knockBackValue, HitDirection);
 
         currentHealth = Mathf.Clamp(currentHealth - (int)damage, 0, maxHealth);
 
         playerTakeDamage?.Invoke(currentHealth, maxHealth);
-
-        if (currentHealth <= 0)
-        {
-            Death();
-        }
     }
 
     protected override void Death()
@@ -43,4 +38,17 @@ public class HealthPlayer : Damageable
 
     public int GetMaxHealth() => maxHealth;
     public int GetCurrentHealth() => currentHealth;
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Mob"))
+        {
+            Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
+            TakeDamage(1, WeaponType.Sword, 5, -hitDirection);
+            if (damageFlash == null)
+            {
+                Debug.Log("No hay damage flash");
+            }
+        }
+    }
 }

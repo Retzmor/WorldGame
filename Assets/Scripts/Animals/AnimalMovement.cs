@@ -13,18 +13,18 @@ public class AnimalMovement : MonoBehaviour
     {
         numberRandom = Random.Range(0, pointsMovement.Length);
         spriteRenderer = GetComponent<SpriteRenderer>();
-        Around();
+        //Around();
     }
 
     private void Update()
     {
-        transform.position = Vector2.MoveTowards(transform.position, pointsMovement[numberRandom].position, speed * Time.deltaTime);
+        //transform.position = Vector2.MoveTowards(transform.position, pointsMovement[numberRandom].position, speed * Time.deltaTime);
 
-        if(Vector2.Distance(transform.position, pointsMovement[numberRandom].position) < distancePoint)
-        {
-            numberRandom = Random.Range(0, pointsMovement.Length);
-            Around();
-        }
+        //if(Vector2.Distance(transform.position, pointsMovement[numberRandom].position) < distancePoint)
+        //{
+        //    numberRandom = Random.Range(0, pointsMovement.Length);
+        //    Around();
+        //}
     }
 
     public void Around()

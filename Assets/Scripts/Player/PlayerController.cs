@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
-public class PlayerController : Damageable
+public class PlayerController : MonoBehaviour
 {
     private PlayerInput playerInput;
     private Animator animator;
@@ -12,10 +12,12 @@ public class PlayerController : Damageable
 
     private Vector2 movementDirection;
     private Vector3 realPosition; // posición acumulada sin snap
+    private Rigidbody2D rb; 
 
-    protected override void Start()
+
+     void Start()
     {
-        base.Start(); 
+        rb = GetComponent<Rigidbody2D>();    
         animator = GetComponent<Animator>();
         playerInput = GetComponent<PlayerInput>();
         realPosition = transform.position;
@@ -51,18 +53,18 @@ public class PlayerController : Damageable
     }
 
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
-            TakeDamage(1, WeaponType.Sword,5, -hitDirection);
-            if (damageFlash == null) 
-            {
-                Debug.Log("No hay damage flash");
-            }
-        }
-    }
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Enemy"))
+    //    {
+    //        Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
+    //        TakeDamage(1, WeaponType.Sword,5, -hitDirection);
+    //        if (damageFlash == null) 
+    //        {
+    //            Debug.Log("No hay damage flash");
+    //        }
+    //    }
+    //}
 
    
     
@@ -71,12 +73,12 @@ public class PlayerController : Damageable
     {
         if (collision.gameObject.CompareTag("Item"))
         {
-            collision.gameObject.SetActive(false);
+           // collision.gameObject.SetActive(false);
         }
     }
 
-    protected override void Death()
-    {
+    //protected override void Death()
+    //{
        
-    }
+    //}
 }

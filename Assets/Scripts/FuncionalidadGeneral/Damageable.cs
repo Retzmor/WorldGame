@@ -9,7 +9,7 @@ public abstract class Damageable : MonoBehaviour, IHit
     protected DamageFlash damageFlash;
     [SerializeField] private bool NeedKnockBack;
 
-    [SerializeField] private WeaponType weaponNeeded;
+    public WeaponType weaponNeeded;
 
 
     protected virtual void Start()
@@ -34,7 +34,7 @@ public abstract class Damageable : MonoBehaviour, IHit
 
  
 
-    public void TakeDamage(float damage, WeaponType weaponType, float knockBackValue,  Vector2 HitDirection)
+    public virtual void TakeDamage(float damage, WeaponType weaponType, float knockBackValue,  Vector2 HitDirection)
     {
         damageFlash?.CallDamageFlash();
         if (NeedKnockBack) { ApplyKnockback(HitDirection, knockBackValue); }
