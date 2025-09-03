@@ -7,10 +7,10 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
 
     [SerializeField] private float speedMovement = 5f;
-    [SerializeField] private float ppu = 32f; // Pixels per Unit
+    [SerializeField] private float ppu = 32f; 
 
     private Vector2 movementDirection;
-    private Vector3 realPosition; // posición acumulada sin snap
+    private Vector3 realPosition; 
 
     private DamageFlash damageFlash;
 

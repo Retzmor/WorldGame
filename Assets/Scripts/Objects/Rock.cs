@@ -7,7 +7,6 @@ public class Rock : MonoBehaviour, IHit
     [SerializeField] int force;
     public void TakeDamage(float damage, WeaponType weapon, Vector2 HitDir)
     {
-
         float finalDamage = damage;
         if (weapon == WeaponType.Pickaxe)
         {
@@ -37,7 +36,6 @@ public class Rock : MonoBehaviour, IHit
             Random.Range(-0.5f, 0.5f),
             Random.Range(-0.5f, 0.5f)
         );
-
             direction += randomOffset;
             direction.Normalize();
 
@@ -49,5 +47,4 @@ public class Rock : MonoBehaviour, IHit
         }
         Death();
     }
-
 }
