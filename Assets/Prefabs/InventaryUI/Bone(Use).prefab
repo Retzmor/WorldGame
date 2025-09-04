@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7836770097797980717}
   - component: {fileID: 3148463652454254330}
   - component: {fileID: -8277066900089511360}
+  - component: {fileID: -7323436934344218035}
   m_Layer: 5
   m_Name: Bone(Use)
   m_TagString: Untagged
@@ -135,7 +136,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentSlot: {fileID: 0}
-  currentItem: {fileID: 0}
+--- !u!225 &-7323436934344218035
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5739570377777651304}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6487342753466191163
 GameObject:
   m_ObjectHideFlags: 0

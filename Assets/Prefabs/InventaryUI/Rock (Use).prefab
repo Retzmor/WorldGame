@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6856237052798775821}
   - component: {fileID: 4382386165295444893}
   - component: {fileID: -3215678522212524377}
+  - component: {fileID: -4232478227141239335}
   m_Layer: 5
   m_Name: Rock (Use)
   m_TagString: Untagged
@@ -135,7 +136,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentSlot: {fileID: 0}
-  currentItem: {fileID: 0}
+--- !u!225 &-4232478227141239335
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7938505630013425594}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8446417215990040133
 GameObject:
   m_ObjectHideFlags: 0

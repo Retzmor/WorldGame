@@ -1,30 +1,53 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    public bool isUsed = false;
+    [Header("Slot Settings")]
+    public bool isHotbarSlot = false;
 
     public void OnDrop(PointerEventData eventData)
     {
-        DragItem draggedItem = eventData.pointerDrag.GetComponent<DragItem>();
-        if (draggedItem == null) return;
+        GameObject droppedObject = eventData.pointerDrag;
+        if (droppedObject == null) return;
 
-        InventorySlot fromSlot = draggedItem.parentSlot;
+        DragItem dragItem = droppedObject.GetComponent<DragItem>();
+        if (dragItem == null) return;
 
-        if (transform.childCount > 0)
+        InventorySlot fromSlot = dragItem.parentSlot;
+        InventorySlot toSlot = this;
+
+        if (fromSlot == toSlot) return;
+
+        bool slotHasItem = transform.childCount > 0;
+
+        if (slotHasItem)
         {
-            Transform existingItem = transform.GetChild(0);
-            existingItem.SetParent(fromSlot.transform);
-            existingItem.localPosition = Vector3.zero;
-            fromSlot.isUsed = true;
+            Transform existingChild = transform.GetChild(0);
+            DragItem existingItem = existingChild.GetComponent<DragItem>();
+
+            if (existingItem != null)
+            {
+                existingItem.transform.SetParent(fromSlot.transform);
+                existingItem.transform.localPosition = Vector3.zero;
+                existingItem.parentSlot = fromSlot;
+            }
         }
         else
         {
-            fromSlot.isUsed = false;
+            fromSlot.ClearSlotVisual();
         }
 
-        draggedItem.SetParent(this);
-        isUsed = true;
+        dragItem.SetParent(toSlot);
+    }
+
+    public void ClearSlotVisual()
+    {
+        // Método para limpieza visual si es necesario
+    }
+
+    public bool IsEmpty()
+    {
+        return transform.childCount == 0;
     }
 }

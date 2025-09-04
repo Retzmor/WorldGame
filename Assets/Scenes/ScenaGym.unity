@@ -221,7 +221,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 1
+  acceptAllItems: 1
 --- !u!1 &11070394 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8457509758085768480, guid: 988a3e298587871428eb0c570ea246dd, type: 3}
@@ -500,7 +501,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -745,7 +746,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1001 &132751512
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1670,7 +1672,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &217199647
 GameObject:
   m_ObjectHideFlags: 0
@@ -2455,7 +2458,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2581,7 +2584,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &327316691
 GameObject:
   m_ObjectHideFlags: 0
@@ -2982,7 +2986,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 1
+  acceptAllItems: 1
 --- !u!1 &398693858
 GameObject:
   m_ObjectHideFlags: 0
@@ -3085,7 +3090,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &406262753
 GameObject:
   m_ObjectHideFlags: 0
@@ -3256,7 +3262,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &418346579
 GameObject:
   m_ObjectHideFlags: 0
@@ -4057,7 +4064,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4487,7 +4494,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &588576278
 GameObject:
   m_ObjectHideFlags: 0
@@ -4743,7 +4751,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &606184161
 GameObject:
   m_ObjectHideFlags: 0
@@ -5097,7 +5106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 1
+  acceptAllItems: 1
 --- !u!1 &635533582
 GameObject:
   m_ObjectHideFlags: 0
@@ -5262,7 +5272,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &663719491
 GameObject:
   m_ObjectHideFlags: 0
@@ -6157,7 +6168,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &765593010 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8457509758085768480, guid: 988a3e298587871428eb0c570ea246dd, type: 3}
@@ -6722,7 +6734,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 1
+  acceptAllItems: 1
 --- !u!1 &795354766
 GameObject:
   m_ObjectHideFlags: 0
@@ -6865,7 +6878,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -7006,7 +7019,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &803695266
 GameObject:
   m_ObjectHideFlags: 0
@@ -8136,7 +8150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &960122894 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8457509758085768480, guid: 988a3e298587871428eb0c570ea246dd, type: 3}
@@ -9299,7 +9314,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &1073331651
 GameObject:
   m_ObjectHideFlags: 0
@@ -11126,7 +11142,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &1218329718
 GameObject:
   m_ObjectHideFlags: 0
@@ -11657,6 +11674,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1280529697}
   m_CullTransparentMesh: 1
+--- !u!1 &1287826852
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1287826854}
+  - component: {fileID: 1287826853}
+  m_Layer: 0
+  m_Name: InventoryManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1287826853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287826852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 756318aa1c68dc64b942e9d84204d43b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryPanel: {fileID: 0}
+  hotbarPanel: {fileID: 0}
+--- !u!4 &1287826854
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287826852}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 158.85817, y: 10.19187, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1288376587
 GameObject:
   m_ObjectHideFlags: 0
@@ -12122,7 +12185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &1347086750
 GameObject:
   m_ObjectHideFlags: 0
@@ -12590,7 +12654,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 1
+  acceptAllItems: 1
 --- !u!1 &1445160380
 GameObject:
   m_ObjectHideFlags: 0
@@ -14498,7 +14563,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &1574040558
 GameObject:
   m_ObjectHideFlags: 0
@@ -14878,7 +14944,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &1629942244
 GameObject:
   m_ObjectHideFlags: 0
@@ -15095,7 +15162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 1
+  acceptAllItems: 1
 --- !u!1 &1645338046
 GameObject:
   m_ObjectHideFlags: 0
@@ -15318,7 +15386,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 1
+  acceptAllItems: 1
 --- !u!1 &1707630844
 GameObject:
   m_ObjectHideFlags: 0
@@ -15773,7 +15842,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 1
+  acceptAllItems: 1
 --- !u!1 &1810447176
 GameObject:
   m_ObjectHideFlags: 0
@@ -16029,7 +16099,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &1831241055
 GameObject:
   m_ObjectHideFlags: 0
@@ -16132,7 +16203,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &1831919687
 GameObject:
   m_ObjectHideFlags: 0
@@ -16235,7 +16307,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &1841305612
 GameObject:
   m_ObjectHideFlags: 0
@@ -16786,7 +16859,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 1
+  acceptAllItems: 1
 --- !u!1 &1916545090
 GameObject:
   m_ObjectHideFlags: 0
@@ -17210,7 +17284,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &1949836599
 GameObject:
   m_ObjectHideFlags: 0
@@ -17294,7 +17369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -17420,7 +17495,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1001 &1974959174
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17592,7 +17668,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &1993121349
 GameObject:
   m_ObjectHideFlags: 0
@@ -18268,7 +18345,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &2042966921
 GameObject:
   m_ObjectHideFlags: 0
@@ -18742,7 +18820,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &2110595108
 GameObject:
   m_ObjectHideFlags: 0
@@ -18845,7 +18924,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373eef7d643f4714da0e5b4c027ef52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsed: 0
+  isHotbarSlot: 0
+  acceptAllItems: 1
 --- !u!1 &2134792047
 GameObject:
   m_ObjectHideFlags: 0
@@ -19250,6 +19330,7 @@ SceneRoots:
   - {fileID: 1434454851}
   - {fileID: 2019030578}
   - {fileID: 606184163}
+  - {fileID: 1287826854}
   - {fileID: 406262754}
   - {fileID: 205037366}
   - {fileID: 1593166509}
