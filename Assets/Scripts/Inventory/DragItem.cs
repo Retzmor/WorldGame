@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -14,17 +15,13 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         rectTransform = GetComponent<RectTransform>();
         canvas = GetComponentInParent<Canvas>();
         currentItem = gameObject;
-
-        // Guarda el slot inicial (padre del item)
         parentSlot = transform.parent.GetComponent<InventorySlot>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // Guarda el slot original
         parentSlot = transform.parent.GetComponent<InventorySlot>();
 
-        // Lo sacamos temporalmente al canvas para que no se "recorte"
         transform.SetParent(canvas.transform);
         transform.SetAsLastSibling();
     }
@@ -49,7 +46,6 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         }
         else if (parentSlot != null)
         {
-            // Vuelve al slot original si no hay destino
             SetParent(parentSlot);
         }
         else
@@ -63,5 +59,6 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         parentSlot = slot;
         transform.SetParent(slot.transform);
         transform.localPosition = Vector3.zero;
+        slot.isUsed = true;
     }
 }

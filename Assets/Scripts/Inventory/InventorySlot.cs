@@ -7,36 +7,24 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        DragItem dragItem = eventData.pointerDrag.GetComponent<DragItem>();
-        if (dragItem != null)
+        DragItem draggedItem = eventData.pointerDrag.GetComponent<DragItem>();
+        if (draggedItem == null) return;
+
+        InventorySlot fromSlot = draggedItem.parentSlot;
+
+        if (transform.childCount > 0)
         {
-            InventorySlot fromSlot = dragItem.parentSlot;
-
-            if (isUsed)
-            {
-                dragItem.SetParent(fromSlot);
-                fromSlot.SetItem(dragItem.currentItem);
-                SetItem(dragItem.currentItem);
-            }
-            else
-            {
-                dragItem.SetParent(this);
-                SetItem(dragItem.currentItem);
-                fromSlot.ClearItem();
-            }
+            Transform existingItem = transform.GetChild(0);
+            existingItem.SetParent(fromSlot.transform);
+            existingItem.localPosition = Vector3.zero;
+            fromSlot.isUsed = true;
         }
-    }
+        else
+        {
+            fromSlot.isUsed = false;
+        }
 
-    public void SetItem(GameObject item)
-    {
-        item.transform.SetParent(transform);
-        item.transform.localPosition = Vector3.zero;
-        item.name = item.name.Replace("(Clone)", "");
+        draggedItem.SetParent(this);
         isUsed = true;
-    }
-
-    public void ClearItem()
-    {
-        isUsed = false;
     }
 }
