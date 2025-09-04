@@ -14,11 +14,17 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         rectTransform = GetComponent<RectTransform>();
         canvas = GetComponentInParent<Canvas>();
         currentItem = gameObject;
+
+        // Guarda el slot inicial (padre del item)
+        parentSlot = transform.parent.GetComponent<InventorySlot>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        // Guarda el slot original
         parentSlot = transform.parent.GetComponent<InventorySlot>();
+
+        // Lo sacamos temporalmente al canvas para que no se "recorte"
         transform.SetParent(canvas.transform);
         transform.SetAsLastSibling();
     }
@@ -30,9 +36,25 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (transform.parent == canvas.transform)
+        InventorySlot newSlot = null;
+
+        if (eventData.pointerEnter != null)
         {
+            newSlot = eventData.pointerEnter.GetComponent<InventorySlot>();
+        }
+
+        if (newSlot != null)
+        {
+            SetParent(newSlot);
+        }
+        else if (parentSlot != null)
+        {
+            // Vuelve al slot original si no hay destino
             SetParent(parentSlot);
+        }
+        else
+        {
+            Debug.LogWarning("Este item no tiene un slot asignado.");
         }
     }
 
