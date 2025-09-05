@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -22,8 +21,8 @@ public class WorldGenerator : MonoBehaviour
 
     [Header("Respawn Settings")]
     public float respawnInterval = 5f;
-    public int maxMobsPerChunk = 10;   // límite de mobs por chunk
-    public int maxMobsGlobal = 10;     // límite global de mobs
+    public int maxMobsPerChunk = 10;
+    public int maxMobsGlobal = 10;
 
     private System.Random prng;
     private float terrainOffsetX, terrainOffsetY;
@@ -34,8 +33,15 @@ public class WorldGenerator : MonoBehaviour
     private readonly Dictionary<Vector2Int, List<GameObject>> chunkObjects = new();
     private readonly Dictionary<Vector2Int, BiomeDefinition> chunkBiomes = new();
 
+    // --- Pooling ---
+    private readonly Dictionary<GameObject, Queue<GameObject>> objectPool = new();
+
     private Coroutine loaderRoutine;
     private Coroutine respawnRoutine;
+
+    // Buffers reutilizables
+    private Vector3Int[] tilePositions;
+    private TileBase[] tileBuffer;
 
     void Awake()
     {
@@ -44,6 +50,10 @@ public class WorldGenerator : MonoBehaviour
         terrainOffsetY = prng.Next(-100000, 100000);
         moistureOffsetX = prng.Next(-100000, 100000);
         moistureOffsetY = prng.Next(-100000, 100000);
+
+        int count = chunkSize * chunkSize;
+        tilePositions = new Vector3Int[count];
+        tileBuffer = new TileBase[count];
     }
 
     void OnEnable()
@@ -101,10 +111,10 @@ public class WorldGenerator : MonoBehaviour
             if (kv.Value && !desired.Contains(kv.Key))
                 toUnload.Add(kv.Key);
 
-        foreach (var c in toUnload)
+        for (int i = 0; i < toUnload.Count; i++)
         {
-            UnloadChunk(c);
-            loadedChunks.Remove(c);
+            UnloadChunk(toUnload[i]);
+            loadedChunks.Remove(toUnload[i]);
         }
 
         chunksToDraw.Sort((a, b) =>
@@ -136,11 +146,7 @@ public class WorldGenerator : MonoBehaviour
     void GenerateChunk(Vector2Int c)
     {
         int count = chunkSize * chunkSize;
-        var positions = new Vector3Int[count];
-        var tiles = new TileBase[count];
-
         System.Random chunkRng = new System.Random(seed + c.x * 73856093 ^ c.y * 19349663);
-
         chunkObjects[c] = new List<GameObject>();
 
         int i = 0;
@@ -169,78 +175,75 @@ public class WorldGenerator : MonoBehaviour
                     biomeCounts[biome]++;
                 }
 
-                positions[i] = new Vector3Int(wx, wy, 0);
-                if (biome != null && biome.groundTile != null && biome.groundTile.Length > 0)
-                {
-                    tiles[i] = biome.groundTile[chunkRng.Next(0, biome.groundTile.Length)];
-                }
+                tilePositions[i] = new Vector3Int(wx, wy, 0);
+                tileBuffer[i] = (biome != null && biome.groundTile != null && biome.groundTile.Length > 0)
+                    ? biome.groundTile[chunkRng.Next(0, biome.groundTile.Length)]
+                    : null;
 
                 // --- DECORACIONES ---
                 if (biome != null && biome.decorations != null && biome.decorations.Length > 0)
                 {
-                    var validDecorations = biome.decorations
-                        .Where(d => d.prefab != null && d.probability > 0f)
-                        .ToArray();
-
-                    if (validDecorations.Length > 0)
+                    float roll = (float)chunkRng.NextDouble();
+                    float cumulative = 0f;
+                    for (int d = 0; d < biome.decorations.Length; d++)
                     {
-                        float roll = (float)chunkRng.NextDouble();
-                        float cumulative = 0f;
-
-                        foreach (var deco in validDecorations)
+                        var deco = biome.decorations[d];
+                        if (deco.prefab == null || deco.probability <= 0f) continue;
+                        cumulative += deco.probability;
+                        if (roll <= cumulative)
                         {
-                            cumulative += deco.probability;
-                            if (roll <= cumulative)
-                            {
-                                var obj = Instantiate(deco.prefab,
-                                    new Vector3(wx + 0.5f, wy + 0.5f, 0f), Quaternion.identity);
+                            var obj = GetFromPool(deco.prefab,
+                                new Vector3(wx + 0.5f, wy + 0.5f, 0f), Quaternion.identity);
 
-                                var sr = obj.GetComponent<SpriteRenderer>();
-                                if (sr != null)
-                                    sr.sortingOrder = -(int)(wy);
+                            var sr = obj.GetComponent<SpriteRenderer>();
+                            if (sr != null) sr.sortingOrder = -(int)(wy);
 
-                                chunkObjects[c].Add(obj);
-                                break;
-                            }
+                            chunkObjects[c].Add(obj);
+                            break;
                         }
                     }
                 }
             }
         }
-        groundTilemap.SetTiles(positions, tiles);
+        groundTilemap.SetTiles(tilePositions, tileBuffer);
 
         if (biomeCounts.Count > 0)
         {
-            dominantBiome = biomeCounts.OrderByDescending(kv => kv.Value).First().Key;
+            int maxCount = -1;
+            foreach (var kv in biomeCounts)
+            {
+                if (kv.Value > maxCount)
+                {
+                    maxCount = kv.Value;
+                    dominantBiome = kv.Key;
+                }
+            }
             chunkBiomes[c] = dominantBiome;
         }
     }
 
     void UnloadChunk(Vector2Int c)
     {
-        int count = chunkSize * chunkSize;
-        var positions = new Vector3Int[count];
-        var tiles = new TileBase[count];
-
         int i = 0;
         int startX = c.x * chunkSize;
         int startY = c.y * chunkSize;
 
         for (int y = 0; y < chunkSize; y++)
             for (int x = 0; x < chunkSize; x++, i++)
-                positions[i] = new Vector3Int(startX + x, startY + y, 0);
+                tilePositions[i] = new Vector3Int(startX + x, startY + y, 0);
 
-        groundTilemap.SetTiles(positions, tiles);
+        System.Array.Clear(tileBuffer, 0, tileBuffer.Length);
+        groundTilemap.SetTiles(tilePositions, tileBuffer);
 
         if (chunkObjects.TryGetValue(c, out var objects))
         {
-            foreach (var obj in objects)
-                if (obj != null) Destroy(obj);
+            for (int j = 0; j < objects.Count; j++)
+                ReturnToPool(objects[j]);
+
             chunkObjects.Remove(c);
         }
 
-        if (chunkBiomes.ContainsKey(c))
-            chunkBiomes.Remove(c);
+        chunkBiomes.Remove(c);
     }
 
     IEnumerator RespawnLoop()
@@ -249,10 +252,11 @@ public class WorldGenerator : MonoBehaviour
 
         while (true)
         {
-            int totalMobs = chunkObjects.Values
-                .SelectMany(list => list)
-                .Where(o => o != null && o.CompareTag("Mob"))
-                .Count();
+            int totalMobs = 0;
+            foreach (var list in chunkObjects.Values)
+                for (int i = 0; i < list.Count; i++)
+                    if (list[i] != null && list[i].CompareTag("Mob"))
+                        totalMobs++;
 
             if (totalMobs >= maxMobsGlobal)
             {
@@ -262,70 +266,95 @@ public class WorldGenerator : MonoBehaviour
 
             foreach (var kv in loadedChunks)
             {
-                if (totalMobs >= maxMobsGlobal) break; // 🔹 detener si ya se alcanzó el límite global
-
+                if (totalMobs >= maxMobsGlobal) break;
                 if (!kv.Value) continue;
-                Vector2Int chunk = kv.Key;
 
-                if (!chunkBiomes.ContainsKey(chunk)) continue;
-                var biome = chunkBiomes[chunk];
+                Vector2Int chunk = kv.Key;
+                if (!chunkBiomes.TryGetValue(chunk, out var biome)) continue;
                 if (biome == null || biome.mobs.Length == 0) continue;
 
-                int mobCount = chunkObjects[chunk]
-                    .Where(o => o != null && o.CompareTag("Mob"))
-                    .Count();
+                int mobCount = 0;
+                var chunkList = chunkObjects[chunk];
+                for (int i = 0; i < chunkList.Count; i++)
+                    if (chunkList[i] != null && chunkList[i].CompareTag("Mob"))
+                        mobCount++;
 
                 if (mobCount >= maxMobsPerChunk) continue;
 
-                foreach (var mobOpt in biome.mobs)
+                for (int m = 0; m < biome.mobs.Length; m++)
                 {
-                    if (totalMobs >= maxMobsGlobal) break; // 🔹 cortar aquí también
+                    if (totalMobs >= maxMobsGlobal) break;
 
-                    float roll = Random.value;
-                    if (roll <= mobOpt.probability)
+                    var mobOpt = biome.mobs[m];
+                    if (Random.value > mobOpt.probability) continue;
+
+                    int groupSize = Random.Range(mobOpt.minGroup, mobOpt.maxGroup + 1);
+
+                    for (int g = 0; g < groupSize; g++)
                     {
-                        int groupSize = Random.Range(mobOpt.minGroup, mobOpt.maxGroup + 1);
+                        if (totalMobs >= maxMobsGlobal) break;
 
-                        for (int g = 0; g < groupSize; g++)
+                        Vector3 spawnPos = Vector3.zero;
+                        bool valid = false;
+                        for (int attempt = 0; attempt < 10 && !valid; attempt++)
                         {
-                            if (totalMobs >= maxMobsGlobal) break;
+                            float px = chunk.x * chunkSize + Random.Range(0, chunkSize);
+                            float py = chunk.y * chunkSize + Random.Range(0, chunkSize);
 
-                            Vector3 spawnPos;
-                            bool valid = false;
-                            int attempts = 0;
+                            spawnPos = new Vector3(px + 0.5f, py + 0.5f, 0f);
+                            Vector3 viewportPos = Camera.main.WorldToViewportPoint(spawnPos);
 
-                            do
-                            {
-                                float px = chunk.x * chunkSize + Random.Range(0, chunkSize);
-                                float py = chunk.y * chunkSize + Random.Range(0, chunkSize);
+                            if (viewportPos.x < 0f || viewportPos.x > 1f ||
+                                viewportPos.y < 0f || viewportPos.y > 1f)
+                                valid = true;
+                        }
 
-                                spawnPos = new Vector3(px + 0.5f, py + 0.5f, 0f);
-
-                                Vector3 viewportPos = Camera.main.WorldToViewportPoint(spawnPos);
-
-                                if (viewportPos.x < 0f || viewportPos.x > 1f ||
-                                    viewportPos.y < 0f || viewportPos.y > 1f)
-                                {
-                                    valid = true;
-                                }
-
-                                attempts++;
-                            }
-                            while (!valid && attempts < 10);
-
-                            if (valid)
-                            {
-                                var mob = Instantiate(mobOpt.prefab, spawnPos, Quaternion.identity);
-                                mob.tag = "Mob";
-                                chunkObjects[chunk].Add(mob);
-                                totalMobs++; // 🔹 incrementar contador global
-                            }
+                        if (valid)
+                        {
+                            var mob = GetFromPool(mobOpt.prefab, spawnPos, Quaternion.identity);
+                            mob.tag = "Mob";
+                            chunkList.Add(mob);
+                            totalMobs++;
                         }
                     }
                 }
             }
-
             yield return wait;
         }
+    }
+
+    // --- Object Pooling ---
+    GameObject GetFromPool(GameObject prefab, Vector3 pos, Quaternion rot)
+    {
+        if (!objectPool.TryGetValue(prefab, out var pool))
+        {
+            pool = new Queue<GameObject>();
+            objectPool[prefab] = pool;
+        }
+
+        GameObject obj;
+        if (pool.Count > 0)
+        {
+            obj = pool.Dequeue();
+            obj.transform.SetPositionAndRotation(pos, rot);
+            obj.SetActive(true);
+        }
+        else
+        {
+            obj = Instantiate(prefab, pos, rot);
+        }
+        return obj;
+    }
+
+    void ReturnToPool(GameObject obj)
+    {
+        if (obj == null) return;
+        obj.SetActive(false);
+
+        GameObject prefab = obj; // Para simplificar: se asume que usas mismo prefab como key
+        if (!objectPool.ContainsKey(prefab))
+            objectPool[prefab] = new Queue<GameObject>();
+
+        objectPool[prefab].Enqueue(obj);
     }
 }

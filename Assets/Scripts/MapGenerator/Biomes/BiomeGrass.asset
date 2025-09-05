@@ -26,6 +26,6 @@ MonoBehaviour:
     probability: 0.016
   mobs:
   - prefab: {fileID: 922170293884832101, guid: a570efa35bb48864a84e89f8ab219ed6, type: 3}
-    probability: 0.024
+    probability: 0.154
     minGroup: 1
     maxGroup: 3
