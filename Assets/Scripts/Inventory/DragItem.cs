@@ -1,30 +1,36 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [HideInInspector] public InventorySlot parentSlot;
     private Canvas canvas;
+    private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
-
-    public GameObject currentItem;
+    private Vector3 originalPosition;
+    private Transform originalParent;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvas = GetComponentInParent<Canvas>();
-        currentItem = gameObject;
+        canvasGroup = GetComponent<CanvasGroup>() ?? gameObject.AddComponent<CanvasGroup>();
 
-        // Guarda el slot inicial (padre del item)
-        parentSlot = transform.parent.GetComponent<InventorySlot>();
+        if (transform.parent != null)
+        {
+            parentSlot = transform.parent.GetComponent<InventorySlot>();
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // Guarda el slot original
-        parentSlot = transform.parent.GetComponent<InventorySlot>();
+        originalPosition = transform.localPosition;
+        originalParent = transform.parent;
 
-        // Lo sacamos temporalmente al canvas para que no se "recorte"
+        canvasGroup.alpha = 0.6f;
+        canvasGroup.blocksRaycasts = false;
+
         transform.SetParent(canvas.transform);
         transform.SetAsLastSibling();
     }
@@ -36,32 +42,53 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        InventorySlot newSlot = null;
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
 
-        if (eventData.pointerEnter != null)
-        {
-            newSlot = eventData.pointerEnter.GetComponent<InventorySlot>();
-        }
+        InventorySlot targetSlot = FindSlotUnderCursor(eventData);
 
-        if (newSlot != null)
+        if (targetSlot != null)
         {
-            SetParent(newSlot);
-        }
-        else if (parentSlot != null)
-        {
-            // Vuelve al slot original si no hay destino
-            SetParent(parentSlot);
+            ExecuteEvents.Execute(targetSlot.gameObject, eventData, ExecuteEvents.dropHandler);
         }
         else
         {
-            Debug.LogWarning("Este item no tiene un slot asignado.");
+            ReturnToOriginalSlot();
         }
     }
 
-    public void SetParent(InventorySlot slot)
+    private InventorySlot FindSlotUnderCursor(PointerEventData eventData)
     {
-        parentSlot = slot;
-        transform.SetParent(slot.transform);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (RaycastResult result in results)
+        {
+            InventorySlot slot = result.gameObject.GetComponent<InventorySlot>();
+            if (slot != null) return slot;
+
+            Transform parent = result.gameObject.transform.parent;
+            while (parent != null)
+            {
+                slot = parent.GetComponent<InventorySlot>();
+                if (slot != null) return slot;
+                parent = parent.parent;
+            }
+        }
+
+        return null;
+    }
+
+    private void ReturnToOriginalSlot()
+    {
+        transform.SetParent(originalParent);
+        transform.localPosition = Vector3.zero;
+    }
+
+    public void SetParent(InventorySlot newSlot)
+    {
+        parentSlot = newSlot;
+        transform.SetParent(newSlot.transform);
         transform.localPosition = Vector3.zero;
     }
 }

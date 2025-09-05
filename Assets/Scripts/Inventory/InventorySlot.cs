@@ -1,42 +1,53 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    public bool isUsed = false;
+    [Header("Slot Settings")]
+    public bool isHotbarSlot = false;
 
     public void OnDrop(PointerEventData eventData)
     {
-        DragItem dragItem = eventData.pointerDrag.GetComponent<DragItem>();
-        if (dragItem != null)
-        {
-            InventorySlot fromSlot = dragItem.parentSlot;
+        GameObject droppedObject = eventData.pointerDrag;
+        if (droppedObject == null) return;
 
-            if (isUsed)
+        DragItem dragItem = droppedObject.GetComponent<DragItem>();
+        if (dragItem == null) return;
+
+        InventorySlot fromSlot = dragItem.parentSlot;
+        InventorySlot toSlot = this;
+
+        if (fromSlot == toSlot) return;
+
+        bool slotHasItem = transform.childCount > 0;
+
+        if (slotHasItem)
+        {
+            Transform existingChild = transform.GetChild(0);
+            DragItem existingItem = existingChild.GetComponent<DragItem>();
+
+            if (existingItem != null)
             {
-                dragItem.SetParent(fromSlot);
-                fromSlot.SetItem(dragItem.currentItem);
-                SetItem(dragItem.currentItem);
-            }
-            else
-            {
-                dragItem.SetParent(this);
-                SetItem(dragItem.currentItem);
-                fromSlot.ClearItem();
+                existingItem.transform.SetParent(fromSlot.transform);
+                existingItem.transform.localPosition = Vector3.zero;
+                existingItem.parentSlot = fromSlot;
             }
         }
+        else
+        {
+            fromSlot.ClearSlotVisual();
+        }
+
+        dragItem.SetParent(toSlot);
     }
 
-    public void SetItem(GameObject item)
+    public void ClearSlotVisual()
     {
-        item.transform.SetParent(transform);
-        item.transform.localPosition = Vector3.zero;
-        item.name = item.name.Replace("(Clone)", "");
-        isUsed = true;
+        // Método para limpieza visual si es necesario
     }
 
-    public void ClearItem()
+    public bool IsEmpty()
     {
-        isUsed = false;
+        return transform.childCount == 0;
     }
 }

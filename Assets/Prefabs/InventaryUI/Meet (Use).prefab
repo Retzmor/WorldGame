@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 8821364560023221647}
   - component: {fileID: 8421294767000285669}
   - component: {fileID: -219790746921927872}
+  - component: {fileID: 7212377256817784184}
   m_Layer: 5
   m_Name: Meet (Use)
   m_TagString: Untagged
@@ -308,4 +309,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentSlot: {fileID: 0}
-  currentItem: {fileID: 0}
+--- !u!225 &7212377256817784184
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8283701720008317760}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
