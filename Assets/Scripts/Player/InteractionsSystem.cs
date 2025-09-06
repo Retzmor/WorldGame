@@ -5,18 +5,29 @@ public class InteractionsSystem : MonoBehaviour
     [SerializeField] float radius;
     [SerializeField] LayerMask layers;
     [SerializeField] Collider2D[] collisions;
+    [SerializeField] GameObject TextInteraction;
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        collisions = Physics2D.OverlapCircleAll(transform.position, radius, layers);
+
+        if (collisions.Length > 0)
         {
-            InteractWithItems();
+            TextInteraction.SetActive(true);
+
+            // Si presiona E, interactúa
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                InteractWithItems();
+            }
+        }
+        else
+        {
+            TextInteraction.SetActive(false);
         }
     }
     public void InteractWithItems()
     {
-        collisions = Physics2D.OverlapCircleAll(transform.position, radius, layers);
-
         if (collisions.Length > 0)
         {
             foreach (var item in collisions)
