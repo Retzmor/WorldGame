@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4382386165295444893}
   - component: {fileID: -3215678522212524377}
   - component: {fileID: -4232478227141239335}
+  - component: {fileID: -1088120267701491418}
   m_Layer: 5
   m_Name: Rock (Use)
   m_TagString: Untagged
@@ -148,6 +149,21 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &-1088120267701491418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7938505630013425594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d946ec3e6d49da4abb8846216763342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthToGive: 20
+  itemPrefab: {fileID: 7473094947042414362, guid: f59893bd328306f4cb8d387cf0adbfc1, type: 3}
+  worldPrefap: {fileID: 7473094947042414362, guid: f59893bd328306f4cb8d387cf0adbfc1, type: 3}
 --- !u!1 &8446417215990040133
 GameObject:
   m_ObjectHideFlags: 0

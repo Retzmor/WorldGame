@@ -174,6 +174,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthToGive: 20
+  itemPrefab: {fileID: 5688600327719869917, guid: 3bbf3550bbc1be34eb1ac94ff0591def, type: 3}
+  worldPrefap: {fileID: 5688600327719869917, guid: 3bbf3550bbc1be34eb1ac94ff0591def, type: 3}
 --- !u!114 &159991024527930844
 MonoBehaviour:
   m_ObjectHideFlags: 0

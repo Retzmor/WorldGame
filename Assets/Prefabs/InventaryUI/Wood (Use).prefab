@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3148463652454254330}
   - component: {fileID: -8277066900089511360}
   - component: {fileID: 3502367376790935508}
+  - component: {fileID: -4896350650095996058}
   m_Layer: 5
   m_Name: Wood (Use)
   m_TagString: Untagged
@@ -148,6 +149,21 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &-4896350650095996058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5739570377777651304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d946ec3e6d49da4abb8846216763342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthToGive: 20
+  itemPrefab: {fileID: 321523522686411955, guid: 961419885de71b54f91e0cadcdac5a7b, type: 3}
+  worldPrefap: {fileID: 321523522686411955, guid: 961419885de71b54f91e0cadcdac5a7b, type: 3}
 --- !u!1 &6487342753466191163
 GameObject:
   m_ObjectHideFlags: 0

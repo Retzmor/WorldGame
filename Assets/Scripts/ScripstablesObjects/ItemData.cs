@@ -3,9 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewItem", menuName = "Inventory/ItemData")]
 public class ItemData : ScriptableObject
 {
-    public string itemName;       // Nombre del ítem
-    public Sprite itemSprite;     // Sprite que se muestra en inventario/hotbar
-    public GameObject prefab;     // Prefab que se instancia en hotbar/inventario
-    public int healAmount;        // Cantidad de curación o efecto del ítem
+    public string itemName;       
+    public Sprite itemSprite;
+    public GameObject worldPrefab; // Erwin del futuro, esto quiza en un futuro de un acoplamiento de locos, hay que ir craneando que hacer
+    public GameObject prefab;     
+    public int healAmount;        
 
 }

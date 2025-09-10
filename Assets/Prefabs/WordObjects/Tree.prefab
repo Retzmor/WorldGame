@@ -316,9 +316,9 @@ MonoBehaviour:
   NeedKnockBack: 0
   weaponNeeded: 0
   woods:
-  - {fileID: 9180093751778452568}
-  - {fileID: 744367967162837138}
-  force: 1
+  - {fileID: 8794553498397025553, guid: 961419885de71b54f91e0cadcdac5a7b, type: 3}
+  - {fileID: 8794553498397025553, guid: 961419885de71b54f91e0cadcdac5a7b, type: 3}
+  force: 2
 --- !u!114 &7232701650476982777
 MonoBehaviour:
   m_ObjectHideFlags: 0

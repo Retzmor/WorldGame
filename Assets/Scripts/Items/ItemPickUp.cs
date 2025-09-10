@@ -19,7 +19,8 @@ public class ItemPickUp : MonoBehaviour
                     itemData.itemName,
                     amount,
                     itemData.itemSprite,
-                    itemData.healAmount
+                    itemData.healAmount,
+                    itemData.worldPrefab
                 );
 
                 Destroy(gameObject); 

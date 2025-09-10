@@ -29,6 +29,7 @@ public class AttackPlayer : MonoBehaviour
                 _currentArm.transform.SetParent(weaponHolder);
                 _currentArm.transform.localPosition = Vector3.zero;
                 _currentArm.transform.localRotation = Quaternion.identity;
+                Debug.Log("SpriteRenderer encontrado: " + _currentArm.GetComponent<SpriteRenderer>());
             }
         }
     }

@@ -7,11 +7,12 @@ public class Inventory : MonoBehaviour
 {
     [SerializeField] GameObject[] slots;
     [SerializeField] GameObject[] hotbarSlots;
+    [SerializeField] GameObject worldPrefap;
     TextMeshProUGUI text;
 
     public Dictionary<string, int> InventoryItems = new Dictionary<string, int>();
 
-    public void AddItem(GameObject itemPrefab, string itemName, int amount, Sprite icon, int healAmount)
+    public void AddItem(GameObject itemPrefab, string itemName, int amount, Sprite icon, int healAmount, GameObject worldPrefab)
     {
         if (!AddItemToHotbar(itemPrefab, icon, itemName, healAmount, amount))
         {
@@ -93,7 +94,7 @@ public class Inventory : MonoBehaviour
 
                 ItemUse itemUse = itemButton.GetComponent<ItemUse>();
                 if (itemUse != null)
-                    itemUse.SetItem(itemName, healAmount);
+                    itemUse.SetItem(itemName, healAmount, worldPrefap);
 
                 InventoryItems[itemName] = amount;
 
