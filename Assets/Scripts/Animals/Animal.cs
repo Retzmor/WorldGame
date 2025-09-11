@@ -34,6 +34,11 @@ public class Animal : Damageable
        
     }
 
+    public override void TakeDamage(float damage, WeaponType weaponType, float knockBackValue, Vector2 HitDirection)
+    {
+        base.TakeDamage(damage, weaponType, knockBackValue, HitDirection);
+        GetComponent<MobAI>().OnHit();
+    }
 
     protected override void Death()
     {

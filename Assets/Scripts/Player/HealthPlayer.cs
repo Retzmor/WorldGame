@@ -44,7 +44,7 @@ public class HealthPlayer : Damageable
         if (collision.gameObject.CompareTag("Mob"))
         {
             Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
-            TakeDamage(1, WeaponType.Sword, 5, -hitDirection);
+            TakeDamage(34, WeaponType.Sword, 1.5f, -hitDirection);
             if (damageFlash == null)
             {
                 Debug.Log("No hay damage flash");

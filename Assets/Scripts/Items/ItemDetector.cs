@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem; // Importante para el nuevo Input System
 
 public class ItemDetector : MonoBehaviour
@@ -9,15 +9,17 @@ public class ItemDetector : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction pickUpAction;
 
-    public Transform weaponHolder;
     private GameObject equippedWeapon;
+
+    private AttackPlayer attackPlayer;
 
     private void Awake()
     {
-        // Obtiene el componente PlayerInput del jugador
+        // Referencia al PlayerInput y AttackPlayer
         playerInput = GetComponent<PlayerInput>();
+        attackPlayer = GetComponent<AttackPlayer>();
 
-        // Asume que la acci�n en tu Input Actions se llama "PickUp"
+        // Asume que la acción en tu Input Actions se llama "Obtener"
         pickUpAction = playerInput.actions["Obtener"];
     }
 
@@ -51,7 +53,9 @@ public class ItemDetector : MonoBehaviour
     void EquipWeapon(GameObject weapon)
     {
         equippedWeapon = weapon;
-        weapon.transform.SetParent(weaponHolder);
+
+        // 👉 ahora siempre se equipa en el pivotArm
+        weapon.transform.SetParent(attackPlayer.pivotLeft);
         weapon.transform.localPosition = Vector3.zero;
         weapon.transform.localRotation = Quaternion.identity;
 
@@ -63,7 +67,7 @@ public class ItemDetector : MonoBehaviour
         var rb = weapon.GetComponent<Rigidbody2D>();
         if (rb) rb.simulated = false;
 
-        GetComponent<AttackPlayer>().CurrentArm = weapon;
+        attackPlayer.currentWeapon = weapon;
     }
 
     void DropWeapon()
@@ -79,7 +83,7 @@ public class ItemDetector : MonoBehaviour
         if (rb) rb.simulated = true;
 
         equippedWeapon = null;
-        GetComponent<AttackPlayer>().CurrentArm = null;
+        attackPlayer.currentWeapon = null;
     }
 
     void SetLayerRecursively(GameObject obj, int layer)

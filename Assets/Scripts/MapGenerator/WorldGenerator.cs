@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Pathfinding;
 
 public class WorldGenerator : MonoBehaviour
 {
@@ -21,8 +22,7 @@ public class WorldGenerator : MonoBehaviour
 
     [Header("Respawn Settings")]
     public float respawnInterval = 5f;
-    public int maxMobsPerChunk = 10;
-    public int maxMobsGlobal = 10;
+    public int maxMobsGlobal = 10; // 🔥 solo límite global
 
     private System.Random prng;
     private float terrainOffsetX, terrainOffsetY;
@@ -127,7 +127,7 @@ public class WorldGenerator : MonoBehaviour
         return dx * dx + dy * dy;
     }
 
-    Vector2Int WorldToChunk(Vector3 worldPos)
+    public Vector2Int WorldToChunk(Vector3 worldPos)
     {
         int wx = Mathf.FloorToInt(worldPos.x);
         int wy = Mathf.FloorToInt(worldPos.y);
@@ -196,7 +196,7 @@ public class WorldGenerator : MonoBehaviour
                                 new Vector3(wx + 0.5f, wy + 0.5f, 0f), Quaternion.identity);
 
                             var sr = obj.GetComponent<SpriteRenderer>();
-                            if (sr != null) sr.sortingOrder = -(int)(wy);
+                            //if (sr != null) sr.sortingOrder = -(int)(wy);
 
                             chunkObjects[c].Add(obj);
                             break;
@@ -237,10 +237,25 @@ public class WorldGenerator : MonoBehaviour
 
         if (chunkObjects.TryGetValue(c, out var objects))
         {
-            for (int j = 0; j < objects.Count; j++)
-                ReturnToPool(objects[j]);
+            for (int j = objects.Count - 1; j >= 0; j--)
+            {
+                var obj = objects[j];
+                if (obj == null)
+                {
+                    objects.RemoveAt(j);
+                    continue;
+                }
 
-            chunkObjects.Remove(c);
+                if (obj.CompareTag("Mob"))
+                {
+                    var aggro = obj.GetComponent<MobsAggro>();
+                    if (aggro != null && aggro.IsAggro)
+                        continue; // mobs en combate no se borran
+                }
+
+                ReturnToPool(obj);
+                objects.RemoveAt(j);
+            }
         }
 
         chunkBiomes.Remove(c);
@@ -255,7 +270,7 @@ public class WorldGenerator : MonoBehaviour
             int totalMobs = 0;
             foreach (var list in chunkObjects.Values)
                 for (int i = 0; i < list.Count; i++)
-                    if (list[i] != null && list[i].CompareTag("Mob"))
+                    if (list[i] != null && list[i].CompareTag("Mob") && list[i].activeSelf)
                         totalMobs++;
 
             if (totalMobs >= maxMobsGlobal)
@@ -272,14 +287,6 @@ public class WorldGenerator : MonoBehaviour
                 Vector2Int chunk = kv.Key;
                 if (!chunkBiomes.TryGetValue(chunk, out var biome)) continue;
                 if (biome == null || biome.mobs.Length == 0) continue;
-
-                int mobCount = 0;
-                var chunkList = chunkObjects[chunk];
-                for (int i = 0; i < chunkList.Count; i++)
-                    if (chunkList[i] != null && chunkList[i].CompareTag("Mob"))
-                        mobCount++;
-
-                if (mobCount >= maxMobsPerChunk) continue;
 
                 for (int m = 0; m < biome.mobs.Length; m++)
                 {
@@ -313,7 +320,20 @@ public class WorldGenerator : MonoBehaviour
                         {
                             var mob = GetFromPool(mobOpt.prefab, spawnPos, Quaternion.identity);
                             mob.tag = "Mob";
-                            chunkList.Add(mob);
+
+                            var aggro = mob.GetComponent<MobsAggro>();
+                            if (aggro != null)
+                            {
+                                aggro.player = player;
+                                aggro.world = this;
+                            }
+                            var IAMob = mob.GetComponent<MobAI>();
+                            if(IAMob != null)
+                            {
+                                IAMob.world = this;
+                            }
+
+                            chunkObjects[chunk].Add(mob);
                             totalMobs++;
                         }
                     }
@@ -323,7 +343,32 @@ public class WorldGenerator : MonoBehaviour
         }
     }
 
-    // --- Object Pooling ---
+    // --- Manejo de mobs ---
+    public void ReassignMobChunk(GameObject mob)
+    {
+        Vector2Int newChunk = WorldToChunk(mob.transform.position);
+
+        foreach (var kv in chunkObjects)
+        {
+            if (kv.Value.Remove(mob)) break;
+        }
+
+        if (!chunkObjects.ContainsKey(newChunk))
+            chunkObjects[newChunk] = new List<GameObject>();
+
+        chunkObjects[newChunk].Add(mob);
+    }
+
+    public void DespawnMob(GameObject mob)
+    {
+        foreach (var kv in chunkObjects)
+        {
+            kv.Value.Remove(mob);
+        }
+        ReturnToPool(mob);
+    }
+
+    // --- Pooling ---
     GameObject GetFromPool(GameObject prefab, Vector3 pos, Quaternion rot)
     {
         if (!objectPool.TryGetValue(prefab, out var pool))
@@ -342,6 +387,7 @@ public class WorldGenerator : MonoBehaviour
         else
         {
             obj = Instantiate(prefab, pos, rot);
+            obj.AddComponent<PrefabReference>().prefab = prefab;
         }
         return obj;
     }
@@ -351,10 +397,23 @@ public class WorldGenerator : MonoBehaviour
         if (obj == null) return;
         obj.SetActive(false);
 
-        GameObject prefab = obj; // Para simplificar: se asume que usas mismo prefab como key
+        var prefabRef = obj.GetComponent<PrefabReference>();
+        if (prefabRef == null)
+        {
+            Debug.LogWarning($"Objeto {obj.name} no tiene PrefabReference");
+            Destroy(obj);
+            return;
+        }
+
+        var prefab = prefabRef.prefab;
         if (!objectPool.ContainsKey(prefab))
             objectPool[prefab] = new Queue<GameObject>();
 
         objectPool[prefab].Enqueue(obj);
     }
+}
+
+public class PrefabReference : MonoBehaviour
+{
+    public GameObject prefab;
 }
