@@ -49,6 +49,8 @@ public class HealthPlayer : Damageable
             {
                 Debug.Log("No hay damage flash");
             }
+            if(ScreenShakeManager.Instance != null)
+            ScreenShakeManager.Instance.Shake(1.3f);
         }
     }
 }

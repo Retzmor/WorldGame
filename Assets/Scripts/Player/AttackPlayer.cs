@@ -5,7 +5,7 @@ public class AttackPlayer : MonoBehaviour
 {
     [Header("Referencias")]
     [SerializeField] private SpriteRenderer playerSprite;
-    [SerializeField] private Transform pivotRight;   // mano derecha
+    [SerializeField] public Transform pivotRight;   // mano derecha
     [SerializeField] public Transform pivotLeft;    // mano izquierda
     [SerializeField] public GameObject currentWeapon;
 

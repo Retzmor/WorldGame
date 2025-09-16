@@ -35,6 +35,7 @@ public class ArmMelee : Weapon
                 Vector2 hitDirection = (collider.transform.position - transform.position).normalized;
                 hit.TakeDamage(damage, WeaponType,KnockbackForce , hitDirection);
                 Debug.Log("ATACA");
+                ScreenShakeManager.Instance.Shake(0.03f);
             }
         }
 

@@ -55,7 +55,7 @@ public class ItemDetector : MonoBehaviour
         equippedWeapon = weapon;
 
         // 👉 ahora siempre se equipa en el pivotArm
-        weapon.transform.SetParent(attackPlayer.pivotLeft);
+        weapon.transform.SetParent(attackPlayer.pivotRight);
         weapon.transform.localPosition = Vector3.zero;
         weapon.transform.localRotation = Quaternion.identity;
 

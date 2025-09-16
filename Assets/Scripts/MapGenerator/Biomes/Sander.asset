@@ -23,3 +23,6 @@ MonoBehaviour:
   decorations:
   - prefab: {fileID: 6913790783632814790, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
     probability: 0.04
+  - prefab: {fileID: 5883860613339452926, guid: f8a060b94a25fcb4db6763b595b05d83, type: 3}
+    probability: 0.006
+  mobs: []
