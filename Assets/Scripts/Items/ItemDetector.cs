@@ -12,6 +12,8 @@ public class ItemDetector : MonoBehaviour
     public Transform weaponHolder;
     private GameObject equippedWeapon;
 
+    [SerializeField] Inventory inventory;
+
     private void Awake()
     {
         // Obtiene el componente PlayerInput del jugador
@@ -41,9 +43,23 @@ public class ItemDetector : MonoBehaviour
         {
             GameObject newWeapon = hits[0].gameObject;
 
-            if (equippedWeapon != null)
-                DropWeapon();
-
+            ItemPickUp pickUpData = newWeapon.GetComponent<ItemPickUp>();
+            if (pickUpData != null && pickUpData.itemData != null)
+            {
+                if (inventory != null)
+                {
+                    inventory.AddItem(
+                        pickUpData.itemData.prefab,
+                        pickUpData.itemData.itemName,
+                        1, 
+                        pickUpData.itemData.itemSprite,
+                        pickUpData.itemData.healAmount,
+                        pickUpData.itemData.worldPrefab
+                    );
+                }
+                Destroy(newWeapon); 
+                return;
+            }
             EquipWeapon(newWeapon);
         }
     }

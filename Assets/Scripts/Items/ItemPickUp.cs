@@ -3,15 +3,14 @@ using UnityEngine;
 
 public class ItemPickUp : MonoBehaviour
 {
-    [SerializeField] private ItemData itemData;
-    [SerializeField] private int amount = 1;
-    [SerializeField] private Inventory inventory;
+    [SerializeField] public ItemData itemData;
+    [SerializeField] public int amount = 1;
+    [SerializeField] public Inventory inventory;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("pocion");
             if (inventory != null)
             {
                 inventory.AddItem(
