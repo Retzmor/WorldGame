@@ -1,75 +1,136 @@
-using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class AttackPlayer : MonoBehaviour
 {
-    [Header("Configuraci�n de ataque")]
-    [SerializeField] private float radiusZoneAttack = 1f;
-
     [Header("Referencias")]
-    [SerializeField] private GameObject _currentArm;
-    [SerializeField] private Transform weaponHolder; // Nuevo: el punto donde ir� el arma
-    [SerializeField] private Transform pivotArm; // Para armas melee
+    [SerializeField] private SpriteRenderer playerSprite;
+    [SerializeField] public Transform pivotRight;   // mano derecha
+    [SerializeField] public Transform pivotLeft;    // mano izquierda
+    [SerializeField] public GameObject currentWeapon;
+
+    [Header("Ajustes")]
+    [SerializeField, Range(0.05f, 0.5f)] private float deadZoneRadius = 0.15f;
+    [SerializeField, Range(5f, 50f)] private float rotationSmooth = 20f;
+    [SerializeField, Range(0.1f, 0.5f)] private float flipThreshold = 0.25f;
 
     private Camera mainCamera;
+    private Quaternion lastValidRotation = Quaternion.identity;
+    private int facingDirection = 1; // 1 = derecha, -1 = izquierda
     private bool isAttacking = false;
     private Quaternion lockedRotation;
 
-    public GameObject CurrentArm
-    {
-        get => _currentArm;
-        set
-        {
-            _currentArm = value;
-
-            if (_currentArm != null)
-            {
-                // Colocar el arma como hija del Weapon Holder
-                _currentArm.transform.SetParent(weaponHolder);
-                _currentArm.transform.localPosition = Vector3.zero;
-                _currentArm.transform.localRotation = Quaternion.identity;
-                Debug.Log("SpriteRenderer encontrado: " + _currentArm.GetComponent<SpriteRenderer>());
-            }
-        }
-    }
+    // 👇 Input System
+    private PlayerInput playerInput;
+    private InputAction mousePosAction;
 
     private void Awake()
     {
         mainCamera = Camera.main;
+        playerInput = GetComponent<PlayerInput>();
+
+        // Buscar la acción "MousePos" definida en tu Input Actions
+        mousePosAction = playerInput.actions["MousePos"];
     }
 
-    private void Update()
+    private void LateUpdate()
     {
-        Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        mouseWorldPos.z = 0;
-        Vector3 direction = (mouseWorldPos - transform.position).normalized;
+        Vector2 screenPos = mousePosAction.ReadValue<Vector2>();
+        Vector3 mouseWorld = mainCamera.ScreenToWorldPoint(screenPos);
+        mouseWorld.z = 0f;
+        HandleFlip(mouseWorld);
+        if (currentWeapon == null) return;
 
-        if (_currentArm == null) return;
+        // Leer la posición del mouse desde Input System
+        
+        
+        
 
-        if (!isAttacking)
+        
+        HandleWeaponRotation(mouseWorld);
+    }
+
+    private void HandleFlip(Vector3 mouseWorld)
+    {
+        float deltaX = mouseWorld.x - transform.position.x;
+
+        if (deltaX > flipThreshold && facingDirection != 1)
         {
-            float flipX = transform.position.x > mouseWorldPos.x ? -1f : 1f;
-            transform.localScale = new Vector3(flipX, transform.localScale.y, transform.localScale.z);
-            _currentArm.transform.up = direction;
-            Transform targetPos = transform;
-            if (_currentArm.TryGetComponent(out Weapon arm) && arm is ArmMelee)
-                targetPos = pivotArm.transform;
-            _currentArm.transform.position = targetPos.position;
+            facingDirection = 1;
+            if (playerSprite) playerSprite.flipX = false;
+            MoveWeaponToHand(pivotRight);
         }
-        else
+        else if (deltaX < -flipThreshold && facingDirection != -1)
         {
-            _currentArm.transform.rotation = lockedRotation;
+            facingDirection = -1;
+            if (playerSprite) playerSprite.flipX = true;
+            MoveWeaponToHand(pivotLeft);
+        }
+    }
+
+    private void HandleWeaponRotation(Vector3 mouseWorld)
+    {
+        if (isAttacking)
+        {
+            currentWeapon.transform.rotation = lockedRotation;
+            return;
+        }
+
+        Vector2 diff = mouseWorld - currentWeapon.transform.position;
+        float dist = diff.magnitude;
+
+        if (dist > deadZoneRadius)
+        {
+            float angle = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+            lastValidRotation = Quaternion.Euler(0f, 0f, angle - 90f);
+        }
+
+        currentWeapon.transform.rotation = Quaternion.Lerp(
+            currentWeapon.transform.rotation,
+            lastValidRotation,
+            rotationSmooth * Time.deltaTime
+        );
+    }
+
+    private void MoveWeaponToHand(Transform newPivot)
+    {
+        if (currentWeapon != null && newPivot != null)
+        {
+            currentWeapon.transform.SetParent(newPivot, false);
+            currentWeapon.transform.localPosition = Vector3.zero;
+            currentWeapon.transform.localRotation = Quaternion.identity;
         }
     }
 
     public void HitEnemy(InputAction.CallbackContext context)
     {
-        if (_currentArm != null && _currentArm.TryGetComponent(out Weapon arm) && context.performed && !isAttacking)
+        if (currentWeapon != null && currentWeapon.TryGetComponent(out Weapon arm) && context.performed && !isAttacking)
         {
-            lockedRotation = _currentArm.transform.rotation;
+            lockedRotation = currentWeapon.transform.rotation;
             arm.Attack();
         }
     }
 
+    public void EquipWeapon(GameObject weapon)
+    {
+        currentWeapon = weapon;
+        MoveWeaponToHand(pivotRight);
+        lastValidRotation = currentWeapon.transform.rotation;
+
+        facingDirection = 1;
+        if (playerSprite) playerSprite.flipX = false;
+
+        // evaluar la posición real del mouse apenas equipa
+        Vector2 screenPos = mousePosAction.ReadValue<Vector2>();
+        Vector3 mouseWorld = mainCamera.ScreenToWorldPoint(screenPos);
+        mouseWorld.z = 0f;
+        HandleFlip(mouseWorld);
+    }
+
+    public void DropWeapon()
+    {
+        if (currentWeapon == null) return;
+        currentWeapon.transform.SetParent(null);
+        currentWeapon = null;
+    }
 }

@@ -1,84 +1,139 @@
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Movimiento")]
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float smoothTime = 0.1f;
+
+    [Header("Visuals (usar hijo con SpriteRenderer)")]
+    [SerializeField] private Transform spriteTransform; // 👈 referencia al hijo visual
+    [SerializeField] private float squashAmount = 0.2f;
+    [SerializeField] private float squashDuration = 0.15f;
+    [SerializeField] private float bobAmount = 0.1f;
+    [SerializeField] private float bobSpeed = 6f;
+
+    [Header("Ghost Trail")]
+    [SerializeField] private GhostTrail ghostPrefab;
+    [SerializeField] private float ghostInterval = 0.05f;
+    [SerializeField] private Color ghostColor = new Color(1, 1, 1, 0.6f);
+    [SerializeField] private bool enableGhost;
+
+    [Header("Effects")]
+    [SerializeField] private ParticleSystem dustParticles;
+
     private PlayerInput playerInput;
-    private Animator animator;
+    private Rigidbody2D rb;
+    [SerializeField] private Animator animator;
+    private SpriteRenderer spriteRenderer;
 
-    [SerializeField] private float speedMovement = 5f;
-    [SerializeField] private float ppu = 32f; // Pixels per Unit
+    private Vector2 inputDir;
+    private Vector2 currentVelocity;
+    private Vector2 velocitySmoothing;
+    private Vector3 baseScale;
+    private Tween squashTween;
+    private float ghostTimer;
+    private bool wasMoving;
 
-    private Vector2 movementDirection;
-    private Vector3 realPosition; // posición acumulada sin snap
-    private Rigidbody2D rb; 
+    private Vector3 lastBobOffset = Vector3.zero;
 
-
-     void Start()
+    private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();    
-        animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
         playerInput = GetComponent<PlayerInput>();
-        realPosition = transform.position;
+        //animator = GetComponentInChildren<Animator>();
+        spriteRenderer = spriteTransform.GetComponent<SpriteRenderer>();
+
+        baseScale = spriteTransform.localScale;
     }
 
     private void Update()
     {
-        // Leer input
-        movementDirection = playerInput.actions["Mover"].ReadValue<Vector2>();
+        inputDir = playerInput.actions["Mover"].ReadValue<Vector2>();
+        if (inputDir.sqrMagnitude > 1f) inputDir.Normalize();
 
-        // Normalizar si excede magnitud 1
-        if (movementDirection.magnitude > 1f)
-            movementDirection.Normalize();
-
-        // Actualizar animación
-        animator.SetFloat("Speed", movementDirection.magnitude);
-
-        //// SOLO mover si hay input
-        //if (movementDirection != Vector2.zero)
-        //{
-        //    realPosition = transform.position; // sincroniza antes de mover
-        //    realPosition += (Vector3)(movementDirection * speedMovement * Time.deltaTime);
-        //    //transform.position = realPosition;
-        //    rb2.linearVelocity += new Vector2(realPosition.x, realPosition.y);
-        //}
-        //else
-        //{
-        //    // si no hay input, no toques transform.position
-        //    realPosition = transform.position;
-        //}
-
-        rb.linearVelocity = movementDirection * speedMovement;
+        if (animator != null)
+            animator.SetFloat("Speed", inputDir.magnitude);
     }
 
-
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Enemy"))
-    //    {
-    //        Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
-    //        TakeDamage(1, WeaponType.Sword,5, -hitDirection);
-    //        if (damageFlash == null) 
-    //        {
-    //            Debug.Log("No hay damage flash");
-    //        }
-    //    }
-    //}
-
-   
-    
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void FixedUpdate()
     {
-        if (collision.gameObject.CompareTag("Item"))
-        {
-           // collision.gameObject.SetActive(false);
-        }
+        // --- Movimiento físico ---
+        Vector2 targetVelocity = inputDir * moveSpeed;
+        currentVelocity = Vector2.SmoothDamp(currentVelocity, targetVelocity, ref velocitySmoothing, smoothTime);
+
+        rb.MovePosition(rb.position + currentVelocity * Time.fixedDeltaTime);
+
+        // Detectar inicio o fin de movimiento (para polvo)
+        bool isMoving = inputDir.magnitude > 0.1f;
+        if (isMoving && !wasMoving) CreateDust();
+        if (!isMoving && wasMoving) CreateDust();
+        wasMoving = isMoving;
     }
 
-    //protected override void Death()
-    //{
-       
-    //}
+    private void LateUpdate()
+    {
+        bool isMoving = inputDir.magnitude > 0.1f;
+
+        // --- Squash & Stretch ---
+        if (isMoving && spriteRenderer != null)
+        {
+            if (squashTween == null || !squashTween.IsActive())
+            {
+                Vector3 squashScale = new Vector3(baseScale.x + squashAmount, baseScale.y - squashAmount, baseScale.z);
+                squashTween = spriteTransform.DOScale(squashScale, squashDuration)
+                    .SetLoops(2, LoopType.Yoyo)
+                    .SetEase(Ease.InOutSine);
+            }
+
+            ghostTimer -= Time.deltaTime;
+            if (ghostTimer <= 0f && enableGhost)
+            {
+                SpawnGhost();
+                ghostTimer = ghostInterval;
+            }
+        }
+        else
+        {
+            spriteTransform.localScale = Vector3.Lerp(spriteTransform.localScale, baseScale, Time.deltaTime * 5f);
+        }
+
+        // --- Bobbing ---
+        Vector3 basePos = spriteTransform.localPosition - lastBobOffset;
+        Vector2 move2D = currentVelocity;
+        float moveMag = move2D.magnitude;
+        Vector2 dir2D = (moveMag > 0.01f) ? move2D.normalized : inputDir;
+
+        Vector3 newBobOffset = Vector3.zero;
+        if (dir2D.sqrMagnitude > 0.0001f)
+        {
+            Vector2 perp = new Vector2(-dir2D.y, dir2D.x);
+            float speedFactor = Mathf.Clamp01(moveMag / moveSpeed);
+            float bobScalar = Mathf.Sin(Time.time * bobSpeed) * bobAmount * speedFactor;
+            Vector2 bobOffset2D = perp * bobScalar;
+            newBobOffset = new Vector3(bobOffset2D.x, bobOffset2D.y, 0f);
+        }
+        else
+        {
+            newBobOffset = Vector3.Lerp(lastBobOffset, Vector3.zero, Time.deltaTime * 8f);
+        }
+
+        spriteTransform.localPosition = basePos + newBobOffset;
+        lastBobOffset = newBobOffset;
+    }
+
+    private void SpawnGhost()
+    {
+        GhostTrail ghost = GhostTrail.GetGhost(ghostPrefab);
+        ghost.Init(spriteRenderer.sprite, spriteTransform.position, spriteTransform.localScale, ghostColor);
+    }
+
+    private void CreateDust()
+    {
+        if (dustParticles != null) dustParticles.Play();
+    }
 }

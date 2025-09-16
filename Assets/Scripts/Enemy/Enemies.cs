@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.AI;
 public class Enemies : Damageable
 {
-
-    [SerializeField] GameObject _gameObject;
     [SerializeField] private int _damage;
     [SerializeField] Transform[] bones;
     [SerializeField] int force;

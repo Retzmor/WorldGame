@@ -35,6 +35,7 @@ public class Tree : Damageable
 
     protected override void Death()
     {
+        ScreenShakeManager.Instance.Shake(0.1f);
         DestroyTree();
     }
 }

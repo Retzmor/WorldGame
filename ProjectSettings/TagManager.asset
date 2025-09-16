@@ -48,11 +48,11 @@ TagManager:
   - name: Ground
     uniqueID: 1895637191
     locked: 0
-  - name: Player
-    uniqueID: 4153774035
+  - name: Mobs
+    uniqueID: 2820115985
     locked: 0
-  - name: Decoration
-    uniqueID: 2614205343
+  - name: UpperGround
+    uniqueID: 3338899147
     locked: 0
   m_RenderingLayers:
   - Default

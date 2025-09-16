@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-
 [System.Serializable]
 public struct DecorationOption
 {
@@ -17,7 +16,6 @@ public struct MobOption
     public int minGroup;
     public int maxGroup;
 }
-
 
 [CreateAssetMenu(fileName = "Biome", menuName = "World/Biome")]
 public class BiomeDefinition : ScriptableObject

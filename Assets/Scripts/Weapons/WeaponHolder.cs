@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WeaponHolder : MonoBehaviour
 {
@@ -15,7 +15,7 @@ public class WeaponHolder : MonoBehaviour
         currentWeapon = newWeapon;
         currentWeapon.transform.parent = transform;
         currentWeapon.transform.localPosition = Vector3.zero;
-        GetComponent<AttackPlayer>().CurrentArm = currentWeapon.gameObject;
+        GetComponent<AttackPlayer>().currentWeapon = currentWeapon.gameObject;
         Debug.Log("Hijo");
     }
 }
