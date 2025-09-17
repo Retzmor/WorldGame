@@ -66,6 +66,11 @@ public class ItemDetector : MonoBehaviour
 
     void EquipWeapon(GameObject weapon)
     {
+        if(GetComponent<AttackPlayer>().currentWeapon != null)
+        {
+            DropWeapon();
+        }
+
         equippedWeapon = weapon;
         weapon.transform.SetParent(weaponHolder);
         weapon.transform.localPosition = Vector3.zero;
@@ -79,7 +84,8 @@ public class ItemDetector : MonoBehaviour
         var rb = weapon.GetComponent<Rigidbody2D>();
         if (rb) rb.simulated = false;
 
-        GetComponent<AttackPlayer>().CurrentArm = weapon;
+        GetComponent<AttackPlayer>().currentWeapon = weapon;
+        
     }
 
     void DropWeapon()
@@ -95,7 +101,7 @@ public class ItemDetector : MonoBehaviour
         if (rb) rb.simulated = true;
 
         equippedWeapon = null;
-        GetComponent<AttackPlayer>().CurrentArm = null;
+        GetComponent<AttackPlayer>().currentWeapon = null;
     }
 
     void SetLayerRecursively(GameObject obj, int layer)

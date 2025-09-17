@@ -22,7 +22,7 @@ public class ItemUse : MonoBehaviour
     public void UseButton()
     {
         Debug.Log("Boton oprimido");
-        if(gameObject.name == "Potion(Use)")
+        if(gameObject.name.Contains("Potion"))
         {
             Debug.Log("Cure al player");
             HealthPlayer player = FindAnyObjectByType<HealthPlayer>();

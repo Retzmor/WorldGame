@@ -29,19 +29,19 @@ public class HotbarController : MonoBehaviour
             ItemUse itemData = selectedUI.GetComponent<ItemUse>();
             if (itemData != null && itemData.itemPrefab != null)
             {
-                if (playerAttack.CurrentArm != null)
-                    Destroy(playerAttack.CurrentArm);
+                if (playerAttack.currentWeapon != null)
+                    Destroy(playerAttack.currentWeapon);
 
                 GameObject newWeapon = Instantiate(itemData.itemPrefab);
-                playerAttack.CurrentArm = newWeapon;
+                playerAttack.currentWeapon = newWeapon;
             }
         }
         else if (playerAttack != null)
         {
-            if (playerAttack.CurrentArm != null)
-                Destroy(playerAttack.CurrentArm);
+            if (playerAttack.currentWeapon != null)
+                Destroy(playerAttack.currentWeapon);
 
-            playerAttack.CurrentArm = null;
+            playerAttack.currentWeapon = null;
         }
     }
 

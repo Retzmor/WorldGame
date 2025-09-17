@@ -13,6 +13,7 @@ public class InteractionsSystem : MonoBehaviour
 
         if (collisions.Length > 0)
         {
+            Debug.Log("ERWIN DETECTADO");
             TextInteraction.SetActive(true);
 
             // Si presiona E, interactúa
@@ -34,6 +35,7 @@ public class InteractionsSystem : MonoBehaviour
             {
                 if (item.TryGetComponent(out IInteractuable interactuable))
                 {
+
                     interactuable.Interact();
                 }
             }

@@ -19,7 +19,7 @@ public class HotbarUI : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            UseCurrentItem();
+            //UseCurrentItem();
         }
     }
 
