@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static WorldSaveSystem;
 
 public class WorldGenerator : MonoBehaviour
 {
@@ -73,10 +74,44 @@ public class WorldGenerator : MonoBehaviour
         waterTileBuffer = new TileBase[count];
     }
 
-    void OnEnable()
+    void Start()
     {
+        saveSystem = FindAnyObjectByType<WorldSaveSystem>();
+        if (saveSystem != null)
+        {
+            // cargar mundo
+            saveSystem.LoadWorld("world_slot1.json");
+
+            // cargar jugador
+            var playerData = saveSystem.LoadPlayer();
+            if (playerData != null)
+            {
+                // colocar jugador en posición guardada
+                player.position = new Vector3(playerData.posX, playerData.posY, playerData.posZ);
+                player.rotation = new Quaternion(playerData.rotX, playerData.rotY, playerData.rotZ, playerData.rotW);
+
+                // restaurar inventario aquí (según tu sistema de inventario)
+                Debug.Log($"Inventario cargado con {playerData.inventory.Count} items");
+            }
+        }
         loaderRoutine = StartCoroutine(LoaderLoop());
         respawnRoutine = StartCoroutine(RespawnLoop());
+
+        InvokeRepeating("SaveGame", 5f, 4f);
+    }
+
+    void OnApplicationQuit()
+    {
+        if (saveSystem != null)
+        {
+            saveSystem.SaveWorld(); // ⬅️ guarda al cerrar juego
+        }
+    }
+
+
+    void OnEnable()
+    {
+       
     }
 
     void OnDisable()
@@ -262,6 +297,11 @@ public class WorldGenerator : MonoBehaviour
                                 if (decorationParent != null) obj.transform.SetParent(decorationParent, true);
 
                                 chunkObjects[c].Add(obj);
+
+                                if (saveSystem != null)
+                                {
+                                    saveSystem.SaveDecorationChange(obj, c, true);
+                                }
                                 break;
                             }
                         }
@@ -331,7 +371,7 @@ public class WorldGenerator : MonoBehaviour
                 }
             }
 
-            foreach (var deco in chunkSave.decorations)
+            foreach (var deco in chunkSave.decorations)   // ⬅️ AQUI
             {
                 if (!deco.active) continue;
                 GameObject prefab = saveSystem != null ? saveSystem.GetDecorationPrefabByName(deco.prefabName) : null;
@@ -603,4 +643,17 @@ public class WorldGenerator : MonoBehaviour
             return h;
         }
     }
+
+    public void SaveGame()
+    {
+        if (saveSystem != null)
+        {
+            // aquí deberías pasar tu lista real de ítems
+            List<ItemSave> currentInventory = new List<ItemSave>();
+            // TODO: recorrer tu sistema de inventario y convertirlo a ItemSave
+
+            saveSystem.SavePlayer(player, currentInventory, saveSystem.GetSlotFileName());
+        }
+    }
+
 }

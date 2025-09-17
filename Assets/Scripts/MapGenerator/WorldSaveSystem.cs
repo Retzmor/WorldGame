@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+Ôªøusing System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -11,14 +11,33 @@ public class WorldSaveSystem : MonoBehaviour
 {
     [Header("Referencias (asignar en inspector)")]
     public BiomeLibrary biomeLibrary;           // para resolver prefabs/tiles por nombre
-    public List<TileBase> extraTiles = new();  // p.ej. asigna waterTile aquÌ si lo deseas
-
+    public List<TileBase> extraTiles = new();  // p.ej. asigna waterTile aqu√≠ si lo deseas
+    public int currentSlot = 1;
     // Estructuras serializables
     [System.Serializable]
     public class WorldSaveData
     {
         public List<ChunkSaveData> chunks = new List<ChunkSaveData>();
+        public PlayerSaveData player;  // ‚¨ÖÔ∏è NUEVO
     }
+
+    [System.Serializable]
+    public class PlayerSaveData
+    {
+        public float posX, posY, posZ;
+        public float rotX, rotY, rotZ, rotW;
+        public List<ItemSave> inventory = new();
+    }
+
+    [System.Serializable]
+    public class ItemSave
+    {
+        public string itemID;
+        public int quantity;
+        public int durability;
+        public bool equipped;
+    }
+
 
     [System.Serializable]
     public class ChunkSaveData
@@ -33,7 +52,7 @@ public class WorldSaveSystem : MonoBehaviour
     public class TileChange
     {
         public int x, y, z;
-        public string tileID; // "null" para vacÌo
+        public string tileID; // "null" para vac√≠o
     }
 
     [System.Serializable]
@@ -49,7 +68,7 @@ public class WorldSaveSystem : MonoBehaviour
     private readonly Dictionary<Vector2Int, ChunkSaveData> worldSaveDict = new();
 
     // -----------------------
-    // API p˙blica
+    // API p√∫blica
     // -----------------------
 
     public ChunkSaveData GetChunkSave(Vector2Int chunkCoord)
@@ -75,8 +94,8 @@ public class WorldSaveSystem : MonoBehaviour
         }
     }
 
-    // Guardar/actualizar estado de una decoraciÛn (active = true => existe; false => destruida)
-    // El obj puede ser cualquier GameObject instanciado (decoraciÛn). Busca por prefabName + posiciÛn cercana.
+    // Guardar/actualizar estado de una decoraci√≥n (active = true => existe; false => destruida)
+    // El obj puede ser cualquier GameObject instanciado (decoraci√≥n). Busca por prefabName + posici√≥n cercana.
     public void SaveDecorationChange(GameObject obj, Vector2Int chunkCoord, bool active)
     {
         if (obj == null) return;
@@ -87,7 +106,7 @@ public class WorldSaveSystem : MonoBehaviour
         float px = p.x, py = p.y, pz = p.z;
         Quaternion q = obj.transform.rotation;
 
-        // buscar existente por prefabName y cercanÌa (evita duplicados)
+        // buscar existente por prefabName y cercan√≠a (evita duplicados)
         DecorationSave found = null;
         foreach (var d in chunk.decorations)
         {
@@ -155,7 +174,7 @@ public class WorldSaveSystem : MonoBehaviour
         return null;
     }
 
-    // Buscar prefab de decoraciÛn por nombre (revisa todos los biomas)
+    // Buscar prefab de decoraci√≥n por nombre (revisa todos los biomas)
     public GameObject GetDecorationPrefabByName(string prefabName)
     {
         if (biomeLibrary == null || biomeLibrary.biomes == null) return null;
@@ -186,7 +205,7 @@ public class WorldSaveSystem : MonoBehaviour
         string path = Application.persistentDataPath + "/" + fileName;
         if (!File.Exists(path))
         {
-            Debug.Log("WorldSaveSystem: no hay archivo de guardado. Se iniciar· mundo procedimental.");
+            Debug.Log("WorldSaveSystem: no hay archivo de guardado. Se iniciar√° mundo procedimental.");
             return;
         }
 
@@ -221,4 +240,96 @@ public class WorldSaveSystem : MonoBehaviour
         if (pr != null && pr.prefab != null) return pr.prefab.name;
         return obj.name.Replace("(Clone)", "").Trim();
     }
+
+
+    private void Start()
+    {
+        Debug.Log("Ruta de guardado: " + Application.persistentDataPath);
+    }
+
+
+    public void DeleteWorld()
+    {
+        string path = Application.persistentDataPath + "/" + GetSlotFileName();
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            Debug.Log($"WorldSaveSystem: archivo de guardado eliminado en {GetSlotFileName()}");
+        }
+        else
+        {
+            Debug.Log("WorldSaveSystem: no hab√≠a archivo de guardado para borrar.");
+        }
+
+        worldSaveDict.Clear(); // tambi√©n vac√≠a la memoria en runtime
+    }
+
+
+    public void SavePlayer(Transform playerTransform, List<ItemSave> inventory, string fileName = "world_slot1.json")
+    {
+        if (!worldSaveDict.TryGetValue(Vector2Int.zero, out _))
+        {
+            // asegura al menos un chunk dummy (para que el save no quede vac√≠o)
+            worldSaveDict[new Vector2Int(0, 0)] = new ChunkSaveData { chunkX = 0, chunkY = 0 };
+        }
+
+        // Crear PlayerSaveData
+        PlayerSaveData playerData = new PlayerSaveData();
+        playerData.posX = playerTransform.position.x;
+        playerData.posY = playerTransform.position.y;
+        playerData.posZ = playerTransform.position.z;
+
+        playerData.rotX = playerTransform.rotation.x;
+        playerData.rotY = playerTransform.rotation.y;
+        playerData.rotZ = playerTransform.rotation.z;
+        playerData.rotW = playerTransform.rotation.w;
+
+        // Copiar inventario
+        playerData.inventory = new List<ItemSave>(inventory);
+
+        // Guardar dentro del mundo
+        WorldSaveData data = new WorldSaveData { chunks = new List<ChunkSaveData>(worldSaveDict.Values), player = playerData };
+
+        string path = Application.persistentDataPath + "/" + fileName;
+        string json = JsonUtility.ToJson(data, true);
+        File.WriteAllText(path, json);
+
+        Debug.Log($"WorldSaveSystem: mundo+jugador guardados en {path}");
+    }
+
+    // Cargar datos del jugador
+    public PlayerSaveData LoadPlayer()
+    {
+        string path = Application.persistentDataPath + "/" + GetSlotFileName();
+        if (!File.Exists(path)) return null;
+
+        string json = File.ReadAllText(path);
+        var data = JsonUtility.FromJson<WorldSaveData>(json);
+
+        worldSaveDict.Clear();
+        if (data != null && data.chunks != null)
+        {
+            foreach (var c in data.chunks)
+            {
+                var key = new Vector2Int(c.chunkX, c.chunkY);
+                worldSaveDict[key] = c;
+            }
+        }
+        
+        Debug.Log($"WorldSaveSystem: mundo+jugador cargados desde {path}");
+        return data.player;
+    }
+
+
+    public string GetSlotFileName()
+    {
+        return $"world_slot{currentSlot}.json";
+    }
+
+
+
+
+
+
+
 }
