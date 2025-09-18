@@ -80,16 +80,16 @@ public class WorldGenerator : MonoBehaviour
         if (saveSystem != null)
         {
             // cargar mundo
-            saveSystem.LoadWorld("world_slot1.json");
+            saveSystem.LoadWorld();
 
             // cargar jugador
             var playerData = saveSystem.LoadPlayer();
             if (playerData != null)
             {
                 // colocar jugador en posición guardada
-                player.position = new Vector3(playerData.posX, playerData.posY, playerData.posZ);
-                player.rotation = new Quaternion(playerData.rotX, playerData.rotY, playerData.rotZ, playerData.rotW);
-
+                player.position = new Vector3(playerData.posX, playerData.posY);
+                //player.rotation = new Quaternion(playerData.rotX, playerData.rotY, playerData.rotZ, playerData.rotW);
+                Debug.Log(playerData.posX);
                 // restaurar inventario aquí (según tu sistema de inventario)
                 Debug.Log($"Inventario cargado con {playerData.inventory.Count} items");
             }
@@ -97,7 +97,7 @@ public class WorldGenerator : MonoBehaviour
         loaderRoutine = StartCoroutine(LoaderLoop());
         respawnRoutine = StartCoroutine(RespawnLoop());
 
-        InvokeRepeating("SaveGame", 5f, 4f);
+        
     }
 
     void OnApplicationQuit()
@@ -105,14 +105,12 @@ public class WorldGenerator : MonoBehaviour
         if (saveSystem != null)
         {
             saveSystem.SaveWorld(); // ⬅️ guarda al cerrar juego
+            List<ItemSave> currentInventory = new List<ItemSave>();
+            // TODO: aquí rellena con los ítems reales del inventario del jugador
+            saveSystem.SavePlayer(player, currentInventory);
         }
     }
 
-
-    void OnEnable()
-    {
-       
-    }
 
     void OnDisable()
     {
@@ -203,7 +201,6 @@ public class WorldGenerator : MonoBehaviour
         if (!chunkObjects.ContainsKey(c)) chunkObjects[c] = new List<GameObject>();
 
         var chunkSave = saveSystem != null ? saveSystem.GetChunkSave(c) : null;
-        bool hasSavedDecorations = (chunkSave != null && chunkSave.decorations != null && chunkSave.decorations.Count > 0);
 
         int i = 0;
         int startX = c.x * chunkSize;
@@ -278,32 +275,25 @@ public class WorldGenerator : MonoBehaviour
                     groundTileBuffer[i] = null;
                 }
 
-                if (!hasSavedDecorations)
+                // GENERAR DECORACIONES PROCEDURALES
+                if (chosen != null && chosen.decorations != null && chosen.decorations.Length > 0)
                 {
-                    if (chosen != null && chosen.decorations != null && chosen.decorations.Length > 0)
+                    float roll = (float)chunkRng.NextDouble();
+                    float cumulative = 0f;
+                    for (int d = 0; d < chosen.decorations.Length; d++)
                     {
-                        float roll = (float)chunkRng.NextDouble();
-                        float cumulative = 0f;
-                        for (int d = 0; d < chosen.decorations.Length; d++)
+                        var deco = chosen.decorations[d];
+                        if (deco.prefab == null || deco.probability <= 0f) continue;
+                        cumulative += deco.probability;
+                        if (roll <= cumulative)
                         {
-                            var deco = chosen.decorations[d];
-                            if (deco.prefab == null || deco.probability <= 0f) continue;
-                            cumulative += deco.probability;
-                            if (roll <= cumulative)
-                            {
-                                var obj = GetFromPool(deco.prefab,
-                                    new Vector3(wx + 0.5f, wy + 0.5f, 0f), Quaternion.identity);
+                            var obj = GetFromPool(deco.prefab,
+                                new Vector3(wx + 0.5f, wy + 0.5f, 0f), Quaternion.identity);
 
-                                if (decorationParent != null) obj.transform.SetParent(decorationParent, true);
+                            if (decorationParent != null) obj.transform.SetParent(decorationParent, true);
 
-                                chunkObjects[c].Add(obj);
-
-                                if (saveSystem != null)
-                                {
-                                    saveSystem.SaveDecorationChange(obj, c, true);
-                                }
-                                break;
-                            }
+                            chunkObjects[c].Add(obj);
+                            break;
                         }
                     }
                 }
@@ -332,57 +322,49 @@ public class WorldGenerator : MonoBehaviour
         }
 
         // ----------------------------
-        // APLICAR CAMBIOS GUARDADOS
+        // APLICAR CAMBIOS DEL JSON
         // ----------------------------
-        if (chunkSave != null)
+        if (chunkSave != null && chunkSave.decorations != null)
         {
-            foreach (var change in chunkSave.changedTiles)
+            foreach (var deco in chunkSave.decorations)
             {
-                var pos = new Vector3Int(change.x, change.y, change.z);
-                if (change.tileID == "null")
+                // Buscar si ya hay una decoración en esa posición
+                Vector3 pos = new Vector3(deco.x, deco.y, deco.z);
+
+                if (!deco.active)
                 {
-                    groundTilemap.SetTile(pos, null);
-                    waterTilemap.SetTile(pos, null);
+                    // Buscar árbol/procedural que coincida y eliminarlo
+                    var toRemove = chunkObjects[c].Find(o =>
+                        o != null &&
+                        Mathf.Abs(o.transform.position.x - pos.x) < 0.1f &&
+                        Mathf.Abs(o.transform.position.y - pos.y) < 0.1f);
+
+                    if (toRemove != null)
+                    {
+                        chunkObjects[c].Remove(toRemove);
+                        ReturnToPool(toRemove);
+                    }
                 }
                 else
                 {
-                    TileBase t = saveSystem != null ? saveSystem.GetTileBaseByName(change.tileID) : null;
-                    if (t == null)
+                    // Si está marcado como activo pero no existe, recrearlo
+                    GameObject prefab = saveSystem.GetDecorationPrefabByName(deco.prefabName);
+                    if (prefab != null)
                     {
-                        if (waterTile != null && change.tileID == waterTile.name)
+                        var existing = chunkObjects[c].Find(o =>
+                            o != null &&
+                            Mathf.Abs(o.transform.position.x - pos.x) < 0.1f &&
+                            Mathf.Abs(o.transform.position.y - pos.y) < 0.1f);
+
+                        if (existing == null)
                         {
-                            waterTilemap.SetTile(pos, waterTile);
-                            groundTilemap.SetTile(pos, null);
-                        }
-                    }
-                    else
-                    {
-                        if (waterTile != null && t == waterTile)
-                        {
-                            waterTilemap.SetTile(pos, t);
-                            groundTilemap.SetTile(pos, null);
-                        }
-                        else
-                        {
-                            groundTilemap.SetTile(pos, t);
-                            waterTilemap.SetTile(pos, null);
+                            Quaternion rot = new Quaternion(deco.qx, deco.qy, deco.qz, deco.qw);
+                            var obj = GetFromPool(prefab, pos, rot);
+                            if (decorationParent != null) obj.transform.SetParent(decorationParent, true);
+                            chunkObjects[c].Add(obj);
                         }
                     }
                 }
-            }
-
-            foreach (var deco in chunkSave.decorations)   // ⬅️ AQUI
-            {
-                if (!deco.active) continue;
-                GameObject prefab = saveSystem != null ? saveSystem.GetDecorationPrefabByName(deco.prefabName) : null;
-                if (prefab == null) continue;
-
-                Vector3 pos = new Vector3(deco.x, deco.y, deco.z);
-                Quaternion rot = new Quaternion(deco.qx, deco.qy, deco.qz, deco.qw);
-
-                var obj = GetFromPool(prefab, pos, rot);
-                if (decorationParent != null) obj.transform.SetParent(decorationParent, true);
-                chunkObjects[c].Add(obj);
             }
         }
     }
@@ -422,7 +404,7 @@ public class WorldGenerator : MonoBehaviour
 
                 if (!obj.CompareTag("Mob") && saveSystem != null)
                 {
-                    saveSystem.SaveDecorationChange(obj, c, obj.activeSelf);
+                    //saveSystem.SaveDecorationChange(obj, c, obj.activeSelf);
                 }
 
                 ReturnToPool(obj);
@@ -644,16 +626,5 @@ public class WorldGenerator : MonoBehaviour
         }
     }
 
-    public void SaveGame()
-    {
-        if (saveSystem != null)
-        {
-            // aquí deberías pasar tu lista real de ítems
-            List<ItemSave> currentInventory = new List<ItemSave>();
-            // TODO: recorrer tu sistema de inventario y convertirlo a ItemSave
-
-            saveSystem.SavePlayer(player, currentInventory, saveSystem.GetSlotFileName());
-        }
-    }
 
 }

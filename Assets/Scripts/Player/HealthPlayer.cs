@@ -48,7 +48,7 @@ public class HealthPlayer : Damageable
         {
             Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
             TakeDamage(34, WeaponType.Sword, 1.5f, -hitDirection);
-            ppManager.EnableVignette(true,0.4f, Color.blue);
+            ppManager.EnableVignette(true,0.4f, Color.darkRed);
             if (damageFlash == null)
             {
                 Debug.Log("No hay damage flash");

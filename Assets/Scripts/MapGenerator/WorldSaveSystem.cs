@@ -24,8 +24,7 @@ public class WorldSaveSystem : MonoBehaviour
     [System.Serializable]
     public class PlayerSaveData
     {
-        public float posX, posY, posZ;
-        public float rotX, rotY, rotZ, rotW;
+        public float posX, posY;
         public List<ItemSave> inventory = new();
     }
 
@@ -190,9 +189,9 @@ public class WorldSaveSystem : MonoBehaviour
     }
 
     // Guardar todo a archivo
-    public void SaveWorld(string fileName = "world.json")
+    public void SaveWorld()
     {
-        string path = Application.persistentDataPath + "/" + fileName;
+        string path = Application.persistentDataPath + "/" + GetSlotFileName();
         var data = new WorldSaveData { chunks = new List<ChunkSaveData>(worldSaveDict.Values) };
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(path, json);
@@ -200,9 +199,9 @@ public class WorldSaveSystem : MonoBehaviour
     }
 
     // Cargar desde archivo
-    public void LoadWorld(string fileName = "world.json")
+    public void LoadWorld()
     {
-        string path = Application.persistentDataPath + "/" + fileName;
+        string path = Application.persistentDataPath + "/" + GetSlotFileName();
         if (!File.Exists(path))
         {
             Debug.Log("WorldSaveSystem: no hay archivo de guardado. Se iniciará mundo procedimental.");
@@ -265,7 +264,7 @@ public class WorldSaveSystem : MonoBehaviour
     }
 
 
-    public void SavePlayer(Transform playerTransform, List<ItemSave> inventory, string fileName = "world_slot1.json")
+    public void SavePlayer(Transform playerTransform, List<ItemSave> inventory)
     {
         if (!worldSaveDict.TryGetValue(Vector2Int.zero, out _))
         {
@@ -277,12 +276,7 @@ public class WorldSaveSystem : MonoBehaviour
         PlayerSaveData playerData = new PlayerSaveData();
         playerData.posX = playerTransform.position.x;
         playerData.posY = playerTransform.position.y;
-        playerData.posZ = playerTransform.position.z;
 
-        playerData.rotX = playerTransform.rotation.x;
-        playerData.rotY = playerTransform.rotation.y;
-        playerData.rotZ = playerTransform.rotation.z;
-        playerData.rotW = playerTransform.rotation.w;
 
         // Copiar inventario
         playerData.inventory = new List<ItemSave>(inventory);
@@ -290,7 +284,7 @@ public class WorldSaveSystem : MonoBehaviour
         // Guardar dentro del mundo
         WorldSaveData data = new WorldSaveData { chunks = new List<ChunkSaveData>(worldSaveDict.Values), player = playerData };
 
-        string path = Application.persistentDataPath + "/" + fileName;
+        string path = Application.persistentDataPath + "/" + GetSlotFileName();
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(path, json);
 
