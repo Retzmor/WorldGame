@@ -3,7 +3,6 @@ using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    [Header("Slot Settings")]
     public bool isHotbarSlot = false;
 
     public void OnDrop(PointerEventData eventData)
@@ -33,17 +32,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 existingItem.parentSlot = fromSlot;
             }
         }
-        else
-        {
-            fromSlot.ClearSlotVisual();
-        }
+       
 
         dragItem.SetParent(toSlot);
-    }
-
-    public void ClearSlotVisual()
-    {
-        // Método para limpieza visual si es necesario
     }
 
     public bool IsEmpty()

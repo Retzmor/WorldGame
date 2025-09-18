@@ -30,6 +30,12 @@ public class Tree : Damageable
             }
         }
 
+        WorldGenerator generator = FindAnyObjectByType<WorldGenerator>();
+        if (generator != null)
+        {
+            generator.NotifyDecorationDestroyed(gameObject);
+        }
+
         gameObject.SetActive(false);
     }
 

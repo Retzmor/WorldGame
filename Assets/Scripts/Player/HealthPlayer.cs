@@ -1,11 +1,14 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthPlayer : Damageable
 {
     [SerializeField] private int maxHealth = 100;
+    [SerializeField] private PostProcessingManager ppManager;
     private int currentHealth;
-
+    [SerializeField] private float timeToDisableDamageEffect;
     public event Action<int, int> playerTakeDamage;
     public event Action<int, int> playerTakeHeal;
 
@@ -45,6 +48,7 @@ public class HealthPlayer : Damageable
         {
             Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
             TakeDamage(34, WeaponType.Sword, 1.5f, -hitDirection);
+            ppManager.EnableVignette(true,0.4f, Color.darkRed);
             if (damageFlash == null)
             {
                 Debug.Log("No hay damage flash");
@@ -53,4 +57,6 @@ public class HealthPlayer : Damageable
             ScreenShakeManager.Instance.Shake(1.3f);
         }
     }
+
+
 }

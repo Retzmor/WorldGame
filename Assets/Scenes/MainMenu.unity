@@ -3047,7 +3047,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PLAY
+  m_text: New Game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ee6f3c6aae5accb44b95e598599e2530, type: 2}
   m_sharedMaterial: {fileID: -4156807572634722909, guid: ee6f3c6aae5accb44b95e598599e2530, type: 2}

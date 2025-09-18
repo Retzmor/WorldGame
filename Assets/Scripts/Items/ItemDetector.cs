@@ -43,7 +43,7 @@ public class ItemDetector : MonoBehaviour
         {
             GameObject newWeapon = hits[0].gameObject;
 
-            ItemPickUp pickUpData = newWeapon.GetComponent<ItemPickUp>();
+            WeaponPickUp pickUpData = newWeapon.GetComponent<WeaponPickUp>();
             if (pickUpData != null && pickUpData.itemData != null)
             {
                 if (inventory != null)
@@ -56,6 +56,7 @@ public class ItemDetector : MonoBehaviour
                         pickUpData.itemData.healAmount,
                         pickUpData.itemData.worldPrefab
                     );
+                    Debug.Log("Inventario");
                 }
                 Destroy(newWeapon); 
                 return;

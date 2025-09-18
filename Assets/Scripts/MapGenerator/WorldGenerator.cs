@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static WorldSaveSystem;
 
 public class WorldGenerator : MonoBehaviour
 {
@@ -73,11 +74,43 @@ public class WorldGenerator : MonoBehaviour
         waterTileBuffer = new TileBase[count];
     }
 
-    void OnEnable()
+    void Start()
     {
+        saveSystem = FindAnyObjectByType<WorldSaveSystem>();
+        if (saveSystem != null)
+        {
+            // cargar mundo
+            saveSystem.LoadWorld();
+
+            // cargar jugador
+            var playerData = saveSystem.LoadPlayer();
+            if (playerData != null)
+            {
+                // colocar jugador en posición guardada
+                player.position = new Vector3(playerData.posX, playerData.posY);
+                //player.rotation = new Quaternion(playerData.rotX, playerData.rotY, playerData.rotZ, playerData.rotW);
+                Debug.Log(playerData.posX);
+                // restaurar inventario aquí (según tu sistema de inventario)
+                Debug.Log($"Inventario cargado con {playerData.inventory.Count} items");
+            }
+        }
         loaderRoutine = StartCoroutine(LoaderLoop());
         respawnRoutine = StartCoroutine(RespawnLoop());
+
+        
     }
+
+    void OnApplicationQuit()
+    {
+        if (saveSystem != null)
+        {
+            saveSystem.SaveWorld(); // ⬅️ guarda al cerrar juego
+            List<ItemSave> currentInventory = new List<ItemSave>();
+            // TODO: aquí rellena con los ítems reales del inventario del jugador
+            saveSystem.SavePlayer(player, currentInventory);
+        }
+    }
+
 
     void OnDisable()
     {
@@ -92,7 +125,7 @@ public class WorldGenerator : MonoBehaviour
         {
             UpdateVisibleChunks();
 
-            int budget = 1; // puedes subir a 2-3 para render más rápido pero mayor CPU
+            int budget = 1;
             while (chunksToDraw.Count > 0 && budget-- > 0)
             {
                 var c = chunksToDraw[0];
@@ -125,7 +158,6 @@ public class WorldGenerator : MonoBehaviour
             }
         }
 
-        // Unload chunks que ya no queremos
         List<Vector2Int> toUnload = new();
         foreach (var kv in loadedChunks)
             if (kv.Value && !desired.Contains(kv.Key))
@@ -137,7 +169,6 @@ public class WorldGenerator : MonoBehaviour
             loadedChunks.Remove(toUnload[i]);
         }
 
-        // Ordenar por distancia al player para priorizar
         chunksToDraw.Sort((a, b) => SqrDist(a, playerChunk).CompareTo(SqrDist(b, playerChunk)));
     }
 
@@ -169,9 +200,7 @@ public class WorldGenerator : MonoBehaviour
         System.Random chunkRng = new System.Random(ChunkSeed(seed, c.x, c.y));
         if (!chunkObjects.ContainsKey(c)) chunkObjects[c] = new List<GameObject>();
 
-        // consulta guardados (si existe)
         var chunkSave = saveSystem != null ? saveSystem.GetChunkSave(c) : null;
-        bool hasSavedDecorations = (chunkSave != null && chunkSave.decorations != null && chunkSave.decorations.Count > 0);
 
         int i = 0;
         int startX = c.x * chunkSize;
@@ -192,7 +221,6 @@ public class WorldGenerator : MonoBehaviour
                 float moisture = Mathf.PerlinNoise((wx + moistureOffsetX) / moistureScale,
                                                    (wy + moistureOffsetY) / moistureScale);
 
-                // Agua por nivel de altura
                 bool isWater = height < waterLevel;
                 tilePositions[i] = new Vector3Int(wx, wy, 0);
 
@@ -207,7 +235,6 @@ public class WorldGenerator : MonoBehaviour
                     waterTileBuffer[i] = null;
                 }
 
-                // Selección de bioma: buscar candidatos que contengan (height, moisture).
                 BiomeDefinition chosen = null;
                 float bestScore = float.MaxValue;
 
@@ -219,7 +246,6 @@ public class WorldGenerator : MonoBehaviour
                         if (height >= b.minHeight && height <= b.maxHeight &&
                             moisture >= b.minMoisture && moisture <= b.maxMoisture)
                         {
-                            // score: distancia cuadrática a centro del rango (mejor ajuste)
                             float midH = (b.minHeight + b.maxHeight) * 0.5f;
                             float midM = (b.minMoisture + b.maxMoisture) * 0.5f;
                             float dh = height - midH;
@@ -233,18 +259,14 @@ public class WorldGenerator : MonoBehaviour
                         }
                     }
 
-                    // fallback: si no hubo coincidencia estricta, intenta GetBiome (el primero)
                     if (chosen == null)
-                    {
                         chosen = biomeLibrary.GetBiome(height, moisture);
-                    }
                 }
 
                 if (chosen != null && chosen.groundTile != null && chosen.groundTile.Length > 0)
                 {
                     int tileIndex = chunkRng.Next(0, chosen.groundTile.Length);
                     groundTileBuffer[i] = chosen.groundTile[tileIndex];
-                    // contar para dominio de chunk
                     if (!biomeCounts.ContainsKey(chosen)) biomeCounts[chosen] = 0;
                     biomeCounts[chosen]++;
                 }
@@ -253,40 +275,34 @@ public class WorldGenerator : MonoBehaviour
                     groundTileBuffer[i] = null;
                 }
 
-                // Decoraciones: sólo en tierra. Si hay decoraciones guardadas para el chunk,
-                // NO generamos decoraciones procedurales aquí (evita duplicados).
-                if (!hasSavedDecorations)
+                // GENERAR DECORACIONES PROCEDURALES
+                if (chosen != null && chosen.decorations != null && chosen.decorations.Length > 0)
                 {
-                    if (chosen != null && chosen.decorations != null && chosen.decorations.Length > 0)
+                    float roll = (float)chunkRng.NextDouble();
+                    float cumulative = 0f;
+                    for (int d = 0; d < chosen.decorations.Length; d++)
                     {
-                        float roll = (float)chunkRng.NextDouble();
-                        float cumulative = 0f;
-                        for (int d = 0; d < chosen.decorations.Length; d++)
+                        var deco = chosen.decorations[d];
+                        if (deco.prefab == null || deco.probability <= 0f) continue;
+                        cumulative += deco.probability;
+                        if (roll <= cumulative)
                         {
-                            var deco = chosen.decorations[d];
-                            if (deco.prefab == null || deco.probability <= 0f) continue;
-                            cumulative += deco.probability;
-                            if (roll <= cumulative)
-                            {
-                                var obj = GetFromPool(deco.prefab,
-                                    new Vector3(wx + 0.5f, wy + 0.5f, 0f), Quaternion.identity);
+                            var obj = GetFromPool(deco.prefab,
+                                new Vector3(wx + 0.5f, wy + 0.5f, 0f), Quaternion.identity);
 
-                                if (decorationParent != null) obj.transform.SetParent(decorationParent, true);
+                            if (decorationParent != null) obj.transform.SetParent(decorationParent, true);
 
-                                chunkObjects[c].Add(obj);
-                                break;
-                            }
+                            chunkObjects[c].Add(obj);
+                            break;
                         }
                     }
                 }
             }
         }
 
-        // Poner tiles en tilemaps (usa el mismo tilePositions)
         groundTilemap.SetTiles(tilePositions, groundTileBuffer);
         waterTilemap.SetTiles(tilePositions, waterTileBuffer);
 
-        // Determinar bioma dominante del chunk (si aplica)
         if (biomeCounts.Count > 0)
         {
             int maxCount = -1;
@@ -306,65 +322,49 @@ public class WorldGenerator : MonoBehaviour
         }
 
         // ----------------------------
-        // APLICAR CAMBIOS GUARDADOS
+        // APLICAR CAMBIOS DEL JSON
         // ----------------------------
-        if (chunkSave != null)
+        if (chunkSave != null && chunkSave.decorations != null)
         {
-            // Tiles guardados
-            foreach (var change in chunkSave.changedTiles)
+            foreach (var deco in chunkSave.decorations)
             {
-                var pos = new Vector3Int(change.x, change.y, change.z);
-                if (change.tileID == "null")
+                // Buscar si ya hay una decoración en esa posición
+                Vector3 pos = new Vector3(deco.x, deco.y, deco.z);
+
+                if (!deco.active)
                 {
-                    groundTilemap.SetTile(pos, null);
-                    waterTilemap.SetTile(pos, null);
+                    // Buscar árbol/procedural que coincida y eliminarlo
+                    var toRemove = chunkObjects[c].Find(o =>
+                        o != null &&
+                        Mathf.Abs(o.transform.position.x - pos.x) < 0.1f &&
+                        Mathf.Abs(o.transform.position.y - pos.y) < 0.1f);
+
+                    if (toRemove != null)
+                    {
+                        chunkObjects[c].Remove(toRemove);
+                        ReturnToPool(toRemove);
+                    }
                 }
                 else
                 {
-                    TileBase t = saveSystem != null ? saveSystem.GetTileBaseByName(change.tileID) : null;
-                    if (t == null)
+                    // Si está marcado como activo pero no existe, recrearlo
+                    GameObject prefab = saveSystem.GetDecorationPrefabByName(deco.prefabName);
+                    if (prefab != null)
                     {
-                        // si no lo encontramos, ignoramos (podría ser water)
-                        if (waterTile != null && change.tileID == waterTile.name)
+                        var existing = chunkObjects[c].Find(o =>
+                            o != null &&
+                            Mathf.Abs(o.transform.position.x - pos.x) < 0.1f &&
+                            Mathf.Abs(o.transform.position.y - pos.y) < 0.1f);
+
+                        if (existing == null)
                         {
-                            waterTilemap.SetTile(pos, waterTile);
-                            groundTilemap.SetTile(pos, null);
-                        }
-                        else
-                        {
-                            // fallback: intentar dejar vacío
-                        }
-                    }
-                    else
-                    {
-                        // si coincide con waterTile,
-                        if (waterTile != null && t == waterTile)
-                        {
-                            waterTilemap.SetTile(pos, t);
-                            groundTilemap.SetTile(pos, null);
-                        }
-                        else
-                        {
-                            groundTilemap.SetTile(pos, t);
-                            waterTilemap.SetTile(pos, null);
+                            Quaternion rot = new Quaternion(deco.qx, deco.qy, deco.qz, deco.qw);
+                            var obj = GetFromPool(prefab, pos, rot);
+                            if (decorationParent != null) obj.transform.SetParent(decorationParent, true);
+                            chunkObjects[c].Add(obj);
                         }
                     }
                 }
-            }
-
-            // Decoraciones guardadas
-            foreach (var deco in chunkSave.decorations)
-            {
-                if (!deco.active) continue;
-                GameObject prefab = saveSystem != null ? saveSystem.GetDecorationPrefabByName(deco.prefabName) : null;
-                if (prefab == null) continue;
-
-                Vector3 pos = new Vector3(deco.x, deco.y, deco.z);
-                Quaternion rot = new Quaternion(deco.qx, deco.qy, deco.qz, deco.qw);
-
-                var obj = GetFromPool(prefab, pos, rot);
-                if (decorationParent != null) obj.transform.SetParent(decorationParent, true);
-                chunkObjects[c].Add(obj);
             }
         }
     }
@@ -379,7 +379,6 @@ public class WorldGenerator : MonoBehaviour
             for (int x = 0; x < chunkSize; x++, i++)
                 tilePositions[i] = new Vector3Int(startX + x, startY + y, 0);
 
-        // limpiar ambos tilemaps (las modificaciones guardadas se aplicarán cuando se regenere)
         System.Array.Clear(groundTileBuffer, 0, groundTileBuffer.Length);
         System.Array.Clear(waterTileBuffer, 0, waterTileBuffer.Length);
         groundTilemap.SetTiles(tilePositions, groundTileBuffer);
@@ -400,14 +399,12 @@ public class WorldGenerator : MonoBehaviour
                 {
                     var aggro = obj.GetComponent<MobsAggro>();
                     if (aggro != null && aggro.IsAggro)
-                        continue; // si está en combate, no lo removemos
+                        continue;
                 }
 
-                // antes de devolver al pool, guardamos su estado (si no es un mob)
                 if (!obj.CompareTag("Mob") && saveSystem != null)
                 {
-                    // Guardar como "existe" (active state)
-                    saveSystem.SaveDecorationChange(obj, c, obj.activeSelf);
+                    //saveSystem.SaveDecorationChange(obj, c, obj.activeSelf);
                 }
 
                 ReturnToPool(obj);
@@ -471,7 +468,7 @@ public class WorldGenerator : MonoBehaviour
 
                             if (viewportPos.x < 0f || viewportPos.x > 1f ||
                                 viewportPos.y < 0f || viewportPos.y > 1f)
-                                valid = true; // asegurarse de no spawnear dentro de la cámara
+                                valid = true;
                         }
 
                         if (valid)
@@ -503,7 +500,6 @@ public class WorldGenerator : MonoBehaviour
         }
     }
 
-    // --- Manejo de mobs / decoraciones desde runtime ---
     public void ReassignMobChunk(GameObject mob)
     {
         Vector2Int newChunk = WorldToChunk(mob.transform.position);
@@ -528,10 +524,9 @@ public class WorldGenerator : MonoBehaviour
         ReturnToPool(mob);
     }
 
-    // Llamar desde gameplay cuando un jugador rompe o coloca un tile
+    // ✅ Persistencia de cambios en tiles
     public void ChangeTile(Vector3Int pos, TileBase newTile)
     {
-        // actualizar tilemaps inmediatamente
         groundTilemap.SetTile(pos, null);
         waterTilemap.SetTile(pos, null);
 
@@ -547,7 +542,6 @@ public class WorldGenerator : MonoBehaviour
             }
         }
 
-        // guardar cambio
         if (saveSystem != null)
         {
             Vector2Int chunk = WorldToChunk(pos);
@@ -555,29 +549,25 @@ public class WorldGenerator : MonoBehaviour
         }
     }
 
-    // Llamar desde gameplay / Destructible para remover una decoracion y guardarla
+    // ✅ Persistencia de destrucción de decoraciones
     public void NotifyDecorationDestroyed(GameObject obj)
     {
         if (obj == null) return;
 
-        // quitar de listas
         foreach (var kv in chunkObjects)
         {
             if (kv.Value.Remove(obj)) break;
         }
 
-        // guardar estado (destruido)
         if (saveSystem != null)
         {
             Vector2Int chunk = WorldToChunk(obj.transform.position);
             saveSystem.SaveDecorationChange(obj, chunk, false);
         }
 
-        // devolver al pool o destruir
         ReturnToPool(obj);
     }
 
-    // --- Pooling ---
     GameObject GetFromPool(GameObject prefab, Vector3 pos, Quaternion rot)
     {
         if (prefab == null) return null;
@@ -625,7 +615,6 @@ public class WorldGenerator : MonoBehaviour
         objectPool[prefab].Enqueue(obj);
     }
 
-    // hashing determinista para cada chunk
     static int ChunkSeed(int baseSeed, int x, int y)
     {
         unchecked
@@ -636,4 +625,6 @@ public class WorldGenerator : MonoBehaviour
             return h;
         }
     }
+
+
 }
