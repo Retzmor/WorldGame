@@ -1,11 +1,12 @@
 using NUnit.Framework.Interfaces;
 using UnityEngine;
+using Zenject;
 
 public class ItemPickUp : MonoBehaviour
 {
+    [Inject] Inventory inventory;
     [SerializeField] public ItemData itemData;
     [SerializeField] public int amount = 1;
-    [SerializeField] public Inventory inventory;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

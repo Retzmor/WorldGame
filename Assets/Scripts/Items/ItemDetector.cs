@@ -1,8 +1,10 @@
 using UnityEngine;
-using UnityEngine.InputSystem; // Importante para el nuevo Input System
+using UnityEngine.InputSystem;
+using Zenject; // Importante para el nuevo Input System
 
 public class ItemDetector : MonoBehaviour
 {
+    [Inject] Inventory inventory;
     public Vector2 detectionSize = new Vector2(1f, 1f);
     public LayerMask pickableLayer;
 
@@ -11,9 +13,6 @@ public class ItemDetector : MonoBehaviour
 
     public Transform weaponHolder;
     private GameObject equippedWeapon;
-
-    [SerializeField] Inventory inventory;
-
     private void Awake()
     {
         // Obtiene el componente PlayerInput del jugador

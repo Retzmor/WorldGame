@@ -1,10 +1,13 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using Zenject;
 
 public class Inventory : MonoBehaviour
 {
+    [Inject] private DiContainer _container;
+
     [SerializeField] GameObject[] slots;
     [SerializeField] GameObject[] hotbarSlots;
     [SerializeField] GameObject worldPrefap;
@@ -83,7 +86,7 @@ public class Inventory : MonoBehaviour
         {
             if (hotbarSlots[i].transform.childCount == 0)
             {
-                GameObject itemButton = Instantiate(itemPrefab, hotbarSlots[i].transform);
+                GameObject itemButton = _container.InstantiatePrefab(itemPrefab, hotbarSlots[i].transform);
                 itemButton.transform.localPosition = Vector3.zero;
                 itemButton.transform.localScale = Vector3.one;
                 itemButton.name = itemName;
