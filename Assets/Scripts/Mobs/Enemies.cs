@@ -38,6 +38,6 @@ public class Enemies : Damageable
             }
         }
 
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }
