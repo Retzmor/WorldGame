@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5422953999099622809}
   - component: {fileID: 7715081258427727664}
   - component: {fileID: 7483898625787901561}
+  - component: {fileID: 8895536224862225244}
   m_Layer: 3
   m_Name: Sword
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 694359164373147337}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.38, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -127,6 +128,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8895536224862225244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 694359164373147337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75aa6ff4c894e464f9ffaecd89aae9c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: 97645c4a0cdd95847bc28cd7388d4dcb, type: 2}
+  amount: 1
 --- !u!1 &1372280929104102109
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,6 +152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2290422771209247293}
   - component: {fileID: 5095694751606060161}
+  - component: {fileID: 6197722147577846722}
   m_Layer: 3
   m_Name: SwordImage
   m_TagString: Untagged
@@ -201,8 +217,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -956068149
+  m_SortingLayer: 3
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 8525bfcfb894d6344b4b7c8c1b8c1a03, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -215,6 +231,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6197722147577846722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1372280929104102109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15586939f43b7004e9f54b6ec64db34c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3992843489258224733
 GameObject:
   m_ObjectHideFlags: 0

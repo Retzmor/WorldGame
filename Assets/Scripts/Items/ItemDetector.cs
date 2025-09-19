@@ -66,10 +66,10 @@ public class ItemDetector : MonoBehaviour
 
     void EquipWeapon(GameObject weapon)
     {
-        if(GetComponent<AttackPlayer>().currentWeapon != null)
-        {
-            DropWeapon();
-        }
+        //if(GetComponent<AttackPlayer>().currentWeapon != null)
+        //{
+        //    DropWeapon();
+        //}
 
         equippedWeapon = weapon;
         weapon.transform.SetParent(weaponHolder);
