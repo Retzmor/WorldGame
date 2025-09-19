@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3148463652454254330}
   - component: {fileID: -8277066900089511360}
   - component: {fileID: -7323436934344218035}
+  - component: {fileID: -3804277873815265077}
   m_Layer: 5
   m_Name: Bone(Use)
   m_TagString: Untagged
@@ -148,6 +149,21 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &-3804277873815265077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5739570377777651304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d946ec3e6d49da4abb8846216763342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthToGive: 20
+  itemPrefab: {fileID: 3168670063845812249, guid: 6f8b6e4c22251dc438264a5916e131ea, type: 3}
+  worldPrefap: {fileID: 3168670063845812249, guid: 6f8b6e4c22251dc438264a5916e131ea, type: 3}
 --- !u!1 &6487342753466191163
 GameObject:
   m_ObjectHideFlags: 0

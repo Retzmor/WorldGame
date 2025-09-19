@@ -1,7 +1,14 @@
+using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class ItemUse : MonoBehaviour
 {
+    [Inject] Inventory inventory;
+    public void Construct(Inventory inv)
+    {
+        inventory = inv;
+    }
     [SerializeField] int healthToGive = 20;
     public GameObject itemPrefab;
     [SerializeField] GameObject worldPrefap;
@@ -21,13 +28,21 @@ public class ItemUse : MonoBehaviour
 
     public void UseButton()
     {
-        Debug.Log("Boton oprimido");
         if(gameObject.name.Contains("Potion"))
         {
-            Debug.Log("Cure al player");
             HealthPlayer player = FindAnyObjectByType<HealthPlayer>();
             if (player != null)
                 player.HealHealth(healthToGive);
+            inventory.InventoryItems[itemName]--;
+            TextMeshProUGUI text = GetComponentInChildren<TextMeshProUGUI>();
+            text.text = inventory.InventoryItems[itemName].ToString();
+            if (inventory.InventoryItems[itemName] <= 0)
+            {
+                inventory.InventoryItems.Remove(itemName);
+                Destroy(gameObject);
+            }
         }
     }
-}
+ }
+
+
