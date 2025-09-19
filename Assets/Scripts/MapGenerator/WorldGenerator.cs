@@ -395,17 +395,7 @@ public class WorldGenerator : MonoBehaviour
                     continue;
                 }
 
-                if (obj.CompareTag("Mob"))
-                {
-                    var aggro = obj.GetComponent<MobsAggro>();
-                    if (aggro != null && aggro.IsAggro)
-                        continue;
-                }
-
-                if (!obj.CompareTag("Mob") && saveSystem != null)
-                {
-                    //saveSystem.SaveDecorationChange(obj, c, obj.activeSelf);
-                }
+               
 
                 ReturnToPool(obj);
                 objects.RemoveAt(j);
@@ -476,13 +466,8 @@ public class WorldGenerator : MonoBehaviour
                             var mob = GetFromPool(mobOpt.prefab, spawnPos, Quaternion.identity);
                             mob.tag = "Mob";
 
-                            var aggro = mob.GetComponent<MobsAggro>();
-                            if (aggro != null)
-                            {
-                                aggro.player = player;
-                                aggro.world = this;
-                            }
-                            var IAMob = mob.GetComponent<MobAI>();
+                            
+                            var IAMob = mob.GetComponent<Mob>();
                             if (IAMob != null)
                             {
                                 IAMob.world = this;

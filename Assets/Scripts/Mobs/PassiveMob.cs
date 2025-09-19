@@ -1,33 +1,25 @@
-﻿using System.Collections;
+using System;
+using System.Collections;
 using UnityEngine;
-using Pathfinding;
+using Random = UnityEngine.Random;
 
-public class MobAI : MonoBehaviour
+
+
+public class PassiveMob : Mob
 {
-    [Header("Refs")]
-    public AIPath aiPath;
-    public AIDestinationSetter destinationSetter;
-
-    [Header("Wander Settings")]
-    public float wanderRadius = 5f;
-    public float minWanderInterval = 2f;
-    public float maxWanderInterval = 5f;
-
     [Header("Flee Settings")]
     public float fleeDistance = 7f;
     public float fleeTime = 3f;
-
-    private Transform player;
-    private Vector3 startPosition;
     private float wanderTimer;
     private float currentWanderInterval;
     private bool isFleeing = false;
+    private Vector3 startPosition;
 
-    [HideInInspector] public WorldGenerator world;
 
-    void Start()
+    protected override void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        base.Start();
+
         startPosition = transform.position;
 
         // Intervalo inicial aleatorio
@@ -37,26 +29,22 @@ public class MobAI : MonoBehaviour
         wanderTimer = Random.Range(0f, currentWanderInterval);
     }
 
-    void Update()
+    protected override void AIUpdate()
     {
         if (!isFleeing)
         {
             Wander();
         }
 
-        if (world != null)
-            world.ReassignMobChunk(gameObject);
-
-        HandleFlip();
     }
 
-    void Wander()
+    private void Wander()
     {
         wanderTimer += Time.deltaTime;
 
         if (wanderTimer >= currentWanderInterval)
         {
-            // Nueva posición aleatoria alrededor del punto de inicio
+            // Nueva posici�n aleatoria alrededor del punto de inicio
             Vector3 randomPos = startPosition + new Vector3(
                 Random.Range(-wanderRadius, wanderRadius),
                 Random.Range(-wanderRadius, wanderRadius),
@@ -72,25 +60,13 @@ public class MobAI : MonoBehaviour
             currentWanderInterval = Random.Range(minWanderInterval, maxWanderInterval);
         }
     }
-    void HandleFlip()
-    {
-        // Si se mueve hacia la izquierda (x < 0) → flip
-        if (aiPath.desiredVelocity.x < -0.01f)
-        {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
-        // Si se mueve hacia la derecha (x > 0) → normal
-        else if (aiPath.desiredVelocity.x > 0.01f)
-        {
-            transform.localScale = new Vector3(1, 1, 1);
-        }
-    }
 
-    public void OnHit()
+    protected override void OnHitReaction()
     {
         if (!isFleeing)
             StartCoroutine(Flee());
     }
+
 
     IEnumerator Flee()
     {
@@ -103,7 +79,7 @@ public class MobAI : MonoBehaviour
 
         while (timer < randomFleeTime)
         {
-            // Siempre calcula la dirección opuesta al jugador
+            // Siempre calcula la direcci�n opuesta al jugador
             Vector3 fleeDir = (transform.position - player.position).normalized;
             Vector3 fleeTarget = transform.position + fleeDir * fleeDistance;
 
@@ -115,4 +91,12 @@ public class MobAI : MonoBehaviour
 
         isFleeing = false;
     }
+
+    public override void TakeDamage(float damage, WeaponType weaponType, float knockBackValue, Vector2 HitDirection)
+    {
+        base.TakeDamage(damage, weaponType, knockBackValue, HitDirection);
+        OnHitReaction();
+    }
+
+
 }

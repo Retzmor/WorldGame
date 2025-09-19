@@ -1,26 +1,16 @@
-﻿using Pathfinding;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class MobsAggro : MonoBehaviour
+public class HostileMob : Mob
 {
-    [Header("Detección del jugador")]
-    public Transform player;
-    public float detectionRange = 8f;
-    public float loseRange = 12f;
-
-    private AIDestinationSetter setter;
-    private AIPath aiPath;
+    [Header("Combat")]
+    [SerializeField] private float detectionRange = 6f;
+    [SerializeField] private float attackRange = 1.5f;
+    [SerializeField] private float loseRangeTarget = 12f;
 
     public bool IsAggro { get; private set; }
-    [HideInInspector] public WorldGenerator world;
 
-    void Awake()
-    {
-        setter = GetComponent<AIDestinationSetter>();
-        aiPath = GetComponent<AIPath>();
-    }
 
-    void Update()
+    protected override void AIUpdate()
     {
         if (player == null) return;
 
@@ -30,22 +20,18 @@ public class MobsAggro : MonoBehaviour
         if (!IsAggro && dist <= detectionRange)
         {
             IsAggro = true;
-            setter.target = player;
+            destinationSetter.target = player;
             if (aiPath != null) aiPath.isStopped = false;
         }
         else if (IsAggro && dist > loseRange)
         {
             IsAggro = false;
-            setter.target = null;
+            destinationSetter.target = null;
             if (aiPath != null) aiPath.isStopped = true;
         }
 
-        if (IsAggro && setter.target != null)
-            setter.target = player;
-
-        // 👇 Reasignación automática al chunk actual
-        if (world != null)
-            world.ReassignMobChunk(gameObject);
+        if (IsAggro && destinationSetter.target != null)
+            destinationSetter.target = player;
     }
 
     void OnDrawGizmosSelected()

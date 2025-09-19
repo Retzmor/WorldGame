@@ -29,7 +29,10 @@ public abstract class Damageable : MonoBehaviour, IHit
                  .SetEase(Ease.OutQuad);
     }
 
-    protected abstract void Death();
+    protected virtual void Death()
+    {
+        GetComponent<LootDropper>()?.DropLoot();
+    }
 
  
 

@@ -12,13 +12,12 @@ GameObject:
   - component: {fileID: 1073209647381649828}
   - component: {fileID: 138086632154833772}
   - component: {fileID: 6480138923473030948}
-  - component: {fileID: 291639164295532556}
-  - component: {fileID: 7784627081984036455}
   - component: {fileID: 9115724749334400432}
   - component: {fileID: 8533302733503008326}
   - component: {fileID: 5974082806600881765}
   - component: {fileID: 1135800072354078885}
-  - component: {fileID: 8888148949663250576}
+  - component: {fileID: 1439324569258015372}
+  - component: {fileID: 6760356891478515887}
   m_Layer: 6
   m_Name: 'Pig '
   m_TagString: Mob
@@ -166,47 +165,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.78125, y: 0.6875}
   m_EdgeRadius: 0
---- !u!114 &291639164295532556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 922170293884832101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e8774a3417721042952e4e790e3ce48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 100
-  NeedKnockBack: 1
-  weaponNeeded: 0
-  meats:
-  - {fileID: 6388667113373229452}
-  - {fileID: 8895160171544491169}
-  force: 2
---- !u!114 &7784627081984036455
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 922170293884832101}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef00b3a4333380741b5c4afb57a1bce2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 1
-  pointsMovement:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  distancePoint: 0.5
 --- !u!114 &9115724749334400432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,7 +287,7 @@ MonoBehaviour:
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0
   constrainInsideGraph: 0
---- !u!114 &8888148949663250576
+--- !u!114 &1439324569258015372
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -338,17 +296,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 922170293884832101}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20bb668f834460b4e9e7d5186a59b7d5, type: 3}
+  m_Script: {fileID: 11500000, guid: 6aff7fc78e480ef4d80a9b042ab030c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aiPath: {fileID: 1135800072354078885}
-  destinationSetter: {fileID: 8533302733503008326}
-  wanderRadius: 2
-  minWanderInterval: 1
+  health: 100
+  NeedKnockBack: 1
+  weaponNeeded: 3
+  maxHealth: 100
+  loseRange: 12
+  wanderRadius: 5
+  minWanderInterval: 2
   maxWanderInterval: 5
-  fleeDistance: 7
-  fleeTime: 6
   world: {fileID: 0}
+  fleeDistance: 7
+  fleeTime: 3
+--- !u!114 &6760356891478515887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922170293884832101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fd3fd26899008c49ba8c7436d8ab5a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lootItems:
+  - {fileID: 6388667113373229452}
+  - {fileID: 8895160171544491169}
+  force: 2
 --- !u!1 &7113607326639885188
 GameObject:
   m_ObjectHideFlags: 0
