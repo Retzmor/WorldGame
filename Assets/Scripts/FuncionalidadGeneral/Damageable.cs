@@ -32,6 +32,7 @@ public abstract class Damageable : MonoBehaviour, IHit
     protected virtual void Death()
     {
         GetComponent<LootDropper>()?.DropLoot();
+        gameObject.SetActive(false);
     }
 
  
