@@ -14,16 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   biomeName: Bosque
   groundTile:
-  - {fileID: 11400000, guid: 5f496eb64f7647b43af882aec72cc3e1, type: 2}
+  - tile: {fileID: 11400000, guid: 568f3558822156c41993734f57ef6309, type: 2}
+    probability: 0.897
+  - tile: {fileID: 11400000, guid: dff69e2cd561feb4292b93ad758ee24d, type: 2}
+    probability: 0.785
+  - tile: {fileID: 11400000, guid: b0005464f462fa94f98cb32752a84469, type: 2}
+    probability: 0.391
+  - tile: {fileID: 11400000, guid: 812565feb9d44f34298fb3776f72b501, type: 2}
+    probability: 0.397
+  - tile: {fileID: 11400000, guid: 32204bbe6a406a24aaa0ce45939b0351, type: 2}
+    probability: 0.096
+  - tile: {fileID: 11400000, guid: 87ac8e40ed278d348af76c9933a93118, type: 2}
+    probability: 0.523
   minHeight: 0.4
   maxHeight: 1
   minMoisture: 0.4
   maxMoisture: 1
   decorations:
   - prefab: {fileID: 6245394949204210498, guid: e7b18e7e24a802b4f8774f778a3917b1, type: 3}
-    probability: 0.08
+    probability: 0.013
   mobs:
   - prefab: {fileID: 8426327130487835229, guid: 63dd1464411c8c345838900bc2ce9f26, type: 3}
-    probability: 0.412
+    probability: 1
     minGroup: 1
     maxGroup: 1

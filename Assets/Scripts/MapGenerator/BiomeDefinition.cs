@@ -5,6 +5,13 @@ using UnityEngine.Tilemaps;
 public struct DecorationOption
 {
     public GameObject prefab;
+    [Range(0f, 0.1f)] public float probability;
+}
+
+[System.Serializable]
+public struct TileOption
+{
+    public TileBase tile;
     [Range(0f, 1f)] public float probability;
 }
 
@@ -21,7 +28,7 @@ public struct MobOption
 public class BiomeDefinition : ScriptableObject
 {
     public string biomeName;
-    public TileBase[] groundTile;
+    public TileOption[] groundTile;
     [Range(0f, 1f)] public float minHeight = 0f;
     [Range(0f, 1f)] public float maxHeight = 1f;
     [Range(0f, 1f)] public float minMoisture = 0f;

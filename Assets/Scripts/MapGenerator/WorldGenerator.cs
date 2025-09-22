@@ -35,6 +35,9 @@ public class WorldGenerator : MonoBehaviour
     [Header("Save System")]
     public WorldSaveSystem saveSystem; // asignar en inspector
 
+    [Header("Decoration Settings")]
+    public float minDecorationSpacing = 1f; // distancia mínima en unidades del mundo
+
     // Offsets para ruido (determinístico por seed)
     private System.Random prng;
     private float terrainOffsetX, terrainOffsetY;
@@ -180,8 +183,8 @@ public class WorldGenerator : MonoBehaviour
 
     public Vector2Int WorldToChunk(Vector3 worldPos)
     {
-        int wx = Mathf.FloorToInt(worldPos.x);
-        int wy = Mathf.FloorToInt(worldPos.y);
+        int wx = Mathf.FloorToInt(worldPos.x / 0.5f);
+        int wy = Mathf.FloorToInt(worldPos.y / 0.5f);
         int cx = FloorDiv(wx, chunkSize);
         int cy = FloorDiv(wy, chunkSize);
         return new Vector2Int(cx, cy);
@@ -265,9 +268,28 @@ public class WorldGenerator : MonoBehaviour
 
                 if (chosen != null && chosen.groundTile != null && chosen.groundTile.Length > 0)
                 {
-                    int tileIndex = chunkRng.Next(0, chosen.groundTile.Length);
-                    groundTileBuffer[i] = chosen.groundTile[tileIndex];
-                    if (!biomeCounts.ContainsKey(chosen)) biomeCounts[chosen] = 0;
+                    float roll = (float)chunkRng.NextDouble();
+                    float cumulative = 0f;
+                    TileBase selectedTile = null;
+
+                    foreach (var tileOpt in chosen.groundTile)
+                    {
+                        if (tileOpt.tile == null || tileOpt.probability <= 0f) continue;
+
+                        cumulative += tileOpt.probability;
+                        if (roll <= cumulative)
+                        {
+                            selectedTile = tileOpt.tile;
+                            break;
+                        }
+                    }
+
+                    // fallback por si las probabilidades no suman 1 exacto
+                    if (selectedTile == null && chosen.groundTile.Length > 0)
+                        selectedTile = chosen.groundTile[0].tile;
+
+                    groundTileBuffer[i] = selectedTile;
+                    if(!biomeCounts.ContainsKey(chosen)) biomeCounts[chosen] = 0;
                     biomeCounts[chosen]++;
                 }
                 else
@@ -287,11 +309,25 @@ public class WorldGenerator : MonoBehaviour
                         cumulative += deco.probability;
                         if (roll <= cumulative)
                         {
-                            var obj = GetFromPool(deco.prefab,
-                                new Vector3(wx + 0.5f, wy + 0.5f, 0f), Quaternion.identity);
+                            Vector3 spawnPos = new Vector3((wx + 0.5f) * 0.5f, (wy + 0.5f) * 0.5f, 0f);
 
+                            // ✅ Comprobar distancia mínima con decoraciones ya generadas
+                            bool tooClose = false;
+                            foreach (var other in chunkObjects[c])
+                            {
+                                if (other == null) continue;
+                                if (Vector3.Distance(other.transform.position, spawnPos) < minDecorationSpacing)
+                                {
+                                    tooClose = true;
+                                    break;
+                                }
+                            }
+
+                            if (tooClose) continue; // saltar este spawn
+
+                            // ✅ Ahora sí instanciar porque pasó la validación
+                            var obj = GetFromPool(deco.prefab, spawnPos, Quaternion.identity);
                             if (decorationParent != null) obj.transform.SetParent(decorationParent, true);
-
                             chunkObjects[c].Add(obj);
                             break;
                         }
@@ -453,7 +489,7 @@ public class WorldGenerator : MonoBehaviour
                             float px = chunk.x * chunkSize + Random.Range(0, chunkSize);
                             float py = chunk.y * chunkSize + Random.Range(0, chunkSize);
 
-                            spawnPos = new Vector3(px + 0.5f, py + 0.5f, 0f);
+                            spawnPos = new Vector3((px + 0.5f) * 0.5f, (py + 0.5f) * 0.5f, 0f);
                             Vector3 viewportPos = Camera.main.WorldToViewportPoint(spawnPos);
 
                             if (viewportPos.x < 0f || viewportPos.x > 1f ||

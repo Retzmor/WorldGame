@@ -10,12 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94ddd65f56f647c4bb5509f2268a26e7, type: 3}
-  m_Name: Sander
+  m_Name: Sand
   m_EditorClassIdentifier: 
   biomeName: Sand
   groundTile:
-  - {fileID: 11400000, guid: aa9f4e8134097614eba0fb0a6bdb6dbc, type: 2}
-  - {fileID: 11400000, guid: eea177dd6ac6aae41bd00f7f283b8397, type: 2}
+  - tile: {fileID: 11400000, guid: 927ba9dcb41770b41a609d3843bf9228, type: 2}
+    probability: 0.99
+  - tile: {fileID: 11400000, guid: e6a16a204e7a85e48ab135306cb28020, type: 2}
+    probability: 0.298
+  - tile: {fileID: 11400000, guid: ccc2aa02369d88d4f87e6aa8c9414b1b, type: 2}
+    probability: 0.265
+  - tile: {fileID: 11400000, guid: 9996f1d5c78d664489528187041f3eb4, type: 2}
+    probability: 0.195
+  - tile: {fileID: 11400000, guid: 1a675386054449c45a10be7e74ba7fb9, type: 2}
+    probability: 0.222
   minHeight: 0.3
   maxHeight: 0.6
   minMoisture: 0

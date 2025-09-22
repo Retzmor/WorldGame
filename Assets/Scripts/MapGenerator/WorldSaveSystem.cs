@@ -147,17 +147,66 @@ public class WorldSaveSystem : MonoBehaviour
     // Buscar TileBase por nombre: revisa biomes (ground tiles) y extraTiles
     public TileBase GetTileBaseByName(string name)
     {
-        if (name == null) return null;
+        if (string.IsNullOrEmpty(name)) return null;
         if (name == "null") return null;
 
         if (biomeLibrary != null && biomeLibrary.biomes != null)
         {
             foreach (var b in biomeLibrary.biomes)
             {
-                if (b == null || b.groundTile == null) continue;
-                foreach (var t in b.groundTile)
+                if (b == null) continue;
+
+                // ==== Manejo compatible con ambos formatos ====
+                // - Si groundTile es ahora TileOption[] (cada opción tiene .tile)
+                // - O si groundTile sigue siendo TileBase[]
+                // Para ser robusto hacemos una iteración genérica y comprobamos cada item.
+
+                var groundField = b.GetType().GetField("groundTile");
+                if (groundField == null) continue;
+                var groundVal = groundField.GetValue(b);
+                if (groundVal == null) continue;
+
+                // Si es TileBase[]
+                if (groundVal is TileBase[] tbArr)
                 {
-                    if (t != null && t.name == name) return t;
+                    foreach (var t in tbArr)
+                        if (t != null && t.name == name) return t;
+                }
+                else
+                {
+                    // Intentar enumerar elementos y extraer 'tile' (caso TileOption[] u otro)
+                    if (groundVal is System.Collections.IEnumerable en)
+                    {
+                        foreach (var item in en)
+                        {
+                            if (item == null) continue;
+
+                            // Si el elemento ya es TileBase
+                            if (item is TileBase tb)
+                            {
+                                if (tb.name == name) return tb;
+                                continue;
+                            }
+
+                            // Si el elemento tiene un campo o propiedad 'tile' que sea TileBase
+                            var fi = item.GetType().GetField("tile");
+                            if (fi != null)
+                            {
+                                var val = fi.GetValue(item) as TileBase;
+                                if (val != null && val.name == name) return val;
+                            }
+                            else
+                            {
+                                // intentar propiedad 'tile'
+                                var pi = item.GetType().GetProperty("tile");
+                                if (pi != null)
+                                {
+                                    var val = pi.GetValue(item, null) as TileBase;
+                                    if (val != null && val.name == name) return val;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -309,7 +358,7 @@ public class WorldSaveSystem : MonoBehaviour
                 worldSaveDict[key] = c;
             }
         }
-        
+
         Debug.Log($"WorldSaveSystem: mundo+jugador cargados desde {path}");
         return data.player;
     }
@@ -319,11 +368,4 @@ public class WorldSaveSystem : MonoBehaviour
     {
         return $"world_slot{currentSlot}.json";
     }
-
-
-
-
-
-
-
 }

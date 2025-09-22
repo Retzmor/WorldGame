@@ -3847,7 +3847,7 @@ Tilemap:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: 0, z: 0}
   m_Size: {x: 0, y: 0, z: 1}
-  m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
+  m_TileAnchor: {x: 1, y: 1, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
@@ -7619,7 +7619,7 @@ Grid:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 939542378}
   m_Enabled: 1
-  m_CellSize: {x: 1, y: 1, z: 0}
+  m_CellSize: {x: 0.5, y: 0.5, z: 0}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
@@ -15618,17 +15618,18 @@ MonoBehaviour:
   player: {fileID: 774840666}
   biomeLibrary: {fileID: 11400000, guid: efde63d7ad927134fab5ea5ec1e273e9, type: 2}
   decorationParent: {fileID: 0}
-  chunkSize: 8
-  viewRadiusChunks: 3
+  chunkSize: 32
+  viewRadiusChunks: 2
   seed: 89989789
-  terrainScale: 20
-  moistureScale: 50
-  biomeScale: 8
-  waterLevel: 0.25
-  waterTile: {fileID: 11400000, guid: ad2da85b312f17246be710344a6c6205, type: 2}
-  respawnInterval: 5
-  maxMobsGlobal: 10
+  terrainScale: 30
+  moistureScale: 60
+  biomeScale: 20
+  waterLevel: 0.28
+  waterTile: {fileID: 11400000, guid: fdf46bec35920c944b0f92d7398684bf, type: 2}
+  respawnInterval: 6
+  maxMobsGlobal: 12
   saveSystem: {fileID: 589795838}
+  minDecorationSpacing: 1
 --- !u!483693784 &1605857227
 TilemapRenderer:
   m_ObjectHideFlags: 0
@@ -15700,7 +15701,7 @@ Tilemap:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: 0, z: 0}
   m_Size: {x: 0, y: 0, z: 1}
-  m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
+  m_TileAnchor: {x: 1, y: 1, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
@@ -16548,7 +16549,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   data:
-    dataString: UEsDBBQAAAgIAACYn+sVv1TgVwIAABIFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQF1VEtz2jAQ/iuMzk0HSPNwby1JSA9JmJBOLr4IaY01yJJHjwDJ8N+7K9vYoZMTy7ff7n77kD+YMr4GEaybOyUfrAT2c8TIZt9GvfMednxtzVK9Q8d5VTKUROKJ88yDsohPKMzbCoJT4pdZayKPEYxGFdZVt3INM+uDR7jg2gO6nA0UbRD6GLEd/pxlFLJHa3pF1jta2Xh0QFOACeB6akfsaA0rGqF5VYMkyT35fNqyz6eJZrCZlkHChdVa+VYJC/s6dbqsS3BArUrFsbFUneglqHUZSOQw9qkoPIRWkeP7G+VwPk1S9ts2Q6u43zSy3riOVOZ6kjWamqwP/xHOJsldOFvdd4UnYyoSSiU2z3wvuA+DsQ7hm8/Ko9lyveErDa8lmEc7dzYaic7gIoVGD9Ob/u+xt1kJYtPjjdQTMNZfL4d6OKT2dzOtqhW5vv9ogKW2ad5p9eBwM39QcDoM36ZAlFT89fDC18MLah13yvmArrZLQ/JWNjqisjs0aPQihpl1BtwwQQ2G67BfYJpwusMT39dRd5zeSlu89XVP4CQkwT1/PD5xLez2uCxf2u0D+PIpBq0M9JMmxyPOaWaNaU5s2FIXtoyu4GIQto5Kfj4tNpECLpF0zS+Kq+kKzqTI5OWUZxfZ6mrCVxlLt6cM9sn1ohHajge3ZvrkBu+s+4SM5o7X6dyl49u5eq+s75nKFHYpHIB5ajIchYPDIvgq5a1UOKAlhKBM2jf7yJm2YgMyPybKU6e3u+B43mfJWa3ebCAkZ7P0zcgZwcdbXjh4U7Cl4l2yAzv8A1BLAwQUAAAICAAAmJ/rwBPmC20AAAB4AAAACQAkAG1ldGEuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAatWKkstKs7Mz1OyUjDRM9IzNNdRUEovSizIKAaKGII4pZkpIHa0kmFKcqpZYnKqRaJpmrlRUqpuSrJliplRoqWpZZK5YWKSpVIsUH1JZUGqX2JuKkRPQGJJRlpmXkpmXrqee1FmijvIaKXYWgBQSwECLQAUAAAICAAAmJ/rFb9U4FcCAAASBQAACwAkAAAAAAAAAAAAAAAAAAAAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwECLQAUAAAICAAAmJ/rwBPmC20AAAB4AAAACQAkAAAAAAAAAAAAAACkAgAAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0BUEsFBgAAAAACAAIAuAAAAFwDAAAAAA==
+    dataString: UEsDBBQAAAgIAACYn+tgIJnsWQIAABQFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQF1VEtz2jAQ/iuMzk0HMwXi3loCpIcEJjSTiy9CWmMNsuTRIzwy/PeuZBs7dHJi+fbb3W8f8gcRylbAnDZLI/iT5kB+DkiwybdB53yEI91ptRFnaDlvgrsikGjkvFAnNOJJCLO6BGcE+6V2MpCHCHolcm3KOd/BTFtnEc6ptIAuo12IVgh9DMgRf+7SEHJCazQN1hmtdDi4oMlAOTAdtSW2tJrlFZO0rIAHyR05mTTsZBJpCptpGMPv45BdSylso4W4UxV73VQFGAjNckGxtVg/dFqA2BUuyOzHrvLcgms0GXp6EAYnVCclv3U9tpLafS3snUofytwn6SiqqrM+/Ue4S6I7N7p8bAsnw1DEFYLtX+iJUet6g+3DD5+Ve3Wgck+3Et4KUM96abRXHJ3O+BDqLYweur/X3mYFsH2H11JvQF99vZ7QwyW2f5xJUW7j5H/UwEbqOO+4fDC4mz8oOJ6GbVIgGlS8WvhLd/0bahwLYaxDV9OlCvK22ptAJQs0wuiZdzNtFJh+ggoUle60xjTudoc3vq+jFjS8lqZ442sfwU1IhDv+cHjjWuvDdVm20IcnsMXKOykUdJMOjmec00wrVZ9Yv6U2bONNTlkvbOcF/3xaJOEMJki6p+N8OtrCHWcpn4xoOk6304RuUxJvTyjsk8p1LbQZD25NdckV3ln7ERksDa3iuXNDD0txLrXtmELlesMMgFrVGa7CwWARfJd8zgUOaAPOCRX3TT4yIjXbA8+uibLY6fzoDM26LBmpxLt2AcnILH41MhLg6y2vDbwLOITibbILufwDUEsDBBQAAAgIAACYn+vAE+YLbQAAAHgAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM011FQSi9KLMgoBooYgjilmSkgdrSSYUpyqllicqpFommauVFSqm5KsmWKmVGipallkrlhYpKlUixQfUllQapfYm4qRE9AYklGWmZeSmZeup57UWaKO8hopdhaAFBLAQItABQAAAgIAACYn+tgIJnsWQIAABQFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAACYn+vAE+YLbQAAAHgAAAAJACQAAAAAAAAAAAAAAKYCAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAXgMAAAAA
     upgradeData: 
     file_cachedStartup: {fileID: 0}
     data_cachedStartup: 
@@ -16973,7 +16974,7 @@ MonoBehaviour:
   player: {fileID: 774840666}
   moveThreshold: 8
   gridSize: 32
-  nodeSize: 1
+  nodeSize: 0.5
 --- !u!4 &1754532922
 Transform:
   m_ObjectHideFlags: 0
