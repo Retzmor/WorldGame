@@ -15,15 +15,15 @@ MonoBehaviour:
   biomeName: Sand
   groundTile:
   - tile: {fileID: 11400000, guid: 927ba9dcb41770b41a609d3843bf9228, type: 2}
-    probability: 0.99
+    probability: 0.777
   - tile: {fileID: 11400000, guid: e6a16a204e7a85e48ab135306cb28020, type: 2}
-    probability: 0.298
+    probability: 0.638
   - tile: {fileID: 11400000, guid: ccc2aa02369d88d4f87e6aa8c9414b1b, type: 2}
-    probability: 0.265
+    probability: 0.546
   - tile: {fileID: 11400000, guid: 9996f1d5c78d664489528187041f3eb4, type: 2}
-    probability: 0.195
+    probability: 0.474
   - tile: {fileID: 11400000, guid: 1a675386054449c45a10be7e74ba7fb9, type: 2}
-    probability: 0.222
+    probability: 0.526
   minHeight: 0.3
   maxHeight: 0.6
   minMoisture: 0
