@@ -32,8 +32,11 @@ public class HotbarController : MonoBehaviour
                 if (playerAttack.currentWeapon != null)
                     Destroy(playerAttack.currentWeapon);
 
-                GameObject newWeapon = Instantiate(itemData.itemPrefab);
+                GameObject newWeapon = Instantiate(itemData.itemPrefab, playerAttack.pivotRight);
                 playerAttack.currentWeapon = newWeapon;
+                // worldPrefab.transform.SetParent(attack.transform);
+                playerAttack.currentWeapon = newWeapon;
+                playerAttack.MoveWeaponToHand(playerAttack.pivotRight);
             }
         }
         else if (playerAttack != null)

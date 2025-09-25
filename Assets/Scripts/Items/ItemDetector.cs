@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Zenject; // Importante para el nuevo Input System
+using Zenject; 
 
 public class ItemDetector : MonoBehaviour
 {
@@ -15,10 +15,7 @@ public class ItemDetector : MonoBehaviour
     private GameObject equippedWeapon;
     private void Awake()
     {
-        // Obtiene el componente PlayerInput del jugador
         playerInput = GetComponent<PlayerInput>();
-
-        // Asume que la acción en tu Input Actions se llama "PickUp"
         pickUpAction = playerInput.actions["Obtener"];
     }
 
@@ -50,42 +47,40 @@ public class ItemDetector : MonoBehaviour
                     inventory.AddItem(
                         pickUpData.itemData.prefab,
                         pickUpData.itemData.itemName,
-                        1, 
+                        1,
                         pickUpData.itemData.itemSprite,
                         pickUpData.itemData.healAmount,
                         pickUpData.itemData.worldPrefab
                     );
-                    Debug.Log("Inventario");
                 }
-                Destroy(newWeapon); 
+
+                EquipWeapon(pickUpData.itemData.worldPrefab);
+
+                Destroy(newWeapon);
                 return;
             }
-            EquipWeapon(newWeapon);
         }
     }
-
-    void EquipWeapon(GameObject weapon)
+    void EquipWeapon(GameObject weaponPrefab)
     {
-        //if(GetComponent<AttackPlayer>().currentWeapon != null)
-        //{
-        //    DropWeapon();
-        //}
+        GameObject weaponGame = Instantiate(weaponPrefab);
 
-        equippedWeapon = weapon;
-        weapon.transform.SetParent(weaponHolder);
-        weapon.transform.localPosition = Vector3.zero;
-        weapon.transform.localRotation = Quaternion.identity;
+        equippedWeapon = weaponGame;
 
-        SetLayerRecursively(weapon, LayerMask.NameToLayer("Equipped"));
+        weaponGame.transform.SetParent(weaponHolder, false);
 
-        var pickupCol = weapon.GetComponent<Collider2D>();
+        weaponGame.transform.localPosition = Vector3.zero;
+        weaponGame.transform.localRotation = Quaternion.identity;
+
+        SetLayerRecursively(weaponGame, LayerMask.NameToLayer("Equipped"));
+
+        var pickupCol = weaponGame.GetComponent<Collider2D>();
         if (pickupCol) pickupCol.enabled = false;
 
-        var rb = weapon.GetComponent<Rigidbody2D>();
+        var rb = weaponGame.GetComponent<Rigidbody2D>();
         if (rb) rb.simulated = false;
 
-        GetComponent<AttackPlayer>().currentWeapon = weapon;
-        
+        GetComponent<AttackPlayer>().currentWeapon = weaponGame;
     }
 
     void DropWeapon()
