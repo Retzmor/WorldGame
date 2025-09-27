@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Bone
   itemSprite: {fileID: 21300000, guid: 30c2edc56210e964aae826643dd997ae, type: 3}
+  worldPrefab: {fileID: 3168670063845812249, guid: 6f8b6e4c22251dc438264a5916e131ea, type: 3}
   prefab: {fileID: 5739570377777651304, guid: ef9c7b59ef8f52b498c7d7fb622f906f, type: 3}
   healAmount: 1

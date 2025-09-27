@@ -11,8 +11,6 @@ public class Inventory : MonoBehaviour
     [SerializeField] GameObject[] slots;
     [SerializeField] GameObject[] hotbarSlots;
     [SerializeField] GameObject worldPrefap;
-    TextMeshProUGUI text;
-
     public Dictionary<string, int> InventoryItems = new Dictionary<string, int>();
 
     public void AddItem(GameObject itemPrefab, string itemName, int amount, Sprite icon, int healAmount, GameObject worldPrefab)
@@ -26,7 +24,6 @@ public class Inventory : MonoBehaviour
     private void AddItemToInventory(GameObject itemToAdd, string itemName, int itemAmount, Sprite icon)
     {
         bool itemPlaced = false;
-
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].transform.childCount > 0 &&
@@ -81,7 +78,6 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
-
         for (int i = 0; i < hotbarSlots.Length; i++)
         {
             if (hotbarSlots[i].transform.childCount == 0)
@@ -108,7 +104,6 @@ public class Inventory : MonoBehaviour
                 return true;
             }
         }
-
         return false;
     }
 }

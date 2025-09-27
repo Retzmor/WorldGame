@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Zenject;
 using static WorldSaveSystem;
 
 public class WorldGenerator : MonoBehaviour
 {
+    [Inject] private DiContainer _container;
     [Header("Refs")]
     public Tilemap groundTilemap;
     public Tilemap waterTilemap;
@@ -605,10 +607,11 @@ public class WorldGenerator : MonoBehaviour
             obj = pool.Dequeue();
             obj.transform.SetPositionAndRotation(pos, rot);
             obj.SetActive(true);
+            _container.InjectGameObject(obj);
         }
         else
         {
-            obj = Instantiate(prefab, pos, rot);
+            obj = _container.InstantiatePrefab(prefab, pos, rot, null);
             var pr = obj.GetComponent<PrefabReference>();
             if (pr == null) pr = obj.AddComponent<PrefabReference>();
             pr.prefab = prefab;

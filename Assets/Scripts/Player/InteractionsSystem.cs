@@ -6,17 +6,13 @@ public class InteractionsSystem : MonoBehaviour
     [SerializeField] LayerMask layers;
     [SerializeField] Collider2D[] collisions;
     [SerializeField] GameObject TextInteraction;
-
     private void Update()
     {
         collisions = Physics2D.OverlapCircleAll(transform.position, radius, layers);
 
         if (collisions.Length > 0)
         {
-            Debug.Log("ERWIN DETECTADO");
             TextInteraction.SetActive(true);
-
-            // Si presiona E, interactúa
             if (Input.GetKeyDown(KeyCode.E))
             {
                 InteractWithItems();
@@ -35,7 +31,6 @@ public class InteractionsSystem : MonoBehaviour
             {
                 if (item.TryGetComponent(out IInteractuable interactuable))
                 {
-
                     interactuable.Interact();
                 }
             }

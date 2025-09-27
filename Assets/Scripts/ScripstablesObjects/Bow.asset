@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Bow
   itemSprite: {fileID: -7856493677412862020, guid: f71053ee6f5aa39428193fc6ef577bc3, type: 3}
-  worldPrefab: {fileID: 0}
+  worldPrefab: {fileID: 8295980451291459553, guid: 4dbb87c33cfe7d64fb4b9693498fbf30, type: 3}
   prefab: {fileID: 5739570377777651304, guid: 2912c1fdc4ab64d4298521922ffcbc9b, type: 3}
   healAmount: 1

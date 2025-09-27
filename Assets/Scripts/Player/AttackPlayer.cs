@@ -78,7 +78,6 @@ public class AttackPlayer : MonoBehaviour
             float angle = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
             lastValidRotation = Quaternion.Euler(0f, 0f, angle - 90f);
         }
-
             currentWeapon.transform.rotation = Quaternion.Lerp(
             currentWeapon.transform.rotation,
             lastValidRotation,
@@ -114,7 +113,6 @@ public class AttackPlayer : MonoBehaviour
         facingDirection = 1;
         if (playerSprite) playerSprite.flipX = false;
 
-        // evaluar la posición real del mouse apenas equipa
         Vector2 screenPos = mousePosAction.ReadValue<Vector2>();
         Vector3 mouseWorld = mainCamera.ScreenToWorldPoint(screenPos);
         mouseWorld.z = 0f;

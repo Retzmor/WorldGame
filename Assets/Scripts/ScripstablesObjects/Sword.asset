@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Sword
   itemSprite: {fileID: 21300000, guid: 8525bfcfb894d6344b4b7c8c1b8c1a03, type: 3}
-  worldPrefab: {fileID: 0}
+  worldPrefab: {fileID: 694359164373147337, guid: 8e95bd64dc8b4f643937cc6460e5b0b8, type: 3}
   prefab: {fileID: 5739570377777651304, guid: f57dff7aa0fc01b4ab4f232f3f19dba9, type: 3}
   healAmount: 1

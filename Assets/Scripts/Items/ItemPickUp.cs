@@ -12,8 +12,11 @@ public class ItemPickUp : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            Debug.Log("Hola");
             if (inventory != null)
             {
+                Debug.Log("Hola inventario");
+
                 inventory.AddItem(
                     itemData.prefab,
                     itemData.itemName,

@@ -7,7 +7,6 @@ public class ItemDetector : MonoBehaviour
     [Inject] Inventory inventory;
     public Vector2 detectionSize = new Vector2(1f, 1f);
     public LayerMask pickableLayer;
-
     private PlayerInput playerInput;
     private InputAction pickUpAction;
 
@@ -38,7 +37,6 @@ public class ItemDetector : MonoBehaviour
         if (hits.Length > 0)
         {
             GameObject newWeapon = hits[0].gameObject;
-
             WeaponPickUp pickUpData = newWeapon.GetComponent<WeaponPickUp>();
             if (pickUpData != null && pickUpData.itemData != null)
             {
@@ -53,10 +51,8 @@ public class ItemDetector : MonoBehaviour
                         pickUpData.itemData.worldPrefab
                     );
                 }
-
                 EquipWeapon(pickUpData.itemData.worldPrefab);
-
-                Destroy(newWeapon);
+                Destroy(newWeapon.gameObject);
                 return;
             }
         }
@@ -68,7 +64,6 @@ public class ItemDetector : MonoBehaviour
         equippedWeapon = weaponGame;
 
         weaponGame.transform.SetParent(weaponHolder, false);
-
         weaponGame.transform.localPosition = Vector3.zero;
         weaponGame.transform.localRotation = Quaternion.identity;
 
@@ -81,6 +76,7 @@ public class ItemDetector : MonoBehaviour
         if (rb) rb.simulated = false;
 
         GetComponent<AttackPlayer>().currentWeapon = weaponGame;
+        weaponGame.SetActive(false);
     }
 
     void DropWeapon()

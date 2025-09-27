@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Rock
   itemSprite: {fileID: 7100388820099998475, guid: ba72dfd55bdd07646b8082b7968b6ba3, type: 3}
-  worldPrefab: {fileID: 0}
+  worldPrefab: {fileID: 6913790783632814790, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
   prefab: {fileID: 7938505630013425594, guid: fc3c3be59c13e8547ac54b4e3406ff72, type: 3}
   healAmount: 1
