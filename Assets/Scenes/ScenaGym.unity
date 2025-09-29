@@ -2802,6 +2802,60 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &371319091
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 371319093}
+  - component: {fileID: 371319092}
+  m_Layer: 0
+  m_Name: BuildSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &371319092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371319091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46d9e78df7d1bff41a00506f08b22002, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 1073331655}
+  grid: {fileID: 939542379}
+  groundTilemap: {fileID: 1605857228}
+  waterTilemap: {fileID: 494014282}
+  player: {fileID: 774840666}
+  currentBuildable:
+    name: oo
+    prefab: {fileID: 4300958470640276037, guid: 1e684b277c596cc438ca3061f264b16d, type: 3}
+    size: {x: 1, y: 1}
+  buildRange: 20
+--- !u!4 &371319093
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371319091}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -40.54, y: 128.91405, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &374680702
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3847,7 +3901,7 @@ Tilemap:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: 0, z: 0}
   m_Size: {x: 0, y: 0, z: 1}
-  m_TileAnchor: {x: 1, y: 1, z: 0}
+  m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
@@ -15701,7 +15755,7 @@ Tilemap:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: 0, z: 0}
   m_Size: {x: 0, y: 0, z: 1}
-  m_TileAnchor: {x: 1, y: 1, z: 0}
+  m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
@@ -20496,3 +20550,4 @@ SceneRoots:
   - {fileID: 1236373140}
   - {fileID: 483687625}
   - {fileID: 374680702}
+  - {fileID: 371319093}
