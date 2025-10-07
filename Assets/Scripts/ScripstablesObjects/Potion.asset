@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Potion
   itemSprite: {fileID: 21300000, guid: 0c1c2a3e5faa6e7409fa3d86ba2f83a0, type: 3}
+  worldPrefab: {fileID: 5688600327719869917, guid: 3bbf3550bbc1be34eb1ac94ff0591def, type: 3}
   prefab: {fileID: 6064242756916226058, guid: e956d7bf8c56841438690fcccf87933c, type: 3}
   healAmount: 1

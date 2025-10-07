@@ -826,6 +826,7 @@ public class AstarPath : VersionedMonoBehaviour {
 	/// See: Pathfinding.Path.DebugString
 	/// </summary>
 	private void LogPathResults (Path path) {
+		int numberOneg;
 		if (logPathResults != PathLog.None && (path.error || logPathResults != PathLog.OnlyErrors)) {
 			string debug = (path as IPathInternals).DebugString(logPathResults);
 
@@ -834,7 +835,7 @@ public class AstarPath : VersionedMonoBehaviour {
 			} else if (path.error) {
 				Debug.LogWarning(debug);
 			} else {
-				Debug.Log(debug);
+				numberOneg = 1;
 			}
 		}
 	}

@@ -1,10 +1,12 @@
-using NUnit.Framework.Interfaces;
+﻿using NUnit.Framework.Interfaces;
 using UnityEngine;
 using Zenject;
 
 public class ItemPickUp : MonoBehaviour
 {
     [Inject] Inventory inventory;
+    [Inject] HotbarController hotbar;
+    [Inject] AttackPlayer playerAttack;
     [SerializeField] public ItemData itemData;
     [SerializeField] public int amount = 1;
 
@@ -12,11 +14,8 @@ public class ItemPickUp : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("Hola");
             if (inventory != null)
             {
-                Debug.Log("Hola inventario");
-
                 inventory.AddItem(
                     itemData.prefab,
                     itemData.itemName,
@@ -26,7 +25,21 @@ public class ItemPickUp : MonoBehaviour
                     itemData.worldPrefab
                 );
 
-                Destroy(gameObject); 
+                if (hotbar != null)
+                {
+                    GameObject selectedUI = hotbar.GetSelectedItem();
+                    if (selectedUI != null && selectedUI.name == itemData.itemName)
+                    {
+                        if (playerAttack.currentWeapon != null)
+                            Destroy(playerAttack.currentWeapon);
+
+                        GameObject newWeapon = Instantiate(itemData.worldPrefab, playerAttack.pivotRight);
+                        playerAttack.currentWeapon = newWeapon;
+                        playerAttack.MoveWeaponToHand(playerAttack.pivotRight);
+                    }
+                }
+
+                Destroy(gameObject);
             }
         }
     }

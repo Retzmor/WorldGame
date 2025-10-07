@@ -1,15 +1,18 @@
+using NUnit.Framework.Interfaces;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using System.Collections.Generic;
 
 public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [HideInInspector] public InventorySlot parentSlot;
     private Canvas canvas;
+    public ItemData itemData;
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
     private Vector3 originalPosition;
     private Transform originalParent;
+    public GameObject worldPrefab => itemData.worldPrefab;
 
     private void Awake()
     {
@@ -53,7 +56,8 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         }
         else
         {
-            ReturnToOriginalSlot();
+            DropAllToWorld();
+            Destroy(gameObject);
         }
     }
 
@@ -90,5 +94,27 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         parentSlot = newSlot;
         transform.SetParent(newSlot.transform);
         transform.localPosition = Vector3.zero;
+    }
+
+    private void DropAllToWorld()
+    {
+        ItemUse itemData = GetComponent<ItemUse>();
+        if (itemData == null) return;
+
+        Inventory inventory = FindObjectOfType<Inventory>();
+        if (inventory == null) return;
+
+        string itemName = itemData.itemName;
+        if (!inventory.InventoryItems.ContainsKey(itemName)) return;
+
+        int amount = inventory.InventoryItems[itemName];
+        if (amount <= 0) return;
+
+        for (int i = 0; i < amount; i++)
+        {
+            Vector3 dropPos = transform.position + Vector3.forward * 1f;
+        }
+
+        inventory.InventoryItems.Remove(itemName);
     }
 }

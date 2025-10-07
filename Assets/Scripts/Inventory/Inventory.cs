@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,20 +7,18 @@ using Zenject;
 public class Inventory : MonoBehaviour
 {
     [Inject] private DiContainer _container;
-
     [SerializeField] GameObject[] slots;
     [SerializeField] GameObject[] hotbarSlots;
-    [SerializeField] GameObject worldPrefap;
+    [SerializeField] HotbarController hotbar;
     public Dictionary<string, int> InventoryItems = new Dictionary<string, int>();
 
     public void AddItem(GameObject itemPrefab, string itemName, int amount, Sprite icon, int healAmount, GameObject worldPrefab)
     {
-        if (!AddItemToHotbar(itemPrefab, icon, itemName, healAmount, amount))
+        if (!AddItemToHotbar(itemPrefab, icon, itemName, healAmount, amount, worldPrefab))
         {
             AddItemToInventory(itemPrefab, itemName, amount, icon);
         }
     }
-
     private void AddItemToInventory(GameObject itemToAdd, string itemName, int itemAmount, Sprite icon)
     {
         bool itemPlaced = false;
@@ -59,9 +57,33 @@ public class Inventory : MonoBehaviour
             }
         }
     }
-
-    private bool AddItemToHotbar(GameObject itemPrefab, Sprite itemSprite, string itemName, int healAmount, int amount)
+    private bool AddItemToHotbar(GameObject itemPrefab, Sprite itemSprite, string itemName, int healAmount, int amount, GameObject worldPrefab)
     {
+        int selectedIndex = hotbar != null ? hotbar.CurrentSlotIndex : -1;
+        if (selectedIndex >= 0 && selectedIndex < hotbarSlots.Length &&
+            hotbarSlots[selectedIndex].transform.childCount == 0)
+        {
+            GameObject itemButton = _container.InstantiatePrefab(itemPrefab, hotbarSlots[selectedIndex].transform);
+            itemButton.transform.localPosition = Vector3.zero;
+            itemButton.transform.localScale = Vector3.one;
+            itemButton.name = itemName;
+
+            Image img = itemButton.GetComponent<Image>();
+            if (img != null && itemSprite != null)
+                img.sprite = itemSprite;
+
+            ItemUse itemUse = itemButton.GetComponent<ItemUse>();
+            if (itemUse != null)
+                itemUse.SetItem(itemName, healAmount, worldPrefab);
+
+            InventoryItems[itemName] = amount;
+
+            TextMeshProUGUI text = itemButton.GetComponentInChildren<TextMeshProUGUI>();
+            if (text != null)
+                text.text = InventoryItems[itemName].ToString();
+
+            return true;
+        }
         for (int i = 0; i < hotbarSlots.Length; i++)
         {
             if (hotbarSlots[i].transform.childCount > 0)
@@ -78,6 +100,7 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
+
         for (int i = 0; i < hotbarSlots.Length; i++)
         {
             if (hotbarSlots[i].transform.childCount == 0)
@@ -93,7 +116,7 @@ public class Inventory : MonoBehaviour
 
                 ItemUse itemUse = itemButton.GetComponent<ItemUse>();
                 if (itemUse != null)
-                    itemUse.SetItem(itemName, healAmount, worldPrefap);
+                    itemUse.SetItem(itemName, healAmount, worldPrefab);
 
                 InventoryItems[itemName] = amount;
 

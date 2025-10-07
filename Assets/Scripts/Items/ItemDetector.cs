@@ -5,6 +5,8 @@ using Zenject;
 public class ItemDetector : MonoBehaviour
 {
     [Inject] Inventory inventory;
+    [SerializeField] private HotbarController hotbar;
+
     public Vector2 detectionSize = new Vector2(1f, 1f);
     public LayerMask pickableLayer;
     private PlayerInput playerInput;
@@ -51,7 +53,14 @@ public class ItemDetector : MonoBehaviour
                         pickUpData.itemData.worldPrefab
                     );
                 }
-                EquipWeapon(pickUpData.itemData.worldPrefab);
+                if (hotbar != null)
+                {
+                    GameObject selectedUI = hotbar.GetSelectedItem();
+                    if (selectedUI != null && selectedUI.name == pickUpData.itemData.itemName)
+                    {
+                        EquipWeapon(pickUpData.itemData.worldPrefab);
+                    }
+                }
                 Destroy(newWeapon.gameObject);
                 return;
             }
@@ -76,25 +85,7 @@ public class ItemDetector : MonoBehaviour
         if (rb) rb.simulated = false;
 
         GetComponent<AttackPlayer>().currentWeapon = weaponGame;
-        weaponGame.SetActive(false);
     }
-
-    void DropWeapon()
-    {
-        equippedWeapon.transform.SetParent(null);
-
-        SetLayerRecursively(equippedWeapon, LayerMask.NameToLayer("Pickable"));
-
-        var pickupCol = equippedWeapon.GetComponent<Collider2D>();
-        if (pickupCol) pickupCol.enabled = true;
-
-        var rb = equippedWeapon.GetComponent<Rigidbody2D>();
-        if (rb) rb.simulated = true;
-
-        equippedWeapon = null;
-        GetComponent<AttackPlayer>().currentWeapon = null;
-    }
-
     void SetLayerRecursively(GameObject obj, int layer)
     {
         obj.layer = layer;
