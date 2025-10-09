@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Wood
   itemSprite: {fileID: 21300000, guid: 1e8159b7b688a7641a988f072363d4d2, type: 3}
-  worldPrefab: {fileID: 0}
+  worldPrefab: {fileID: 321523522686411955, guid: 961419885de71b54f91e0cadcdac5a7b, type: 3}
   prefab: {fileID: 5739570377777651304, guid: 9db19b32e2ac9d54da6c8c5dbc8690cf, type: 3}
   healAmount: 1

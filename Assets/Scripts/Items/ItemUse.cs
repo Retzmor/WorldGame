@@ -5,14 +5,10 @@ using Zenject;
 public class ItemUse : MonoBehaviour
 {
     [Inject] Inventory inventory;
-    public void Construct(Inventory inv)
-    {
-        inventory = inv;
-    }
     [SerializeField] int healthToGive = 20;
     public GameObject itemPrefab;
-    [SerializeField] GameObject worldPrefap;
-    private string itemName;
+    [SerializeField] public GameObject worldPrefap;
+    public string itemName;
     private int healAmount;
     public void SetItem(string name, int heal, GameObject worldPrefab)
     {

@@ -307,6 +307,7 @@ MonoBehaviour:
   wanderRadius: 5
   minWanderInterval: 2
   maxWanderInterval: 5
+  reverseFlip: 0
   world: {fileID: 0}
   fleeDistance: 7
   fleeTime: 3
@@ -338,7 +339,8 @@ GameObject:
   - component: {fileID: 280091597409357441}
   - component: {fileID: 2055153384683227536}
   - component: {fileID: 5128063238153357370}
-  m_Layer: 6
+  - component: {fileID: 232034943648883866}
+  m_Layer: 0
   m_Name: Meet (1)
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -488,6 +490,20 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.6688083, y: 0.5455754}
   m_EdgeRadius: 0
+--- !u!114 &232034943648883866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7113607326639885188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6d583420d0ff24b8909ea68831bf0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: 55dbf49c0770ceb41abd98fa0f5bea1c, type: 2}
+  amount: 1
 --- !u!1 &7644870064065256323
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,7 +516,8 @@ GameObject:
   - component: {fileID: 3647982526191027603}
   - component: {fileID: 872733794883066445}
   - component: {fileID: 4115339052490030}
-  m_Layer: 6
+  - component: {fileID: 4869082592331627654}
+  m_Layer: 0
   m_Name: Meet
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -650,3 +667,17 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.7612345, y: 0.622596}
   m_EdgeRadius: 0
+--- !u!114 &4869082592331627654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7644870064065256323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6d583420d0ff24b8909ea68831bf0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: 55dbf49c0770ceb41abd98fa0f5bea1c, type: 2}
+  amount: 1
