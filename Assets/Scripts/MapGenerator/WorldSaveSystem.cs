@@ -2,6 +2,7 @@
 using System.IO;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static GameManager;
 
 /// <summary>
 /// Sistema de guardado simple: guarda cambios por chunk (tiles modificados y decoraciones).
@@ -13,6 +14,11 @@ public class WorldSaveSystem : MonoBehaviour
     public BiomeLibrary biomeLibrary;           // para resolver prefabs/tiles por nombre
     public List<TileBase> extraTiles = new();  // p.ej. asigna waterTile aquí si lo deseas
     public int currentSlot = 1;
+
+
+    //data actual de la partida seleccionada
+    public WorldMeta currentData;
+
     // Estructuras serializables
     [System.Serializable]
     public class WorldSaveData

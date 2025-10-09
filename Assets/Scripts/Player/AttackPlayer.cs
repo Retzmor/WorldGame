@@ -23,6 +23,8 @@ public class AttackPlayer : MonoBehaviour
     // 👇 Input System
     private PlayerInput playerInput;
     private InputAction mousePosAction;
+    [SerializeField]private BuildSystem buildSystem;
+
 
     private void Awake()
     {
@@ -107,6 +109,7 @@ public class AttackPlayer : MonoBehaviour
         if (currentWeapon != null && currentWeapon.TryGetComponent(out Weapon arm) && context.performed && !isAttacking)
         {
             lockedRotation = currentWeapon.transform.rotation;
+            if(buildSystem.buildMode == false)
             arm.Attack();
         }
     }

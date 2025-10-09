@@ -97,11 +97,19 @@ public class WorldGenerator : MonoBehaviour
                 Debug.Log($"Inventario cargado con {playerData.inventory.Count} items");
             }
         }
+        
+        GenerateWorld();
+        
+    }
+
+    private void GenerateWorld()
+    {
         loaderRoutine = StartCoroutine(LoaderLoop());
         respawnRoutine = StartCoroutine(RespawnLoop());
 
-        
     }
+
+
 
     void OnApplicationQuit()
     {

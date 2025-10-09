@@ -2841,6 +2841,7 @@ MonoBehaviour:
     prefab: {fileID: 4300958470640276037, guid: 1e684b277c596cc438ca3061f264b16d, type: 3}
     size: {x: 1, y: 1}
   buildRange: 20
+  buildMode: 0
 --- !u!4 &371319093
 Transform:
   m_ObjectHideFlags: 0
@@ -7971,80 +7972,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 964915650}
   m_CullTransparentMesh: 1
---- !u!1001 &975620848
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1883409070978452006, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-      propertyPath: inventory
-      value: 
-      objectReference: {fileID: 979663320}
-    - target: {fileID: 1965514526772229295, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4371887107343160549, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-      propertyPath: inventory
-      value: 
-      objectReference: {fileID: 979663320}
-    - target: {fileID: 4909257162067166293, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-      propertyPath: inventory
-      value: 
-      objectReference: {fileID: 979663320}
-    - target: {fileID: 6913790783632814790, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-      propertyPath: m_Name
-      value: Rock
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934102990404535260, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 3.5294
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934102990404535260, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.5109507
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934102990404535260, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934102990404535260, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934102990404535260, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934102990404535260, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934102990404535260, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934102990404535260, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934102990404535260, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934102990404535260, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4371887107343160549, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a9ea26f8ef3ccbf4695037aecb5f9e8f, type: 3}
 --- !u!114 &979663320 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}
@@ -15674,7 +15601,7 @@ MonoBehaviour:
   decorationParent: {fileID: 0}
   chunkSize: 32
   viewRadiusChunks: 2
-  seed: 89989789
+  seed: 123
   terrainScale: 30
   moistureScale: 60
   biomeScale: 60
@@ -20293,6 +20220,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 759953723}
     - target: {fileID: 8717999183226577293, guid: 65df9e2171c307348a96d86a27ae8f5a, type: 3}
+      propertyPath: buildSystem
+      value: 
+      objectReference: {fileID: 371319092}
+    - target: {fileID: 8717999183226577293, guid: 65df9e2171c307348a96d86a27ae8f5a, type: 3}
       propertyPath: playerSprite
       value: 
       objectReference: {fileID: 759953724}
@@ -20541,7 +20472,6 @@ SceneRoots:
   - {fileID: 939542380}
   - {fileID: 1722888350}
   - {fileID: 1754532922}
-  - {fileID: 975620848}
   - {fileID: 589795837}
   - {fileID: 400739610}
   - {fileID: 47752685}

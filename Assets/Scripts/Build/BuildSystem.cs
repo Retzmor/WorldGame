@@ -1,42 +1,57 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.InputSystem;
 
 public class BuildSystem : MonoBehaviour
 {
     [Header("References")]
-    public Camera cam;                     // cámara ortográfica principal
+    public Camera cam;                     // cÃ¡mara ortogrÃ¡fica principal
     public Grid grid;                      // el Grid que contiene los Tilemaps
     public Tilemap groundTilemap;          // tilemap "tierra"
     public Tilemap waterTilemap;           // tilemap "agua"
-    public Transform player;               // referencia al jugador (posición para rango)
+    public Transform player;               // referencia al jugador (posiciÃ³n para rango)
     public Buildable currentBuildable;     // objeto seleccionado para construir
 
     [Header("Build Settings")]
-    public int buildRange = 4;             // rango máximo en tiles (Manhattan)
+    public int buildRange = 4;             // rango mÃ¡ximo en tiles (Manhattan)
 
     private GameObject ghost;
     private SpriteRenderer[] ghostRenderers;
+    public bool buildMode = false;        // â† NUEVO: modo construcciÃ³n activo/inactivo
 
     void Update()
     {
-        if (currentBuildable == null) return;
+        // --- toggle de construcciÃ³n con click derecho
+        if (Mouse.current.rightButton.wasPressedThisFrame)
+        {
+            buildMode = !buildMode;
+
+            if (!buildMode) CancelBuild(); // apagar ghost si salgo del modo
+        }
+
+        if (!buildMode || currentBuildable == null) return;
         if (cam == null) cam = Camera.main;
         if (grid == null) return;
 
-        // --- obtener mouse (Input System) y convertir a world (plano z = 0)
+        // --- obtener mouse y convertir a world
         Vector2 mouseScreen = Mouse.current.position.ReadValue();
-        Vector3 mouseWorld = cam.ScreenToWorldPoint(new Vector3(mouseScreen.x, mouseScreen.y, -cam.transform.position.z));
+        Vector3 mouseWorld = cam.ScreenToWorldPoint(
+            new Vector3(mouseScreen.x, mouseScreen.y, -cam.transform.position.z)
+        );
         mouseWorld.z = 0f;
 
-        // --- celda bajo el mouse (esta será la referencia para centrar la huella)
+        // --- celda bajo el mouse
         Vector3Int anchorCell = grid.WorldToCell(mouseWorld);
 
-        // --- calcular la lista de celdas que ocuparía la huella centrada en anchorCell
+        // --- calcular footprint (desde la celda ancla)
         Vector2Int size = currentBuildable.size;
-        Vector3Int startCell = new Vector3Int(anchorCell.x - size.x / 2, anchorCell.y - size.y / 2, anchorCell.z);
+        Vector3Int startCell = new Vector3Int(
+            anchorCell.x - size.x / 2,
+            anchorCell.y - size.y / 2,
+            anchorCell.z
+        );
 
-        // if ghost missing -> crear (modo preview)
+        // --- crear ghost si no existe
         if (ghost == null)
         {
             ghost = Instantiate(currentBuildable.prefab);
@@ -44,77 +59,68 @@ public class BuildSystem : MonoBehaviour
             ghostRenderers = ghost.GetComponentsInChildren<SpriteRenderer>();
         }
 
-        // --- calcular centro del footprint (promedio de los centros de cada celda)
+        // --- centro del footprint
         Vector3 footprintCenter = Vector3.zero;
         int count = 0;
         for (int x = 0; x < size.x; x++)
-        {
             for (int y = 0; y < size.y; y++)
             {
                 Vector3Int c = new Vector3Int(startCell.x + x, startCell.y + y, startCell.z);
                 footprintCenter += grid.GetCellCenterWorld(c);
                 count++;
             }
-        }
         if (count > 0) footprintCenter /= count;
         footprintCenter.z = 0f;
 
-        // mover ghost al centro de la huella
         ghost.transform.position = footprintCenter;
 
-        // comprobar si se puede colocar (agua, tierra, overlap, rango)
+        // --- validaciÃ³n de colocaciÃ³n
         bool canPlace = CanPlaceAt(startCell, size);
 
-        // colorear ghost (verde/rojo)
+        // --- color del ghost
         if (ghostRenderers != null)
         {
-            Color c = canPlace ? new Color(0f, 1f, 0f, 0.5f) : new Color(1f, 0f, 0f, 0.5f);
-            foreach (var sr in ghostRenderers) if (sr != null) sr.color = c;
+            Color c = canPlace ? new Color(0f, 1f, 0f, 0.5f)
+                               : new Color(1f, 0f, 0f, 0.5f);
+            foreach (var sr in ghostRenderers)
+                if (sr != null) sr.color = c;
         }
 
-        // colocar con click izquierdo
+        // --- click izquierdo coloca
         if (Mouse.current.leftButton.wasPressedThisFrame && canPlace)
         {
             PlaceAt(startCell, size);
         }
 
-        // cancelar con tecla ESC (opcional)
+        // --- cancelar con ESC (opcional)
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             CancelBuild();
+            buildMode = false;
         }
     }
 
     private void PlaceAt(Vector3Int startCell, Vector2Int size)
     {
-        // instanciar en la misma posición del ghost (centro de footprint)
-        // usar la misma lógica de centro para posicionamiento exacto
         Vector3 center = Vector3.zero;
         int count = 0;
         for (int x = 0; x < size.x; x++)
-        {
             for (int y = 0; y < size.y; y++)
             {
                 Vector3Int c = new Vector3Int(startCell.x + x, startCell.y + y, startCell.z);
                 center += grid.GetCellCenterWorld(c);
                 count++;
             }
-        }
         if (count > 0) center /= count;
         center.z = 0f;
 
         Instantiate(currentBuildable.prefab, center, Quaternion.identity);
     }
 
-    /// <summary>
-    /// Comprueba si la huella que empieza en startCell con tamaño size puede colocarse.
-    /// </summary>
     private bool CanPlaceAt(Vector3Int startCell, Vector2Int size)
     {
-        // 1) Rango Manhattan (usamos el centro de la huella como referencia)
         if (player != null)
         {
-            // centro de la huella en celdas
             Vector3 footprintCenterWorld = Vector3.zero;
             int count = 0;
             for (int x = 0; x < size.x; x++)
@@ -124,29 +130,26 @@ public class BuildSystem : MonoBehaviour
                     footprintCenterWorld += grid.GetCellCenterWorld(c);
                     count++;
                 }
+                
             if (count > 0) footprintCenterWorld /= count;
 
             Vector3Int footprintCenterCell = grid.WorldToCell(footprintCenterWorld);
             Vector3Int playerCell = grid.WorldToCell(player.position);
 
-            int manhattan = Mathf.Abs(playerCell.x - footprintCenterCell.x) + Mathf.Abs(playerCell.y - footprintCenterCell.y);
+            int manhattan = Mathf.Abs(playerCell.x - footprintCenterCell.x) +
+                            Mathf.Abs(playerCell.y - footprintCenterCell.y);
             if (manhattan > buildRange) return false;
         }
 
-        // 2) Para cada celda dentro de la huella: comprobar agua, tierra y colisiones
         for (int x = 0; x < size.x; x++)
         {
             for (int y = 0; y < size.y; y++)
             {
                 Vector3Int checkCell = new Vector3Int(startCell.x + x, startCell.y + y, startCell.z);
 
-                // si alguna celda toca agua => no permitir
                 if (waterTilemap != null && waterTilemap.HasTile(checkCell)) return false;
-
-                // debe haber tierra en cada celda
                 if (groundTilemap != null && !groundTilemap.HasTile(checkCell)) return false;
 
-                // comprobación de colisiones físicas: OverlapPoint en el centro de esa celda
                 Vector3 checkCenter = grid.GetCellCenterWorld(checkCell);
                 Collider2D hit = Physics2D.OverlapPoint(checkCenter);
                 if (hit != null) return false;
@@ -159,17 +162,13 @@ public class BuildSystem : MonoBehaviour
     private void SetGhostMode(GameObject obj)
     {
         if (obj == null) return;
-        // desactivar colisiones en el preview
         foreach (var col in obj.GetComponentsInChildren<Collider2D>())
             col.enabled = false;
-
-        // opcional: marcar layer para preview para evitar confusión
-        // obj.layer = LayerMask.NameToLayer("IgnoreRaycast");
     }
 
     private void CancelBuild()
     {
-        currentBuildable = null;
+       // currentBuildable = null;
         if (ghost != null) { Destroy(ghost); ghost = null; }
     }
 
