@@ -19178,7 +19178,7 @@ MonoBehaviour:
   maxEnergy: 3
   energyDrainRate: 1
   energyRegenDelay: 2
-  energyRegenRate: 1
+  energyRegenRate: 5
   imageEnergy:
   - {fileID: 1549479101}
   - {fileID: 1570580119}
