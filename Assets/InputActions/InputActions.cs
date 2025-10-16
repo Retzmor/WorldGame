@@ -153,6 +153,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Correr"",
+                    ""type"": ""Button"",
+                    ""id"": ""b0483892-5790-4d35-bffc-d4fbdd989f93"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -276,6 +285,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Arrojar"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""058f6bfe-5fa4-43ea-bfba-a4b6a50c33da"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Correr"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -325,6 +345,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_GamePlay_Pause = m_GamePlay.FindAction("Pause", throwIfNotFound: true);
         m_GamePlay_MousePos = m_GamePlay.FindAction("MousePos", throwIfNotFound: true);
         m_GamePlay_Arrojar = m_GamePlay.FindAction("Arrojar", throwIfNotFound: true);
+        m_GamePlay_Correr = m_GamePlay.FindAction("Correr", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         // Global
@@ -419,6 +440,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_GamePlay_Pause;
     private readonly InputAction m_GamePlay_MousePos;
     private readonly InputAction m_GamePlay_Arrojar;
+    private readonly InputAction m_GamePlay_Correr;
     /// <summary>
     /// Provides access to input actions defined in input action map "GamePlay".
     /// </summary>
@@ -458,6 +480,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "GamePlay/Arrojar".
         /// </summary>
         public InputAction @Arrojar => m_Wrapper.m_GamePlay_Arrojar;
+        /// <summary>
+        /// Provides access to the underlying input action "GamePlay/Correr".
+        /// </summary>
+        public InputAction @Correr => m_Wrapper.m_GamePlay_Correr;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -505,6 +531,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Arrojar.started += instance.OnArrojar;
             @Arrojar.performed += instance.OnArrojar;
             @Arrojar.canceled += instance.OnArrojar;
+            @Correr.started += instance.OnCorrer;
+            @Correr.performed += instance.OnCorrer;
+            @Correr.canceled += instance.OnCorrer;
         }
 
         /// <summary>
@@ -537,6 +566,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Arrojar.started -= instance.OnArrojar;
             @Arrojar.performed -= instance.OnArrojar;
             @Arrojar.canceled -= instance.OnArrojar;
+            @Correr.started -= instance.OnCorrer;
+            @Correr.performed -= instance.OnCorrer;
+            @Correr.canceled -= instance.OnCorrer;
         }
 
         /// <summary>
@@ -807,6 +839,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnArrojar(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Correr" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCorrer(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

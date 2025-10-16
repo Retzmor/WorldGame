@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movimiento")]
-    [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float smoothTime = 0.1f;
 
     [Header("Visuals (usar hijo con SpriteRenderer)")]
@@ -29,6 +28,7 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private Rigidbody2D rb;
     [SerializeField] private Animator animator;
+    [SerializeField] private PlayerRun playerRun;
     private SpriteRenderer spriteRenderer;
 
     private Vector2 inputDir;
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         // --- Movimiento físico ---
-        Vector2 targetVelocity = inputDir * moveSpeed;
+        Vector2 targetVelocity = inputDir * playerRun.CurrentSpeed;
         currentVelocity = Vector2.SmoothDamp(currentVelocity, targetVelocity, ref velocitySmoothing, smoothTime);
 
         rb.MovePosition(rb.position + currentVelocity * Time.fixedDeltaTime);
@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour
         if (dir2D.sqrMagnitude > 0.0001f)
         {
             Vector2 perp = new Vector2(-dir2D.y, dir2D.x);
-            float speedFactor = Mathf.Clamp01(moveMag / moveSpeed);
+            float speedFactor = Mathf.Clamp01(moveMag / playerRun.CurrentSpeed);
             float bobScalar = Mathf.Sin(Time.time * bobSpeed) * bobAmount * speedFactor;
             Vector2 bobOffset2D = perp * bobScalar;
             newBobOffset = new Vector3(bobOffset2D.x, bobOffset2D.y, 0f);

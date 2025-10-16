@@ -21,6 +21,7 @@ public class BuildSystem : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(gameObject.name);
         // --- toggle de construcción con click derecho
         if (Mouse.current.rightButton.wasPressedThisFrame)
         {

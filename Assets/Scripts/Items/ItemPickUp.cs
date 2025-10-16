@@ -9,7 +9,6 @@ public class ItemPickUp : MonoBehaviour
     [Inject] AttackPlayer playerAttack;
     [SerializeField] public ItemData itemData;
     [SerializeField] public int amount = 1;
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
