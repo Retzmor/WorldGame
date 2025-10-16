@@ -16,9 +16,9 @@ public class HealthPlayer : Damageable
         health = maxHealth;
     }
 
-    public override void TakeDamage(float damage, WeaponType weaponType, float knockBackValue, Vector2 HitDirection)
+    public override void TakeDamage(float damage, WeaponType weaponType, float knockBackValue, Vector2 HitDirection, Vector2 HitPosition)
     {
-        base.TakeDamage(damage, weaponType, knockBackValue, HitDirection);
+        base.TakeDamage(damage, weaponType, knockBackValue, HitDirection, HitPosition);
 
         currentHealth = Mathf.Clamp(currentHealth - (int)damage, 0, maxHealth);
 
@@ -45,7 +45,8 @@ public class HealthPlayer : Damageable
         if (collision.gameObject.CompareTag("Mob"))
         {
             Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
-            TakeDamage(34, WeaponType.Sword, 1.5f, -hitDirection);
+            Vector2 hitPosition = collision.GetContact(0).point;
+            TakeDamage(34, WeaponType.Sword, 1.5f, -hitDirection, hitPosition);
             ppManager.EnableVignette(true,0.4f, Color.darkRed);
             if (damageFlash == null)
             {

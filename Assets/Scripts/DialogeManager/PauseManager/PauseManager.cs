@@ -1,10 +1,13 @@
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using static WorldSaveSystem;
+using Zenject.SpaceFighter;
 
 public class PauseManager : MonoBehaviour
 {
-    [SerializeField] private string sceneName = "Nivel1"; // escena donde S� funciona la pausa
+    [SerializeField] private string sceneName = "Nivel1"; // escena donde SÍ funciona la pausa
     [SerializeField] private GameObject pausePanel; // tu UI panel de pausa
     [SerializeField] private PlayerInput playerInput;
 
@@ -13,11 +16,15 @@ public class PauseManager : MonoBehaviour
     private void OnEnable()
     {
         playerInput.actions["Pause"].performed += OnPausePerformed;
+        GameManager.OnMainMenu += SaveAfterQuitTheMainScene;
+        GameManager.OnMainMenu += ResumeGame;
     }
 
     private void OnDisable()
     {
         playerInput.actions["Pause"].performed -= OnPausePerformed;
+        GameManager.OnMainMenu -= SaveAfterQuitTheMainScene;
+        GameManager.OnMainMenu -= ResumeGame;
     }
 
     private void OnPausePerformed(InputAction.CallbackContext context)
@@ -72,10 +79,27 @@ public class PauseManager : MonoBehaviour
         }
     }
 
-    // Opci�n para un bot�n "Salir al men�"
+    // Opción para un botón "Salir al menú"
     public void QuitToMenu(string menuScene)
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(menuScene);
     }
+
+    public void SaveAfterQuitTheMainScene()
+    {
+        Transform player = GameObject.FindAnyObjectByType<PlayerController>().transform;
+        WorldSaveSystem saveSystem = GameObject.FindAnyObjectByType<WorldSaveSystem>();
+        saveSystem.SaveWorld(); // ⬅️ guarda al cerrar juego
+        List<ItemSave> currentInventory = new List<ItemSave>();
+        // TODO: aquí rellena con los ítems reales del inventario del jugador
+        saveSystem.SavePlayer(player, currentInventory);
+
+    }
+
+    public void OnClickMainMenu()
+    {
+        GameManager.instance.GoToMainMenu();
+    }
+
 }

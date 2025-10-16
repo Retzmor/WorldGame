@@ -22,10 +22,10 @@ public class Arrow : MonoBehaviour
         {
             gameObject.SetActive(false);
             Vector2 hitDir = (collision.transform.position - transform.position).normalized;
-            Debug.Log("enemigo");
+            Vector2 hitPosition = collision.ClosestPoint(transform.position);
             if (collision.TryGetComponent<Damageable>(out var hit))
             {
-                hit.TakeDamage(damage, weaponType, knockBack , hitDir);
+                hit.TakeDamage(damage, weaponType, knockBack , hitDir, hitPosition);
                 
             }
             else

@@ -33,8 +33,8 @@ public class ArmMelee : Weapon
             if (collider.TryGetComponent(out IHit hit))
             {
                 Vector2 hitDirection = (collider.transform.position - transform.position).normalized;
-                hit.TakeDamage(damage, WeaponType,KnockbackForce , hitDirection);
-                Debug.Log("ATACA");
+                Vector2 hitPosition = collider.ClosestPoint(positionDetect);
+                hit.TakeDamage(damage, WeaponType,KnockbackForce , hitDirection, hitPosition);
                 ScreenShakeManager.Instance.Shake(0.03f);
             }
         }

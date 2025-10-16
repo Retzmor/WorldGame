@@ -10,9 +10,12 @@ using static GameManager;
 /// </summary>
 public class WorldSaveSystem : MonoBehaviour
 {
+
     [Header("Referencias (asignar en inspector)")]
     public BiomeLibrary biomeLibrary;           // para resolver prefabs/tiles por nombre
     public List<TileBase> extraTiles = new();  // p.ej. asigna waterTile aquí si lo deseas
+
+   
     public int currentSlot = 1;
 
 
@@ -73,6 +76,7 @@ public class WorldSaveSystem : MonoBehaviour
     private readonly Dictionary<Vector2Int, ChunkSaveData> worldSaveDict = new();
 
     // -----------------------
+    // API pública
     // API pública
     // -----------------------
 
@@ -373,5 +377,11 @@ public class WorldSaveSystem : MonoBehaviour
     public string GetSlotFileName()
     {
         return $"world_slot{currentSlot}.json";
+    }
+
+    public void ChangeCurrentData(WorldMeta worldData)
+    {
+        currentData = worldData;
+        currentSlot = currentData.slot;
     }
 }

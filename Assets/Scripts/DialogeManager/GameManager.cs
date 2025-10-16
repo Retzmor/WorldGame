@@ -7,10 +7,19 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public WorldSaveSystem saveSystem; // referencia al sistema de guardado
+     [HideInInspector] public WorldSaveSystem saveSystem; // referencia al sistema de guardado
     private string metaFile => Path.Combine(Application.persistentDataPath, "worlds.json");
     public static event Action OnCreateNewWorld;
+    public static event Action OnLoadWorld;
+    public static event Action OnMainMenu;
 
+
+    public bool DeveloperMode;
+
+    private void Start()
+    {
+        saveSystem = GetComponent<WorldSaveSystem>();
+    }
 
 
     [System.Serializable]
@@ -37,6 +46,17 @@ public class GameManager : MonoBehaviour
     {
         OnCreateNewWorld?.Invoke();
         Debug.Log("perra");
+    }
+
+    public void LoadWorld()
+    {
+
+        OnLoadWorld?.Invoke();
+    }
+
+    public void GoToMainMenu()
+    {
+        OnMainMenu?.Invoke();
     }
 
     // Crear un mundo y añadirlo a worlds.json
@@ -69,10 +89,41 @@ public class GameManager : MonoBehaviour
         SaveMetaData();
 
         // asignar slot en el saveSystem y crear archivo del mundo
-        saveSystem.currentSlot = slot;
+        saveSystem.ChangeCurrentData(meta);
         saveSystem.SaveWorld();
-
+        
         Debug.Log($"🌍 Mundo creado: {name} (slot {slot})");
+
+        LoadWorld();
+    }
+
+    public void DeleteWorld(int slot)
+    {
+        // 1️⃣ Buscar el mundo en la lista
+        var meta = metaList.worlds.Find(w => w.slot == slot);
+        if (meta == null)
+        {
+            Debug.LogWarning($"No se encontró ningún mundo con slot {slot}");
+            return;
+        }
+
+        // 2️⃣ Eliminar el archivo físico del mundo
+        string worldFile = Path.Combine(Application.persistentDataPath, $"world_slot{slot}.json");
+        if (File.Exists(worldFile))
+        {
+            File.Delete(worldFile);
+            Debug.Log($"🗑️ Archivo de mundo eliminado: {worldFile}");
+        }
+        else
+        {
+            Debug.Log($"⚠️ El archivo {worldFile} no existía.");
+        }
+
+        // 3️⃣ Eliminarlo de la lista de metadatos
+        metaList.worlds.Remove(meta);
+        SaveMetaData();
+
+        Debug.Log($"✅ Mundo '{meta.name}' (slot {slot}) eliminado correctamente.");
     }
 
     // Guardar worlds.json
@@ -113,10 +164,6 @@ public class GameManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
 
-        if (saveSystem == null)
-        {
-            saveSystem = gameObject.AddComponent<WorldSaveSystem>();
-        }
     }
 
 

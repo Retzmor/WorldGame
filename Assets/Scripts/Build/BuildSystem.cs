@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.InputSystem;
+using Pathfinding;
 
 public class BuildSystem : MonoBehaviour
 {
@@ -114,7 +115,11 @@ public class BuildSystem : MonoBehaviour
         if (count > 0) center /= count;
         center.z = 0f;
 
-        Instantiate(currentBuildable.prefab, center, Quaternion.identity);
+        GameObject obj =  Instantiate(currentBuildable.prefab, center, Quaternion.identity);
+        Collider2D col = obj.GetComponent<Collider2D>();
+        GraphUpdateObject guo = new GraphUpdateObject(col.bounds);
+        guo.updatePhysics = true;
+        AstarPath.active.UpdateGraphs(guo);
     }
 
     private bool CanPlaceAt(Vector3Int startCell, Vector2Int size)

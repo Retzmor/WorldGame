@@ -37,7 +37,7 @@ public abstract class Damageable : MonoBehaviour, IHit
 
  
 
-    public virtual void TakeDamage(float damage, WeaponType weaponType, float knockBackValue,  Vector2 HitDirection)
+    public virtual void TakeDamage(float damage, WeaponType weaponType, float knockBackValue,  Vector2 HitDirection, Vector2 hitPosition)
     {
         damageFlash?.CallDamageFlash();
         if (NeedKnockBack) { ApplyKnockback(HitDirection, knockBackValue); }

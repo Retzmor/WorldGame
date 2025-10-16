@@ -92,9 +92,9 @@ public class PassiveMob : Mob
         isFleeing = false;
     }
 
-    public override void TakeDamage(float damage, WeaponType weaponType, float knockBackValue, Vector2 HitDirection)
+    public override void TakeDamage(float damage, WeaponType weaponType, float knockBackValue, Vector2 HitDirection, Vector2 hitPosition)
     {
-        base.TakeDamage(damage, weaponType, knockBackValue, HitDirection);
+        base.TakeDamage(damage, weaponType, knockBackValue, HitDirection, hitPosition);
         OnHitReaction();
     }
 

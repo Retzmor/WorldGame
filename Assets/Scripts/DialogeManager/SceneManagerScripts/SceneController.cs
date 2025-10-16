@@ -17,7 +17,14 @@ public class SceneController : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-
+    private void OnEnable()
+    {
+        GameManager.OnLoadWorld += () => LoadScene("ScenaGym");
+    }
+    private void OnDisable()
+    {
+        GameManager.OnLoadWorld -= () => LoadScene("ScenaGym");
+    }
 
     public void LoadScene(string sceneName)
     {

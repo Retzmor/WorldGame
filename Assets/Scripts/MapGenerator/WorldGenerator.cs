@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Pathfinding;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -63,8 +65,19 @@ public class WorldGenerator : MonoBehaviour
     private TileBase[] groundTileBuffer;
     private TileBase[] waterTileBuffer;
 
+    public static event System.Action OnWorldGenerated;
+    public bool IsWorldReady;
+    public float GenerationProgress { get; private set; }
+
+
     void Awake()
     {
+        saveSystem = FindAnyObjectByType<WorldSaveSystem>();
+        if (saveSystem != null)
+        {
+            int converterSeed = int.Parse(saveSystem.currentData.seed);
+            seed = (int)converterSeed;
+        }
         prng = new System.Random(seed);
         terrainOffsetX = prng.Next(-100000, 100000);
         terrainOffsetY = prng.Next(-100000, 100000);
@@ -84,7 +97,7 @@ public class WorldGenerator : MonoBehaviour
         saveSystem = FindAnyObjectByType<WorldSaveSystem>();
         if (saveSystem != null)
         {
-            // cargar mundo
+           // cargar mundo
             saveSystem.LoadWorld();
 
             // cargar jugador
@@ -100,9 +113,36 @@ public class WorldGenerator : MonoBehaviour
             }
         }
         
-        GenerateWorld();
-        
     }
+
+    // ✅ Nuevo método público
+    public void StartWorldGeneration()
+    {
+        if (loaderRoutine == null)
+            loaderRoutine = StartCoroutine(LoaderLoop());
+
+        if (respawnRoutine == null)
+            respawnRoutine = StartCoroutine(RespawnLoop());
+
+        StartCoroutine(GenerateWorldCoroutine());
+    }
+
+    private IEnumerator GenerateWorldCoroutine()
+    {
+        GenerationProgress = 0f;
+
+        // Ejemplo: si generas chunks o bloques, actualiza este valor
+        int totalSteps = 10; // o chunks.Length, etc.
+        for (int i = 0; i < totalSteps; i++)
+        {
+            yield return new WaitForSeconds(0.1f); // simulación
+            GenerationProgress = (float)(i + 1) / totalSteps;
+        }
+
+        GenerationProgress = 1f;
+        OnWorldGenerated?.Invoke();
+    }
+
 
     private void GenerateWorld()
     {
@@ -134,6 +174,10 @@ public class WorldGenerator : MonoBehaviour
     IEnumerator LoaderLoop()
     {
         var wait = new WaitForSeconds(0.1f);
+
+        // Espera hasta que se hayan generado los chunks iniciales
+        bool initialLoadDone = false;
+
         while (true)
         {
             UpdateVisibleChunks();
@@ -146,6 +190,13 @@ public class WorldGenerator : MonoBehaviour
                 GenerateChunk(c);
                 loadedChunks[c] = true;
                 if (chunkSize >= 48) yield return null;
+            }
+
+            if (!initialLoadDone && chunksToDraw.Count == 0)
+            {
+                initialLoadDone = true;
+                IsWorldReady = true;
+                OnWorldGenerated?.Invoke(); // 🔥 Aquí avisamos que ya está listo
             }
 
             yield return wait;
@@ -484,9 +535,9 @@ public class WorldGenerator : MonoBehaviour
                     if (totalMobs >= maxMobsGlobal) break;
 
                     var mobOpt = biome.mobs[m];
-                    if (Random.value > mobOpt.probability) continue;
+                    if (UnityEngine.Random.value > mobOpt.probability) continue;
 
-                    int groupSize = Random.Range(mobOpt.minGroup, mobOpt.maxGroup + 1);
+                    int groupSize = UnityEngine.Random.Range(mobOpt.minGroup, mobOpt.maxGroup + 1);
 
                     for (int g = 0; g < groupSize; g++)
                     {
@@ -496,8 +547,8 @@ public class WorldGenerator : MonoBehaviour
                         bool valid = false;
                         for (int attempt = 0; attempt < 10 && !valid; attempt++)
                         {
-                            float px = chunk.x * chunkSize + Random.Range(0, chunkSize);
-                            float py = chunk.y * chunkSize + Random.Range(0, chunkSize);
+                            float px = chunk.x * chunkSize + UnityEngine.Random.Range(0, chunkSize);
+                            float py = chunk.y * chunkSize + UnityEngine.Random.Range(0, chunkSize);
 
                             spawnPos = new Vector3((px + 0.5f) * 0.5f, (py + 0.5f) * 0.5f, 0f);
                             Vector3 viewportPos = Camera.main.WorldToViewportPoint(spawnPos);
@@ -597,6 +648,12 @@ public class WorldGenerator : MonoBehaviour
         }
 
         ReturnToPool(obj);
+
+        Collider2D col = obj.GetComponent<Collider2D>();
+        GraphUpdateObject guo = new GraphUpdateObject(col.bounds);
+        guo.updatePhysics = true;
+        AstarPath.active.UpdateGraphs(guo);
+
     }
 
     GameObject GetFromPool(GameObject prefab, Vector3 pos, Quaternion rot)

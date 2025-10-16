@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 6934102990404535260}
   - component: {fileID: 2445864320127121881}
   - component: {fileID: 5598127237281928977}
-  - component: {fileID: 8017222588040685761}
   - component: {fileID: 4740769668288234308}
-  - component: {fileID: 4371887107343160549}
   - component: {fileID: -2671263356699090769}
+  - component: {fileID: 6643240851587598662}
+  - component: {fileID: 7940041373504880488}
   m_Layer: 13
   m_Name: Rock
   m_TagString: Untagged
@@ -140,25 +140,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.78731257, y: 0.5310158}
   m_EdgeRadius: 0
---- !u!114 &8017222588040685761
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6913790783632814790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a3cddb2919c74d4e8406eefcc025d96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 100
-  NeedKnockBack: 0
-  weaponNeeded: 1
-  rocks:
-  - {fileID: 8241184534265308917}
-  - {fileID: 5554386040059573509}
-  force: 2
 --- !u!114 &4740769668288234308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,21 +178,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4371887107343160549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6913790783632814790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e6d583420d0ff24b8909ea68831bf0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemData: {fileID: 11400000, guid: 8b608308ccee5e8418943da4abb3ae86, type: 2}
-  amount: 1
-  inventory: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}
 --- !u!114 &-2671263356699090769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,6 +190,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15586939f43b7004e9f54b6ec64db34c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6643240851587598662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6913790783632814790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c0ef67096d17d64fbfb3f43dcbf6f81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  NeedKnockBack: 0
+  weaponNeeded: 1
+  dominantColor: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
+--- !u!114 &7940041373504880488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6913790783632814790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fd3fd26899008c49ba8c7436d8ab5a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lootItems:
+  - {fileID: 8241184534265308917}
+  - {fileID: 5554386040059573509}
+  force: 2
 --- !u!1001 &424165476243824179
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -242,11 +240,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5257905200430902070, guid: 6ea01e7d109187e45a9919b6e0c97b7c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.19253208
+      value: 0.189
       objectReference: {fileID: 0}
     - target: {fileID: 5257905200430902070, guid: 6ea01e7d109187e45a9919b6e0c97b7c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.30999994
+      value: -0.021
       objectReference: {fileID: 0}
     - target: {fileID: 5257905200430902070, guid: 6ea01e7d109187e45a9919b6e0c97b7c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -319,7 +317,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: 8b608308ccee5e8418943da4abb3ae86, type: 2}
   amount: 1
-  inventory: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}
 --- !u!4 &5554386040059573509 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5257905200430902070, guid: 6ea01e7d109187e45a9919b6e0c97b7c, type: 3}
@@ -347,7 +344,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5257905200430902070, guid: 6ea01e7d109187e45a9919b6e0c97b7c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.30999994
+      value: 0.033
       objectReference: {fileID: 0}
     - target: {fileID: 5257905200430902070, guid: 6ea01e7d109187e45a9919b6e0c97b7c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -420,7 +417,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: 8b608308ccee5e8418943da4abb3ae86, type: 2}
   amount: 1
-  inventory: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}
 --- !u!4 &8241184534265308917 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5257905200430902070, guid: 6ea01e7d109187e45a9919b6e0c97b7c, type: 3}
