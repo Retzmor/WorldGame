@@ -32,9 +32,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 existingItem.parentSlot = fromSlot;
             }
         }
-       
-
         dragItem.SetParent(toSlot);
+        dragItem.transform.SetAsLastSibling();
     }
 
     public bool IsEmpty()

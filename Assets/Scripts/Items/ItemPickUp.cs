@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework.Interfaces;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using Zenject;
 
@@ -9,7 +10,12 @@ public class ItemPickUp : MonoBehaviour
     [Inject] AttackPlayer playerAttack;
     [SerializeField] public ItemData itemData;
     [SerializeField] public int amount = 1;
+    Rigidbody2D rb;
 
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
@@ -38,7 +44,6 @@ public class ItemPickUp : MonoBehaviour
                         playerAttack.MoveWeaponToHand(playerAttack.pivotRight);
                     }
                 }
-
                 Destroy(gameObject);
             }
         }

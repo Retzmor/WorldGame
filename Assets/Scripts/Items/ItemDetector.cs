@@ -42,17 +42,27 @@ public class ItemDetector : MonoBehaviour
             WeaponPickUp pickUpData = newWeapon.GetComponent<WeaponPickUp>();
             if (pickUpData != null && pickUpData.itemData != null)
             {
-                if (inventory != null)
+                if (hotbar != null)
                 {
-                    inventory.AddItem(
-                        pickUpData.itemData.prefab,
-                        pickUpData.itemData.itemName,
-                        1,
-                        pickUpData.itemData.itemSprite,
-                        pickUpData.itemData.healAmount,
-                        pickUpData.itemData.worldPrefab
-                    );
+                    GameObject selectedUI = hotbar.GetSelectedItem();
+                    if (selectedUI != null && selectedUI.name == pickUpData.itemData.itemName)
+                    {
+                        AttackPlayer playerAttack = GetComponent<AttackPlayer>();
+                        if (playerAttack.currentWeapon != null && playerAttack.currentWeapon.name.Contains(pickUpData.itemData.itemName))
+                        {
+                            return;
+                        }
+                    }
                 }
+
+                inventory.AddItem(
+                    pickUpData.itemData.prefab,
+                    pickUpData.itemData.itemName,
+                    1,
+                    pickUpData.itemData.itemSprite,
+                    pickUpData.itemData.healAmount,
+                    pickUpData.itemData.worldPrefab
+                );
                 if (hotbar != null)
                 {
                     GameObject selectedUI = hotbar.GetSelectedItem();

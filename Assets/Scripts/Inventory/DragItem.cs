@@ -1,10 +1,14 @@
-using NUnit.Framework.Interfaces;
+﻿using NUnit.Framework.Interfaces;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
 public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    [Inject] Inventory inventory;
+    [Inject] DiContainer container;
     [HideInInspector] public InventorySlot parentSlot;
     private Canvas canvas;
     public ItemData itemData;
@@ -35,7 +39,7 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         canvasGroup.blocksRaycasts = false;
 
         transform.SetParent(canvas.transform);
-        transform.SetAsLastSibling();
+        transform.SetAsLastSibling(); 
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -82,13 +86,6 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
         return null;
     }
-
-    private void ReturnToOriginalSlot()
-    {
-        transform.SetParent(originalParent);
-        transform.localPosition = Vector3.zero;
-    }
-
     public void SetParent(InventorySlot newSlot)
     {
         parentSlot = newSlot;
@@ -100,8 +97,6 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         ItemUse itemData = GetComponent<ItemUse>();
         if (itemData == null) return;
-
-        Inventory inventory = FindObjectOfType<Inventory>();
         if (inventory == null) return;
 
         string itemName = itemData.itemName;
@@ -109,12 +104,13 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
         int amount = inventory.InventoryItems[itemName];
         if (amount <= 0) return;
-
-        for (int i = 0; i < amount; i++)
-        {
-            Vector3 dropPos = transform.position + Vector3.forward * 1f;
-        }
-
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        Vector3 dropOffset = Vector3.right; 
+        SpriteRenderer sr = player.GetComponent<SpriteRenderer>();
+        if (sr != null && sr.flipX) dropOffset = Vector3.left; 
+        Vector3 dropPos = player.transform.position + dropOffset * 1f; 
+        dropPos.z = 0f;
+        GameObject dropped = container.InstantiatePrefab(itemData.worldPrefap, dropPos, Quaternion.identity, null);
         inventory.InventoryItems.Remove(itemName);
     }
 }
