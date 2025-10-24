@@ -12,7 +12,7 @@ public class PlayerRun : MonoBehaviour
     private Vector2 moveInput;
     private bool isRunning;
 
-    private void Awake()
+    private void Start()
     {
         playerInput = GetComponent<PlayerInput>();
         playerEnergy = GetComponent<PlayerEnergy>();

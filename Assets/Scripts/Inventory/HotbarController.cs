@@ -100,7 +100,9 @@ public class HotbarController : MonoBehaviour
                 GameObject newWeapon = Instantiate(itemData.itemPrefab, playerAttack.pivotRight);
                 playerAttack.currentWeapon = newWeapon;
                 playerAttack.currentWeapon = newWeapon;
-                playerAttack.MoveWeaponToHand(playerAttack.pivotRight);
+                playerAttack.EquipWeapon(newWeapon);
+                //playerAttack.MoveWeaponToHand(playerAttack.pivotRight);
+
             }
         }
         else if (playerAttack != null)
