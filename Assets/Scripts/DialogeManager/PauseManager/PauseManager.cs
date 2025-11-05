@@ -11,7 +11,7 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private GameObject pausePanel; // tu UI panel de pausa
     [SerializeField] private PlayerInput playerInput;
 
-    private bool isPaused = false;
+    [SerializeField] private bool isPaused = false;
 
     private void OnEnable()
     {

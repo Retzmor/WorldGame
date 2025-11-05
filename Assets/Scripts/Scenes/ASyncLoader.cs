@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class ASyncLoader : MonoBehaviour
 {
+    public static ASyncLoader Instance;
+
     [Header("MenuScreens")]
     [SerializeField] private GameObject LoadingScreen;
     [SerializeField] private GameObject MainMenu;
@@ -17,11 +19,23 @@ public class ASyncLoader : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        if(Instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
     private void OnEnable()
     {
+        if (GameObject.Find("MainMenu") != null)
+        {
+            MainMenu = GameObject.Find("MainMenu");
+        }
 
         loadWorldAction = () => LoadLevelBtn("ScenaGym");
         GameManager.OnLoadWorld += loadWorldAction;
@@ -37,7 +51,11 @@ public class ASyncLoader : MonoBehaviour
 
     public void LoadLevelBtn(string levelLoad)
     {
+        Debug.Log("PressButon");
+        Time.timeScale = 1f;
+        MainMenu = GameObject.Find("CanvasMainMenu");
         MainMenu?.SetActive(false);
+        
         LoadingScreen?.SetActive(true);
         StartCoroutine(LoadLevelAsync(levelLoad));
     }
@@ -98,6 +116,5 @@ public class ASyncLoader : MonoBehaviour
 
         yield return new WaitForSeconds(0.3f);
         LoadingScreen.SetActive(false);
-        Destroy(gameObject);
     }
 }
