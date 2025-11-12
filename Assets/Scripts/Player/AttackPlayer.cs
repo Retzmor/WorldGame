@@ -8,6 +8,8 @@ public class AttackPlayer : MonoBehaviour
     [SerializeField] public Transform pivotRight;   // mano derecha
     [SerializeField] public Transform pivotLeft;    // mano izquierda
     [SerializeField] public GameObject currentWeapon;
+    public ItemData currentWeaponData;
+    [SerializeField] public WeaponType? currentWeaponType;
 
     [Header("Ajustes")]
     [SerializeField, Range(0.05f, 0.5f)] private float deadZoneRadius = 0.15f;
@@ -107,9 +109,15 @@ public class AttackPlayer : MonoBehaviour
         }
     }
 
-    public void EquipWeapon(GameObject weapon)
+    public void EquipWeapon(GameObject weapon, ItemData itemData)
     {
         currentWeapon = weapon;
+        currentWeaponType = itemData.itemType;
+        Debug.Log(itemData.itemType);
+        currentWeaponData = itemData;
+        if (itemData != null)
+            currentWeaponType = itemData.itemType;
+
         MoveWeaponToHand(pivotRight);
         lastValidRotation = currentWeapon.transform.rotation;
 

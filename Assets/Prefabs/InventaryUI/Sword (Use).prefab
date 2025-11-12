@@ -137,6 +137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentSlot: {fileID: 0}
+  itemData: {fileID: 11400000, guid: 97645c4a0cdd95847bc28cd7388d4dcb, type: 2}
 --- !u!225 &-7323436934344218035
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -163,7 +164,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthToGive: 20
   itemPrefab: {fileID: 694359164373147337, guid: 8e95bd64dc8b4f643937cc6460e5b0b8, type: 3}
+  itemData: {fileID: 11400000, guid: 97645c4a0cdd95847bc28cd7388d4dcb, type: 2}
   worldPrefap: {fileID: 694359164373147337, guid: 8e95bd64dc8b4f643937cc6460e5b0b8, type: 3}
+  itemName: 
 --- !u!1 &6487342753466191163
 GameObject:
   m_ObjectHideFlags: 0

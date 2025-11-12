@@ -63,7 +63,6 @@ public class HotbarController : MonoBehaviour
         {
             Vector3 dropPos = playerAttack.transform.position + playerAttack.transform.right * 1f;
             _container.InstantiatePrefab(itemData.worldPrefap, dropPos, Quaternion.identity, null);
-            Debug.Log("Instancie el objeto");
         }
 
         if (inventory.InventoryItems[itemName] <= 0)
@@ -88,21 +87,21 @@ public class HotbarController : MonoBehaviour
         currentSlotIndex = index;
         GameObject selectedUI = GetSelectedItem();
         UpdateSlotHighlights();
+
         if (selectedUI != null && playerAttack != null)
         {
-            ItemUse itemData = selectedUI.GetComponent<ItemUse>();
-            if (playerAttack.currentWeapon != null)
-                Destroy(playerAttack.currentWeapon);
-            if (itemData != null && itemData.itemPrefab != null)
-            {
-                if (playerAttack.currentWeapon != null)
-                Destroy(playerAttack.currentWeapon);
-                GameObject newWeapon = Instantiate(itemData.itemPrefab, playerAttack.pivotRight);
-                playerAttack.currentWeapon = newWeapon;
-                playerAttack.currentWeapon = newWeapon;
-                playerAttack.EquipWeapon(newWeapon);
-                //playerAttack.MoveWeaponToHand(playerAttack.pivotRight);
+            ItemUse itemUse = selectedUI.GetComponent<ItemUse>();
 
+            if (playerAttack.currentWeapon != null)
+            {
+                Debug.Log("Elimine " + playerAttack.currentWeapon.name);
+                Destroy(playerAttack.currentWeapon);
+            }
+
+            if (itemUse != null && itemUse.itemPrefab != null)
+            {
+                GameObject newWeapon = Instantiate(itemUse.itemPrefab, playerAttack.pivotRight);
+                playerAttack.EquipWeapon(newWeapon, itemUse.itemData); 
             }
         }
         else if (playerAttack != null)
@@ -113,7 +112,6 @@ public class HotbarController : MonoBehaviour
             playerAttack.currentWeapon = null;
         }
     }
-
     public GameObject GetSelectedItem()
     {
         if (currentSlotIndex >= 0 && currentSlotIndex < hotbarSlots.Length &&
@@ -123,7 +121,6 @@ public class HotbarController : MonoBehaviour
         }
         return null;
     }
-
     private void UpdateSlotHighlights()
     {
         for (int i = 0; i < hotbarSlots.Length; i++)
@@ -138,5 +135,4 @@ public class HotbarController : MonoBehaviour
             }
         }
     }
-    
 }

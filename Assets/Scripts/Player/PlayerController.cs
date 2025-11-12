@@ -47,7 +47,6 @@ public class PlayerController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         //animator = GetComponentInChildren<Animator>();
         spriteRenderer = spriteTransform.GetComponent<SpriteRenderer>();
-
         baseScale = spriteTransform.localScale;
     }
 

@@ -39,7 +39,7 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         canvasGroup.blocksRaycasts = false;
 
         transform.SetParent(canvas.transform);
-        transform.SetAsLastSibling(); 
+        transform.SetAsLastSibling();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -52,17 +52,21 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
-        InventorySlot targetSlot = FindSlotUnderCursor(eventData);
+        bool pointerOverUI = EventSystem.current.IsPointerOverGameObject();
 
-        if (targetSlot != null)
+        if (pointerOverUI)
         {
-            ExecuteEvents.Execute(targetSlot.gameObject, eventData, ExecuteEvents.dropHandler);
+            InventorySlot targetSlot = FindSlotUnderCursor(eventData);
+            if (targetSlot != null)
+            {
+                ExecuteEvents.Execute(targetSlot.gameObject, eventData, ExecuteEvents.dropHandler);
+                return;
+            }
         }
-        else
-        {
-            DropAllToWorld();
-            Destroy(gameObject);
-        }
+
+        // Si no está sobre UI o slot, soltar al mundo
+        Debug.Log("Soltado fuera del inventario, soltando al mundo...");
+        DropAllToWorld(itemData);
     }
 
     private InventorySlot FindSlotUnderCursor(PointerEventData eventData)
@@ -93,24 +97,42 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         transform.localPosition = Vector3.zero;
     }
 
-    private void DropAllToWorld()
+    private void DropAllToWorld(ItemData itemData)
     {
-        ItemUse itemData = GetComponent<ItemUse>();
-        if (itemData == null) return;
-        if (inventory == null) return;
+        if (itemData == null || itemData.worldPrefab == null) return;
 
-        string itemName = itemData.itemName;
-        if (!inventory.InventoryItems.ContainsKey(itemName)) return;
-
-        int amount = inventory.InventoryItems[itemName];
-        if (amount <= 0) return;
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        Vector3 dropOffset = Vector3.right; 
+        if (player == null) return;
+
+        AttackPlayer attackPlayer = player.GetComponent<AttackPlayer>();
+        if (attackPlayer != null && attackPlayer.currentWeapon != null)
+        {
+            if (attackPlayer.currentWeaponData == itemData)
+            {
+                Destroy(attackPlayer.currentWeapon);
+                attackPlayer.currentWeapon = null;
+                attackPlayer.currentWeaponType = null;
+                attackPlayer.currentWeaponData = null;
+            }
+        }
+        Vector3 dropOffset = player.transform.right;
         SpriteRenderer sr = player.GetComponent<SpriteRenderer>();
-        if (sr != null && sr.flipX) dropOffset = Vector3.left; 
-        Vector3 dropPos = player.transform.position + dropOffset * 1f; 
-        dropPos.z = 0f;
-        GameObject dropped = container.InstantiatePrefab(itemData.worldPrefap, dropPos, Quaternion.identity, null);
-        inventory.InventoryItems.Remove(itemName);
+        if (sr != null && sr.flipX) dropOffset = -player.transform.right;
+
+        Vector3 worldPos = player.transform.position + dropOffset * 1f;
+
+        GameObject droppedItem = container.InstantiatePrefab(itemData.worldPrefab, worldPos, Quaternion.identity, null);
+
+        Rigidbody2D rb = droppedItem.GetComponent<Rigidbody2D>();
+        if (rb == null) rb = droppedItem.AddComponent<Rigidbody2D>();
+        rb.gravityScale = 0f;
+        rb.linearDamping = 2f;
+        rb.angularDamping = 1f;
+        rb.linearVelocity = dropOffset * 3f;
+
+        if (droppedItem.GetComponent<Collider2D>() == null)
+            droppedItem.AddComponent<BoxCollider2D>();
+
+        Destroy(gameObject); 
     }
 }

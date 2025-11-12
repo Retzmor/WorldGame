@@ -7,6 +7,7 @@ public class ItemUse : MonoBehaviour
     [Inject] Inventory inventory;
     [SerializeField] int healthToGive = 20;
     public GameObject itemPrefab;
+    public ItemData itemData;
     [SerializeField] public GameObject worldPrefap;
     public string itemName;
     private int healAmount;

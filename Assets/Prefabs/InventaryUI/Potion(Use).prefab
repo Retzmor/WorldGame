@@ -175,7 +175,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthToGive: 20
   itemPrefab: {fileID: 5688600327719869917, guid: 3bbf3550bbc1be34eb1ac94ff0591def, type: 3}
+  itemData: {fileID: 11400000, guid: 919fdeb54be07a24bade7340fd281386, type: 2}
   worldPrefap: {fileID: 5688600327719869917, guid: 3bbf3550bbc1be34eb1ac94ff0591def, type: 3}
+  itemName: 
 --- !u!114 &159991024527930844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,6 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentSlot: {fileID: 0}
+  itemData: {fileID: 11400000, guid: 919fdeb54be07a24bade7340fd281386, type: 2}
 --- !u!225 &238578635930040604
 CanvasGroup:
   m_ObjectHideFlags: 0
