@@ -9,4 +9,11 @@ public class ItemData : ScriptableObject
     public GameObject prefab;     
     public int healAmount;
     public WeaponType itemType;
+
+    [HideInInspector] public string uniqueID;
+    private void OnEnable()
+    {
+        if (string.IsNullOrEmpty(uniqueID))
+            uniqueID = System.Guid.NewGuid().ToString();
+    }
 }

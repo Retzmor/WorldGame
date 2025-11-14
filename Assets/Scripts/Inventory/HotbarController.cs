@@ -82,7 +82,7 @@ public class HotbarController : MonoBehaviour
             if (text != null) text.text = inventory.InventoryItems[itemName].ToString();
         }
     }
-    private void SelectSlot(int index)
+    public void SelectSlot(int index)
     {
         currentSlotIndex = index;
         GameObject selectedUI = GetSelectedItem();
@@ -100,8 +100,9 @@ public class HotbarController : MonoBehaviour
 
             if (itemUse != null && itemUse.itemPrefab != null)
             {
-                GameObject newWeapon = Instantiate(itemUse.itemPrefab, playerAttack.pivotRight);
-                playerAttack.EquipWeapon(newWeapon, itemUse.itemData); 
+                GameObject newWeapon = _container.InstantiatePrefab(itemUse.itemPrefab, playerAttack.pivotRight);
+                playerAttack.EquipWeapon(newWeapon, itemUse.itemData);
+                Debug.Log("Hola");
             }
         }
         else if (playerAttack != null)

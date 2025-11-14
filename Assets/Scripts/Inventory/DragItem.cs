@@ -16,6 +16,7 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private RectTransform rectTransform;
     private Vector3 originalPosition;
     private Transform originalParent;
+    public GameObject worldInstance;
     public GameObject worldPrefab => itemData.worldPrefab;
 
     private void Awake()
@@ -99,29 +100,41 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     private void DropAllToWorld(ItemData itemData)
     {
-        if (itemData == null || itemData.worldPrefab == null) return;
+        if (itemData == null) return;
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player == null) return;
 
         AttackPlayer attackPlayer = player.GetComponent<AttackPlayer>();
-        if (attackPlayer != null && attackPlayer.currentWeapon != null)
+        GameObject droppedItem;
+
+        if (attackPlayer != null &&
+             attackPlayer.currentWeapon != null &&
+            attackPlayer.currentWeaponData != null &&
+            attackPlayer.currentWeaponData.itemName == itemData.itemName)
         {
-            if (attackPlayer.currentWeaponData == itemData)
-            {
-                Destroy(attackPlayer.currentWeapon);
-                attackPlayer.currentWeapon = null;
-                attackPlayer.currentWeaponType = null;
-                attackPlayer.currentWeaponData = null;
-            }
+            Debug.Log("Quite el arma");
+            droppedItem = attackPlayer.currentWeapon;
+            attackPlayer.currentWeapon = null;
+            attackPlayer.currentWeaponData = null;
+            attackPlayer.currentWeaponType = null;
+
+            droppedItem.transform.SetParent(null);
         }
+        else
+        {
+            if (itemData.worldPrefab == null) return;
+            droppedItem = container.InstantiatePrefab(itemData.worldPrefab);
+        }
+
         Vector3 dropOffset = player.transform.right;
         SpriteRenderer sr = player.GetComponent<SpriteRenderer>();
-        if (sr != null && sr.flipX) dropOffset = -player.transform.right;
+        if (sr != null && sr.flipX)
+            dropOffset = -player.transform.right;
 
         Vector3 worldPos = player.transform.position + dropOffset * 1f;
-
-        GameObject droppedItem = container.InstantiatePrefab(itemData.worldPrefab, worldPos, Quaternion.identity, null);
+        droppedItem.transform.position = worldPos;
+        droppedItem.transform.rotation = Quaternion.identity;
 
         Rigidbody2D rb = droppedItem.GetComponent<Rigidbody2D>();
         if (rb == null) rb = droppedItem.AddComponent<Rigidbody2D>();
@@ -133,6 +146,7 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         if (droppedItem.GetComponent<Collider2D>() == null)
             droppedItem.AddComponent<BoxCollider2D>();
 
-        Destroy(gameObject); 
+        Destroy(gameObject);
     }
+
 }

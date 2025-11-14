@@ -66,7 +66,7 @@ public class Inventory : MonoBehaviour
             GameObject itemButton = _container.InstantiatePrefab(itemPrefab, hotbarSlots[selectedIndex].transform);
             itemButton.transform.localPosition = Vector3.zero;
             itemButton.transform.localScale = Vector3.one;
-            itemButton.name = itemName;
+            hotbar.SelectSlot(selectedIndex);
 
             Image img = itemButton.GetComponent<Image>();
             if (img != null && itemSprite != null)
@@ -109,6 +109,16 @@ public class Inventory : MonoBehaviour
                 itemButton.transform.localPosition = Vector3.zero;
                 itemButton.transform.localScale = Vector3.one;
                 itemButton.name = itemName;
+                hotbar.SelectSlot(selectedIndex);
+                if (hotbar.CurrentSlotIndex == i)
+                    hotbar.SelectSlot(i);
+
+
+
+                hotbar.SelectSlot(selectedIndex);
+                if (hotbar.CurrentSlotIndex == i)
+                    hotbar.SelectSlot(i);
+
 
                 Image img = itemButton.GetComponent<Image>();
                 if (img != null && itemSprite != null)

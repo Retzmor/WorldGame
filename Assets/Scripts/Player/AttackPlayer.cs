@@ -129,11 +129,14 @@ public class AttackPlayer : MonoBehaviour
         mouseWorld.z = 0f;
         HandleFlip(mouseWorld);
     }
-
     public void DropWeapon()
     {
         if (currentWeapon == null) return;
+
         currentWeapon.transform.SetParent(null);
         currentWeapon = null;
+        currentWeaponData = null;
+        currentWeaponType = null;
     }
+
 }
