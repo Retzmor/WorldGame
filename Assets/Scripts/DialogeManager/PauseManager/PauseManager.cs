@@ -48,7 +48,6 @@ public class PauseManager : MonoBehaviour
         {
             playerInput.SwitchCurrentActionMap("Global");
             playerInput.actions["Pause"].performed += OnPausePerformed;
-            Debug.Log(playerInput.currentActionMap);
         }
            
             
@@ -88,18 +87,14 @@ public class PauseManager : MonoBehaviour
 
     public void SaveAfterQuitTheMainScene()
     {
+
         Transform player = GameObject.FindAnyObjectByType<PlayerController>().transform;
         WorldSaveSystem saveSystem = GameObject.FindAnyObjectByType<WorldSaveSystem>();
-        saveSystem.SaveWorld(); // ⬅️ guarda al cerrar juego
-        List<ItemSave> currentInventory = new List<ItemSave>();
-        // TODO: aquí rellena con los ítems reales del inventario del jugador
-        saveSystem.SavePlayer(player, currentInventory);
+        List<ItemSave> currentInventory = FindAnyObjectByType<Inventory>().GetInventoryForSave();
+
+        saveSystem.SavePlayer(player, currentInventory); // ✅ Esto ya guarda todo correctamente
 
     }
 
-    public void OnClickMainMenu()
-    {
-        GameManager.instance.GoToMainMenu();
-    }
 
 }

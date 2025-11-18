@@ -34,7 +34,7 @@ public class WorldSaveSystem : MonoBehaviour
     public class PlayerSaveData
     {
         public float posX, posY;
-        public List<ItemSave> inventory = new();
+        public List<ItemSave> inventory;
     }
 
     [System.Serializable]
@@ -44,6 +44,7 @@ public class WorldSaveSystem : MonoBehaviour
         public int quantity;
         public int durability;
         public bool equipped;
+        public int slotIndex; // ✅ nuevo campo para saber dónde estaba
     }
 
 
@@ -325,6 +326,15 @@ public class WorldSaveSystem : MonoBehaviour
 
     public void SavePlayer(Transform playerTransform, List<ItemSave> inventory)
     {
+        Debug.Log($"[SavePlayer] Inventario recibido: {inventory?.Count ?? -1}");
+        if (inventory != null)
+        {
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                var it = inventory[i];
+                Debug.Log($"Item {i}: id={it.itemID}, qty={it.quantity}, dura={it.durability}");
+            }
+        }
         if (!worldSaveDict.TryGetValue(Vector2Int.zero, out _))
         {
             // asegura al menos un chunk dummy (para que el save no quede vacío)
@@ -339,6 +349,7 @@ public class WorldSaveSystem : MonoBehaviour
 
         // Copiar inventario
         playerData.inventory = new List<ItemSave>(inventory);
+                        
 
         // Guardar dentro del mundo
         WorldSaveData data = new WorldSaveData { chunks = new List<ChunkSaveData>(worldSaveDict.Values), player = playerData };

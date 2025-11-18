@@ -282,11 +282,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 20477660}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d58c195b354e1843a169dc82fac7d9e, type: 3}
+  m_Script: {fileID: 11500000, guid: a25e74eada8d57a4da085aed8d82d9f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 20477664}
-  sceneToLoad: MainMenu
 --- !u!1 &32611750
 GameObject:
   m_ObjectHideFlags: 0
@@ -8979,6 +8977,7 @@ MonoBehaviour:
   sceneName: ScenaGym
   pausePanel: {fileID: 731792282}
   playerInput: {fileID: 774840671}
+  isPaused: 0
 --- !u!4 &1055935437
 Transform:
   m_ObjectHideFlags: 0
@@ -21005,6 +21004,10 @@ PrefabInstance:
       value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}
+      propertyPath: itemDatabase.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}
       propertyPath: 'hotbarSlots.Array.data[0]'
       value: 
       objectReference: {fileID: 827263685}
@@ -21040,6 +21043,34 @@ PrefabInstance:
       propertyPath: 'hotbarSlots.Array.data[8]'
       value: 
       objectReference: {fileID: 1769206846}
+    - target: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}
+      propertyPath: 'itemDatabase.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 5519f22179f66f749bd422f8cbf38805, type: 2}
+    - target: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}
+      propertyPath: 'itemDatabase.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 45bc02990a418a642ae35840426e637c, type: 2}
+    - target: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}
+      propertyPath: 'itemDatabase.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 55dbf49c0770ceb41abd98fa0f5bea1c, type: 2}
+    - target: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}
+      propertyPath: 'itemDatabase.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 919fdeb54be07a24bade7340fd281386, type: 2}
+    - target: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}
+      propertyPath: 'itemDatabase.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8b608308ccee5e8418943da4abb3ae86, type: 2}
+    - target: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}
+      propertyPath: 'itemDatabase.Array.data[5]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 97645c4a0cdd95847bc28cd7388d4dcb, type: 2}
+    - target: {fileID: 1154378816510967280, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}
+      propertyPath: 'itemDatabase.Array.data[6]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 0798bdb6dedad4b419e2591e2f4f1989, type: 2}
     - target: {fileID: 2564810946254760593, guid: 8143e6c1f675ca04da88b04c2a33e5e1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.09064

@@ -51,7 +51,6 @@ public class ASyncLoader : MonoBehaviour
 
     public void LoadLevelBtn(string levelLoad)
     {
-        Debug.Log("PressButon");
         Time.timeScale = 1f;
         MainMenu = GameObject.Find("CanvasMainMenu");
         MainMenu?.SetActive(false);

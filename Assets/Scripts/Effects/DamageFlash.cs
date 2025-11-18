@@ -28,7 +28,7 @@ public class DamageFlash : MonoBehaviour
         {
             materials[i] = spriteRenderers[i].material;
         }
-        //Debug.Log(gameObject.name  + materials.Length);
+
     }
 
     public void CallDamageFlash()

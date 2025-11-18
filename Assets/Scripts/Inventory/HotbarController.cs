@@ -63,7 +63,6 @@ public class HotbarController : MonoBehaviour
         {
             Vector3 dropPos = playerAttack.transform.position + playerAttack.transform.right * 1f;
             _container.InstantiatePrefab(itemData.worldPrefap, dropPos, Quaternion.identity, null);
-            Debug.Log("Instancie el objeto");
         }
 
         if (inventory.InventoryItems[itemName] <= 0)

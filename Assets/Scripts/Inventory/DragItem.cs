@@ -54,6 +54,11 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
         InventorySlot targetSlot = FindSlotUnderCursor(eventData);
 
+        //agregar datos al inventario del script de guardado de partida
+        //se requiere agregar index slot
+        //setear la cantidad a script de guardado de partida
+
+
         if (targetSlot != null)
         {
             ExecuteEvents.Execute(targetSlot.gameObject, eventData, ExecuteEvents.dropHandler);

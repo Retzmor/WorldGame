@@ -45,7 +45,6 @@ public class GameManager : MonoBehaviour
     public void InitWorld()
     {
         OnCreateNewWorld?.Invoke();
-        Debug.Log("perra");
     }
 
     public void LoadWorld()
@@ -57,6 +56,7 @@ public class GameManager : MonoBehaviour
     public void GoToMainMenu()
     {
         OnMainMenu?.Invoke();
+        SceneController.Instance.LoadScene("MainMenu");
     }
 
     // Crear un mundo y añadirlo a worlds.json

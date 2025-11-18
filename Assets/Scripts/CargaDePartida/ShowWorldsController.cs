@@ -37,7 +37,6 @@ public class ShowWorldsController : MonoBehaviour
     {
         // Carga de metadatos
         WorldMetaList metaData = GameManager.instance.LoadMetaData();
-        Debug.Log(metaData.worlds[0].name);
 
         foreach (var item in metaData.worlds)
         {

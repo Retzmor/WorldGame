@@ -106,10 +106,8 @@ public class WorldGenerator : MonoBehaviour
             {
                 // colocar jugador en posición guardada
                 player.position = new Vector3(playerData.posX, playerData.posY);
-                //player.rotation = new Quaternion(playerData.rotX, playerData.rotY, playerData.rotZ, playerData.rotW);
-                Debug.Log(playerData.posX);
-                // restaurar inventario aquí (según tu sistema de inventario)
-                Debug.Log($"Inventario cargado con {playerData.inventory.Count} items");
+                FindAnyObjectByType<Inventory>().LoadInventory(playerData.inventory);
+
             }
         }
         
@@ -158,7 +156,11 @@ public class WorldGenerator : MonoBehaviour
         if (saveSystem != null)
         {
             saveSystem.SaveWorld(); // ⬅️ guarda al cerrar juego
-            List<ItemSave> currentInventory = new List<ItemSave>();
+            List<ItemSave> currentInventory = FindAnyObjectByType<Inventory>().GetInventoryForSave();
+            for (int i = 0;i < currentInventory.Count;i++) 
+            {
+                Debug.Log(currentInventory[i].itemID);
+            }
             // TODO: aquí rellena con los ítems reales del inventario del jugador
             saveSystem.SavePlayer(player, currentInventory);
         }
